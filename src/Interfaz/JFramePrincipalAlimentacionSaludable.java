@@ -2,6 +2,7 @@ package Interfaz;
 
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -117,6 +118,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png"))); // NOI18N
         jMenuItem8.setText("Registrar Profesional");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem8);
 
         jMenuBar1.add(jMenu2);
@@ -229,7 +235,16 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-      
+        //LookAndFeel
+        try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+         JInternalFrameRegitroUsuario registroUsuario = new JInternalFrameRegitroUsuario();
+         jDesktopPane1.add(registroUsuario);
+         registroUsuario.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -251,6 +266,19 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private void jMenu7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseExited
          jMenu7.setEnabled(true);
     }//GEN-LAST:event_jMenu7MouseExited
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        //LookAndFeel
+        try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+         JInternalFrameRegitroProfesional registroProfesional = new JInternalFrameRegitroProfesional();
+         jDesktopPane1.add(registroProfesional);
+         registroProfesional.setVisible(true);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
    
     public static void main(String args[]) {
 
