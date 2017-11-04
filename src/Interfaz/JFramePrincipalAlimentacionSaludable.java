@@ -2,6 +2,7 @@ package Interfaz;
 
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /*
@@ -257,7 +258,12 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-
+         //SALIR
+        int eleccion = JOptionPane.showConfirmDialog(null, "¿Desea salir de Aplicacion Saludable?",
+                "Aplicacion Saludable", JOptionPane.YES_NO_CANCEL_OPTION);
+        if (eleccion == 0) {
+            dispose();
+        }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
