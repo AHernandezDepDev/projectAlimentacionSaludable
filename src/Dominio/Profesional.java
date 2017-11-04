@@ -1,5 +1,6 @@
 package Dominio;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 /*
@@ -9,14 +10,14 @@ import java.util.Date;
 public class Profesional extends Persona {
 
     private String nombreTituloProfesional;
-    private Date fechaGraduacion;
+    private DateFormat fechaGraduacion;
     private String paisObtuvoTitulo;
 
     public String getNombreTituloProfesional() {
         return nombreTituloProfesional;
     }
 
-    public Date getFechaGraduacion() {
+    public DateFormat getFechaGraduacion() {
         return fechaGraduacion;
     }
 
@@ -28,7 +29,7 @@ public class Profesional extends Persona {
         this.nombreTituloProfesional = nombreTituloProfesional;
     }
 
-    public void setFechaGraduacion(Date fechaGraduacion) {
+    public void setFechaGraduacion(DateFormat fechaGraduacion) {
         this.fechaGraduacion = fechaGraduacion;
     }
 
