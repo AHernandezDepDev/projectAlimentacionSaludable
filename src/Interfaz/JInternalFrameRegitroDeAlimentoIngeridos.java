@@ -6,7 +6,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
-
 public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInternalFrame {
 
     public JInternalFrameRegitroDeAlimentoIngeridos() {

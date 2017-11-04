@@ -6,7 +6,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
-
 public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame {
 
     public JInternalFrameRegitroProfesional() {
@@ -232,7 +231,7 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

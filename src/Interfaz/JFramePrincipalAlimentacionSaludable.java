@@ -8,7 +8,6 @@ import javax.swing.UIManager;
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
-
 public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
     public JFramePrincipalAlimentacionSaludable() {
@@ -134,10 +133,20 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroAlimentoImagen.png"))); // NOI18N
         jMenuItem9.setText("Registrar Alimento");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem9);
 
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/alimentosIngeridosImagen.png"))); // NOI18N
         jMenuItem5.setText("Alimentos Ingeridos");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem5);
 
         jMenuBar1.add(jMenu3);
@@ -231,32 +240,32 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-  
+
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         //LookAndFeel
         try {
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-         JInternalFrameRegitroUsuario registroUsuario = new JInternalFrameRegitroUsuario();
-         jDesktopPane1.add(registroUsuario);
-         registroUsuario.setVisible(true);
+        JInternalFrameRegitroUsuario registroUsuario = new JInternalFrameRegitroUsuario();
+        jDesktopPane1.add(registroUsuario);
+        registroUsuario.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        
+
     }//GEN-LAST:event_jMenuItem10ActionPerformed
-   
+
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
 
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        
+
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenu7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseEntered
@@ -264,22 +273,48 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu7MouseEntered
 
     private void jMenu7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseExited
-         jMenu7.setEnabled(true);
+        jMenu7.setEnabled(true);
     }//GEN-LAST:event_jMenu7MouseExited
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         //LookAndFeel
         try {
-                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-         JInternalFrameRegitroProfesional registroProfesional = new JInternalFrameRegitroProfesional();
-         jDesktopPane1.add(registroProfesional);
-         registroProfesional.setVisible(true);
+        JInternalFrameRegitroProfesional registroProfesional = new JInternalFrameRegitroProfesional();
+        jDesktopPane1.add(registroProfesional);
+        registroProfesional.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
-   
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        //LookAndFeel
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JInternalFrameRegitroDeAlimento registroAlimento = new JInternalFrameRegitroDeAlimento();
+        jDesktopPane1.add(registroAlimento);
+        registroAlimento.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        //LookAndFeel
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido = new JInternalFrameRegitroDeAlimentoIngeridos();
+        jDesktopPane1.add(registroAlimentoIngerido);
+        registroAlimentoIngerido.setVisible(true);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
