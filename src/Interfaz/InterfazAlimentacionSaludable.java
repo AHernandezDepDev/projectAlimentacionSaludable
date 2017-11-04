@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Dominio.Alimento;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
@@ -36,7 +37,7 @@ public class InterfazAlimentacionSaludable {
         return rutaFoto;
     }
 
-    public static void cargarJListRegistroUsuario(JList lista, String nuevoRegistro, DefaultListModel modelo) {
+    public static void cargarJListRegistro(JList lista, String nuevoRegistro, DefaultListModel modelo) {
         modelo.addElement(nuevoRegistro.replaceAll(" ", ""));
         lista.setModel(modelo);
     }
@@ -78,7 +79,7 @@ public class InterfazAlimentacionSaludable {
 
     public static boolean agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema, Profesional usuarioAProfesional) {
         boolean profesionalARegistrarExiste = true;
-        if (!sistema.getListaUsuarios().contains(usuarioAProfesional)) {
+        if (!sistema.getListaProfesionales().contains(usuarioAProfesional)) {
             sistema.agregarRegistroProfesional(usuarioAProfesional);
         } else {
             profesionalARegistrarExiste = false;
@@ -86,6 +87,16 @@ public class InterfazAlimentacionSaludable {
         return profesionalARegistrarExiste;
     }
 
+     public static boolean agregarAListaAlimentoRegistrado(SistemaAlimentacionSaludable sistema, Alimento alimentoARegistrar) {
+        boolean alimentoARegistrarExiste = true;
+        if (!sistema.getListaAlimentos().contains(alimentoARegistrar)) {
+            sistema.agregarRegistroAlimento(alimentoARegistrar);
+        } else {
+            alimentoARegistrarExiste = false;
+        }
+        return alimentoARegistrarExiste;
+    }
+     
     public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
         int sizeDelModel = modelo.getSize();
         for (int i = 0; i < sizeDelModel; i++) {

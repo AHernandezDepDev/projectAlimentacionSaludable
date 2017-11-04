@@ -256,6 +256,8 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //Se realiza un control que al menos el Profesional tenga que registrarse
+        //con su primer o segundo nombre / primer apellido y su nombre del titulo profesional
         if (!jTextField3.getText().equals("") || !jTextField5.getText().equals("")) {
             if (!jTextField2.getText().equals("")) {
                 Profesional preRegistroProfesional = new Profesional();

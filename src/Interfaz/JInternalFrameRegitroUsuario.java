@@ -4,7 +4,7 @@ import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaUsuarioRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
-import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistroUsuario;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.creacionJFileChooser;
 import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
@@ -23,7 +23,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     //Instancio Sistema Alimentacion Saludable
     SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
 
-    //Modelo de JList Agregar Preferencia de Alimento
+    //Modelo de JList Agregar Preferencia y Restricciones de Alimento
     DefaultListModel modeloJListPreferencias = new DefaultListModel();
     DefaultListModel modeloJListRestricciones = new DefaultListModel();
 
@@ -334,10 +334,8 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (!jTextField8.getText().equals("")) {
             if (!existeStringCargadoEnJList(modeloJListRestricciones, jTextField8.getText())) {
-                cargarJListRegistroUsuario(jList3, jTextField8.getText(), modeloJListRestricciones);
+                cargarJListRegistro(jList3, jTextField8.getText(), modeloJListRestricciones);
                 jTextField8.setText("");
-            } else {
-
             }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -345,7 +343,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!jTextField7.getText().equals("")) {
             if (!existeStringCargadoEnJList(modeloJListPreferencias, jTextField7.getText())) {
-                cargarJListRegistroUsuario(jList2, jTextField7.getText(), modeloJListPreferencias);
+                cargarJListRegistro(jList2, jTextField7.getText(), modeloJListPreferencias);
                 jTextField7.setText("");
             } else {
 
@@ -355,7 +353,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Se realiza un control que al menos el Usuario tenga que registrarse
-        //con su primer o segundo nombre / primer o segundo apellido
+        //con su primer o segundo nombre / primer apellido
         if (!jTextField4.getText().equals("") || !jTextField1.getText().equals("")) {
             if (!jTextField3.getText().equals("")) {
                 Usuario preRegistroUsuario = new Usuario();
@@ -372,7 +370,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
 
                 //REGISTRAMOS NUEVO USUARIO
                 if (!agregarAListaUsuarioRegistrado(sistemaAlimentacionSaludable, preRegistroUsuario)) {
-                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el USUARIO. Usuario ya ingresado en el SISTEMA", 
+                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el USUARIO. Usuario ya ingresado en el SISTEMA",
                             "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
                 }
 

@@ -1,5 +1,14 @@
 package Interfaz;
 
+import Dominio.Alimento;
+import Dominio.SistemaAlimentacionSaludable;
+import static Interfaz.InterfazAlimentacionSaludable.agregarAListaAlimentoRegistrado;
+import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
+import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
+import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /*
@@ -7,6 +16,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
 public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame {
+
+    //Instancio Sistema Alimentacion Saludable
+    SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
+
+    //Modelo de JList Agregar Nutrientes de Alimentos
+    DefaultListModel modeloJListNutrientesAlimentos = new DefaultListModel();
 
     public JInternalFrameRegitroDeAlimento() {
         initComponents();
@@ -68,6 +83,11 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
         jButton2.setText("Agregar a Lista de Nutrientes:");
         jButton2.setActionCommand("Agregar a Lista de Nutrientes");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -96,6 +116,11 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
         );
 
         jButton4.setText("Registrar Alimento");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -164,6 +189,44 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (!jTextField7.getText().equals("")) {
+            if (!existeStringCargadoEnJList(modeloJListNutrientesAlimentos, jTextField7.getText())) {
+                cargarJListRegistro(jList2, jTextField7.getText(), modeloJListNutrientesAlimentos);
+                jTextField7.setText("");
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //Se deben completar todos los campos para el registro de Aliemento
+        if (!jTextField1.getText().equals("") || !jTextField4.getText().equals("") || !jTextField5.getText().equals("")) {
+                Alimento alimentoAIngresar = new Alimento();
+                
+                alimentoAIngresar.setNombre(jTextField1.getText());
+                alimentoAIngresar.setTipo(jTextField4.getText());
+                alimentoAIngresar.setPorcion(Integer.parseInt(jTextField5.getText()));
+                alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
+               
+                //REGISTRAMOS NUEVO ALIMENTO
+                if (!agregarAListaAlimentoRegistrado(sistemaAlimentacionSaludable, alimentoAIngresar)) {
+                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
+                            "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
+                }
+
+                //Refrescamos para proximo registro
+                jTextField1.setText("");
+                jTextField4.setText("");
+                jTextField5.setText("");
+                borrarModeloJList(jList2, modeloJListNutrientesAlimentos);
+                
+        } else {
+            JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO sin completar"
+                    + " todos los datos del formulario",
+                    "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
