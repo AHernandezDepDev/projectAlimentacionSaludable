@@ -1,16 +1,14 @@
-
 package Dominio;
 
 import java.util.Date;
 import javax.swing.ImageIcon;
 
 /*
- * @author Andre Hernandez ---- Numero de Estudiante: 193234 
- * SEGUNDO OBLIGARORIO      ---- PROGRAMACION II
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
-
 public class Persona {
-    
+
     private String primerNombre;
     private String segundoNombre;
     private String primerApellido;
@@ -65,5 +63,5 @@ public class Persona {
     public void setFotoPerfil(ImageIcon fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
- 
+
 }

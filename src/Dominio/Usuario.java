@@ -1,18 +1,19 @@
-
 package Dominio;
 
 import java.util.ArrayList;
 
 /*
- * @author Andre Hernandez ---- Numero de Estudiante: 193234 
- * SEGUNDO OBLIGARORIO      ---- PROGRAMACION II
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
+public class Usuario extends Persona {
 
-public class Usuario extends Persona{
-    
     private String nacionalidad;
     private ArrayList<String> listaPreferencias = new ArrayList<String>();
     private ArrayList<String> listaRestricciones = new ArrayList<String>();
+    private ArrayList<Alimento> listaAlimentosIngeridos = new ArrayList<Alimento>();
+    private ArrayList<Consulta> listaConsultasRealizadas = new ArrayList<Consulta>();
+    private ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = new ArrayList<PlanAlimentacion>();
 
     public String getNacionalidad() {
         return nacionalidad;
@@ -26,6 +27,18 @@ public class Usuario extends Persona{
         return listaRestricciones;
     }
 
+    public ArrayList<Alimento> getListaAlimentosIngeridos() {
+        return listaAlimentosIngeridos;
+    }
+
+    public ArrayList<Consulta> getListaConsultasRealizadas() {
+        return listaConsultasRealizadas;
+    }
+
+    public ArrayList<PlanAlimentacion> getListaPlanesDeAlimentacion() {
+        return listaPlanesDeAlimentacion;
+    }
+
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
@@ -37,5 +50,17 @@ public class Usuario extends Persona{
     public void setListaRestricciones(ArrayList<String> listaRestricciones) {
         this.listaRestricciones = listaRestricciones;
     }
-    
+
+    public void setListaAlimentosIngeridos(ArrayList<Alimento> listaAlimentosIngeridos) {
+        this.listaAlimentosIngeridos = listaAlimentosIngeridos;
+    }
+
+    public void setListaConsultasRealizadas(ArrayList<Consulta> listaConsultasRealizadas) {
+        this.listaConsultasRealizadas = listaConsultasRealizadas;
+    }
+
+    public void setListaPlanesDeAlimentacion(ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion) {
+        this.listaPlanesDeAlimentacion = listaPlanesDeAlimentacion;
+    }
+
 }

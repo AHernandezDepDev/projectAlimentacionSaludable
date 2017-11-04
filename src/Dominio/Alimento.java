@@ -1,15 +1,13 @@
-
 package Dominio;
 
 import java.util.ArrayList;
 
 /*
- * @author Andre Hernandez ---- Numero de Estudiante: 193234 
- * SEGUNDO OBLIGARORIO      ---- PROGRAMACION II
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
-
 public class Alimento {
-    
+
     private String nombre;
     private String tipo;
     private ArrayList<String> listaDeNutrientes = new ArrayList<String>();
@@ -46,5 +44,5 @@ public class Alimento {
     public void setPorcion(int porcion) {
         this.porcion = porcion;
     }
-   
+
 }

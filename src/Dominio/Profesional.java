@@ -1,15 +1,13 @@
-
 package Dominio;
 
 import java.util.Date;
 
 /*
- * @author Andre Hernandez ---- Numero de Estudiante: 193234 
- * SEGUNDO OBLIGARORIO      ---- PROGRAMACION II
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
+public class Profesional extends Persona {
 
-public class Profesional extends Persona{
-    
     private String nombreTituloProfesional;
     private Date fechaGraduacion;
     private String paisObtuvoTitulo;
@@ -37,5 +35,5 @@ public class Profesional extends Persona{
     public void setPaisObtuvoTitulo(String paisObtuvoTitulo) {
         this.paisObtuvoTitulo = paisObtuvoTitulo;
     }
-    
+
 }
