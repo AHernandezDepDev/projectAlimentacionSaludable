@@ -1,7 +1,8 @@
 package Dominio;
 
+import java.text.DateFormat;
 import java.util.Date;
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -13,8 +14,8 @@ public class Persona {
     private String segundoNombre;
     private String primerApellido;
     private String segundoApellido;
-    private Date fechaNacimiento;
-    private ImageIcon fotoPerfil;
+    private DateFormat fechaNacimiento;
+    private Icon fotoPerfil;
 
     public String getPrimerNombre() {
         return primerNombre;
@@ -32,11 +33,11 @@ public class Persona {
         return segundoApellido;
     }
 
-    public Date getFechaNacimiento() {
+    public DateFormat getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public ImageIcon getFotoPerfil() {
+    public Icon getFotoPerfil() {
         return fotoPerfil;
     }
 
@@ -56,11 +57,11 @@ public class Persona {
         this.segundoApellido = segundoApellido;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(DateFormat fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public void setFotoPerfil(ImageIcon fotoPerfil) {
+    public void setFotoPerfil(Icon fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
 

@@ -62,5 +62,5 @@ public class Usuario extends Persona {
     public void setListaPlanesDeAlimentacion(ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion) {
         this.listaPlanesDeAlimentacion = listaPlanesDeAlimentacion;
     }
-
+    
 }

@@ -8,32 +8,45 @@ import java.util.ArrayList;
  */
 public class SistemaAlimentacionSaludable {
 
-    private ArrayList<String> listaUsuarios = new ArrayList<String>();
-    private ArrayList<String> listaProfesionales = new ArrayList<String>();
-    private ArrayList<String> listaAlimentos = new ArrayList<String>();
+    private ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+    private ArrayList<Profesional> listaProfesionales = new ArrayList<Profesional>();
+    private ArrayList<Alimento> listaAlimentos = new ArrayList<Alimento>();
 
-    public ArrayList<String> getListaUsuarios() {
+    public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
 
-    public ArrayList<String> getListaProfesionales() {
+    public ArrayList<Profesional> getListaProfesionales() {
         return listaProfesionales;
     }
 
-    public ArrayList<String> getListaAlimentos() {
+    public ArrayList<Alimento> getListaAlimentos() {
         return listaAlimentos;
     }
 
-    public void setListaUsuarios(ArrayList<String> listaUsuarios) {
+    public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
         this.listaUsuarios = listaUsuarios;
     }
 
-    public void setListaProfesionales(ArrayList<String> listaProfesionales) {
+    public void setListaProfesionales(ArrayList<Profesional> listaProfesionales) {
         this.listaProfesionales = listaProfesionales;
     }
 
-    public void setListaAlimentos(ArrayList<String> listaAlimentos) {
+    public void setListaAlimentos(ArrayList<Alimento> listaAlimentos) {
         this.listaAlimentos = listaAlimentos;
+    }
+
+    //*************************************************************************//
+    public void agregarRegistroUsuario(Usuario nuevoUsuario) {
+        this.listaUsuarios.add(nuevoUsuario);
+    }
+
+    public void agregarRegistroProfesional(Profesional nuevoProfesional) {
+        this.listaProfesionales.add(nuevoProfesional);
+    }
+
+    public void agregarRegistroAlimento(Alimento nuevoAlimento) {
+        this.listaAlimentos.add(nuevoAlimento);
     }
 
 }
