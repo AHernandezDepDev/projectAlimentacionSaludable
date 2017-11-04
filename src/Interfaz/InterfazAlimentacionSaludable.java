@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import java.util.ArrayList;
@@ -68,6 +69,12 @@ public class InterfazAlimentacionSaludable {
     public static void agregarAListaUsuarioRegistrado(SistemaAlimentacionSaludable sistema, Usuario usuarioARegistrar) {
         //if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
         sistema.agregarRegistroUsuario(usuarioARegistrar);
+        //}
+    }
+    
+    public static void agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema, Profesional usuarioAProfesional) {
+        //if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
+        sistema.agregarRegistroProfesional(usuarioAProfesional);
         //}
     }
 
