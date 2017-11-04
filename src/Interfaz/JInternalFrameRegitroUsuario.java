@@ -12,6 +12,7 @@ import java.awt.Image;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -353,31 +354,46 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Usuario preRegistroUsuario = new Usuario();
+        //Se realiza un control que al menos el Usuario tenga que registrarse
+        //con su primer o segundo nombre / primer o segundo apellido
+        if (!jTextField4.getText().equals("") || !jTextField1.getText().equals("")) {
+            if (!jTextField3.getText().equals("")) {
+                Usuario preRegistroUsuario = new Usuario();
 
-        preRegistroUsuario.setPrimerNombre(jTextField3.getText());
-        preRegistroUsuario.setSegundoNombre(jTextField5.getText());
-        preRegistroUsuario.setPrimerApellido(jTextField1.getText());
-        preRegistroUsuario.setSegundoApellido(jTextField4.getText());
-        preRegistroUsuario.setNacionalidad(jTextField6.getText());
-        preRegistroUsuario.setFechaNacimiento(dateChooserCombo1.getDateFormat());
-        preRegistroUsuario.setFotoPerfil(jButton5.getIcon());
-        preRegistroUsuario.setListaPreferencias(datosEnListaAArrayListString(modeloJListPreferencias));
-        preRegistroUsuario.setListaRestricciones(datosEnListaAArrayListString(modeloJListRestricciones));
+                preRegistroUsuario.setPrimerNombre(jTextField4.getText());
+                preRegistroUsuario.setSegundoNombre(jTextField1.getText());
+                preRegistroUsuario.setPrimerApellido(jTextField3.getText());
+                preRegistroUsuario.setSegundoApellido(jTextField5.getText());
+                preRegistroUsuario.setNacionalidad(jTextField6.getText());
+                preRegistroUsuario.setFechaNacimiento(dateChooserCombo1.getDateFormat());
+                preRegistroUsuario.setFotoPerfil(jButton5.getIcon());
+                preRegistroUsuario.setListaPreferencias(datosEnListaAArrayListString(modeloJListPreferencias));
+                preRegistroUsuario.setListaRestricciones(datosEnListaAArrayListString(modeloJListRestricciones));
 
-        //REGISTRAMOS NUEVO USUARIO
-        agregarAListaUsuarioRegistrado(sistemaAlimentacionSaludable, preRegistroUsuario);
+                //REGISTRAMOS NUEVO USUARIO
+                if (!agregarAListaUsuarioRegistrado(sistemaAlimentacionSaludable, preRegistroUsuario)) {
+                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el USUARIO. Usuario ya ingresado en el SISTEMA", 
+                            "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
+                }
 
-        //Refrescamos para proximo registro
-        jTextField4.setText("");
-        jTextField1.setText("");
-        jTextField3.setText("");
-        jTextField5.setText("");
-        jTextField6.setText("");
-        dateChooserCombo1.setDateFormat(null);
-        jButton5.setIcon(null);
-        borrarModeloJList(jList2, modeloJListPreferencias);
-        borrarModeloJList(jList3, modeloJListRestricciones);
+                //Refrescamos para proximo registro
+                jTextField4.setText("");
+                jTextField1.setText("");
+                jTextField3.setText("");
+                jTextField5.setText("");
+                jTextField6.setText("");
+                dateChooserCombo1.setDateFormat(null);
+                jButton5.setIcon(null);
+                borrarModeloJList(jList2, modeloJListPreferencias);
+                borrarModeloJList(jList3, modeloJListRestricciones);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un USUARIO sin APELLIDO. "
+                        + "Completar campo: Primer Apellido", "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un USUARIO sin NOMBRE. "
+                    + "Completar al menos uno de los campos: Primer Nombre - Segundo Nombre", "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

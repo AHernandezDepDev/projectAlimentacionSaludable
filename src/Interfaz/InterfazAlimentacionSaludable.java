@@ -66,25 +66,32 @@ public class InterfazAlimentacionSaludable {
         return listaDatos;
     }
 
-    public static void agregarAListaUsuarioRegistrado(SistemaAlimentacionSaludable sistema, Usuario usuarioARegistrar) {
-        //if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
-        sistema.agregarRegistroUsuario(usuarioARegistrar);
-        //}
-    }
-    
-    public static void agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema, Profesional usuarioAProfesional) {
-        //if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
-        sistema.agregarRegistroProfesional(usuarioAProfesional);
-        //}
+    public static boolean agregarAListaUsuarioRegistrado(SistemaAlimentacionSaludable sistema, Usuario usuarioARegistrar) {
+        boolean usuarioARegistrarExiste = true;
+        if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
+            sistema.agregarRegistroUsuario(usuarioARegistrar);
+        } else {
+            usuarioARegistrarExiste = false;
+        }
+        return usuarioARegistrarExiste;
     }
 
-    public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo){
+    public static boolean agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema, Profesional usuarioAProfesional) {
+        boolean profesionalARegistrarExiste = true;
+        if (!sistema.getListaUsuarios().contains(usuarioAProfesional)) {
+            sistema.agregarRegistroProfesional(usuarioAProfesional);
+        } else {
+            profesionalARegistrarExiste = false;
+        }
+        return profesionalARegistrarExiste;
+    }
+
+    public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
         int sizeDelModel = modelo.getSize();
         for (int i = 0; i < sizeDelModel; i++) {
             modelo.remove(modelo.getSize() - 1);
         }
-       listaABorrar.setModel(modelo);
+        listaABorrar.setModel(modelo);
     }
-    
-    
+
 }
