@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Dominio.SistemaAlimentacionSaludable;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -10,6 +11,9 @@ import javax.swing.UIManager;
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
 public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
+
+    //Instancio Sistema Alimentacion Saludable
+    SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
 
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
@@ -27,6 +31,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
@@ -67,6 +72,15 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu1.setText("Rol del Sistema ");
         jMenu1.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
 
+        jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adminImagen.png"))); // NOI18N
+        jMenuItem12.setText("Administrador");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem12);
+
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png"))); // NOI18N
         jMenuItem1.setText("Usuario ");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -88,7 +102,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu7.setBackground(new java.awt.Color(241, 158, 158));
-        jMenu7.setText(" Sin Seleccion ");
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adminImagen.png"))); // NOI18N
+        jMenu7.setText(" ADMINISTRADOR");
         jMenu7.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         jMenu7.setMargin(new java.awt.Insets(0, 40, 0, 40));
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -231,13 +246,50 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        jMenu7.setText(" USUARIO ");
-        jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png")));
+        if (sistemaAlimentacionSaludable.getListaUsuarios().size() >= 1) {
+            jMenu7.setText(" USUARIO ");
+            jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png")));
+
+            jMenuItem6.setVisible(true);
+            jMenuItem8.setVisible(false);
+            jMenuItem9.setVisible(false);
+            jMenuItem5.setVisible(true);
+            jMenuItem4.setVisible(true);
+            jMenuItem7.setVisible(false);
+            jMenuItem3.setVisible(true);
+            jMenuItem11.setVisible(false);
+
+            jMenu2.setVisible(false); //PREGUNTARRRRR
+        } else {
+            JOptionPane.showMessageDialog(null, "No existen USUARIOS REGISTRADOS en el Sistema por lo que "
+                    + "no se puede acceder a el perfil USUARIO. \nDebe realizar el registro de USUARIO "
+                    + "con perfil ADMINISTRADOR",
+                    "Alimentacion Saludable", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        jMenu7.setText(" PROFESIONAL ");
-        jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png")));
+        if (sistemaAlimentacionSaludable.getListaProfesionales().size() >= 1) {
+            jMenu7.setText(" PROFESIONAL ");
+            jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png")));
+
+            jMenuItem8.setVisible(true);
+            jMenuItem6.setVisible(false);
+            jMenuItem9.setVisible(true);
+            jMenuItem5.setVisible(false);
+            jMenuItem5.setVisible(false);
+            jMenuItem7.setVisible(true);
+            jMenuItem3.setVisible(false);
+            jMenuItem11.setVisible(true);
+            jMenuItem4.setVisible(false);
+
+            jMenu2.setVisible(false); //PREGUNTARRRRR
+        } else {
+            JOptionPane.showMessageDialog(null, "No existen PROFESIONALES REGISTRADOS en el Sistema por lo que "
+                    + "no se puede acceder a el perfil PROFESIONAL. \nDebe realizar el registro de PROFESIONAL "
+                    + "con perfil ADMINISTRADOR",
+                    "Alimentacion Saludable", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
@@ -252,13 +304,13 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        JInternalFrameRegitroUsuario registroUsuario = new JInternalFrameRegitroUsuario();
+        JInternalFrameRegitroUsuario registroUsuario = new JInternalFrameRegitroUsuario(jMenu7);
         jDesktopPane1.add(registroUsuario);
         registroUsuario.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-         //SALIR
+        //SALIR
         int eleccion = JOptionPane.showConfirmDialog(null, "¿Desea salir de Aplicacion Saludable?",
                 "Aplicacion Saludable", JOptionPane.YES_NO_CANCEL_OPTION);
         if (eleccion == 0) {
@@ -273,14 +325,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
 
     }//GEN-LAST:event_jMenuItem11ActionPerformed
-
-    private void jMenu7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseEntered
-        jMenu7.setEnabled(false);
-    }//GEN-LAST:event_jMenu7MouseEntered
-
-    private void jMenu7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseExited
-        jMenu7.setEnabled(true);
-    }//GEN-LAST:event_jMenu7MouseExited
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         //LookAndFeel
@@ -321,6 +365,34 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         registroAlimentoIngerido.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        jMenu7.setText(" ADMINISTRADOR ");
+        jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/adminImagen.png")));
+
+        jMenuItem6.setVisible(true);
+        jMenuItem8.setVisible(true);
+        jMenuItem9.setVisible(true);
+        jMenuItem5.setVisible(true);
+        jMenuItem4.setVisible(true);
+        jMenuItem7.setVisible(true);
+        jMenuItem3.setVisible(true);
+        jMenuItem11.setVisible(true);
+
+        jMenu2.setVisible(true); //PREGUNTARRRRR
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenu7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseEntered
+        if (jMenu7.getText().equals(" ADMINISTRADOR ")) {
+            jMenu7.setEnabled(false);
+        }
+    }//GEN-LAST:event_jMenu7MouseEntered
+
+    private void jMenu7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseExited
+        if (jMenu7.getText().equals(" ADMINISTRADOR ")) {
+            jMenu7.setEnabled(true);
+        }
+    }//GEN-LAST:event_jMenu7MouseExited
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -342,6 +414,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

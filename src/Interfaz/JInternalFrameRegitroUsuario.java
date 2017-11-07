@@ -8,10 +8,12 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.creacionJFileChooser;
 import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
+import static Interfaz.InterfazAlimentacionSaludable.perfilDeUsuarioRegistrado;
 import java.awt.Image;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 /*
@@ -26,8 +28,10 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     //Modelo de JList Agregar Preferencia y Restricciones de Alimento
     DefaultListModel modeloJListPreferencias = new DefaultListModel();
     DefaultListModel modeloJListRestricciones = new DefaultListModel();
+    JMenu menuUsuarios = null;
 
-    public JInternalFrameRegitroUsuario() {
+    public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados) {
+        menuUsuarios = menuAddUsuariosRegistrados;
         initComponents();
         this.setTitle(" Registrar Usuario ");
     }
@@ -369,7 +373,9 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 preRegistroUsuario.setListaRestricciones(datosEnListaAArrayListString(modeloJListRestricciones));
 
                 //REGISTRAMOS NUEVO USUARIO
-                if (!agregarAListaUsuarioRegistrado(sistemaAlimentacionSaludable, preRegistroUsuario)) {
+                if (!sistemaAlimentacionSaludable.getListaUsuarios().contains(preRegistroUsuario)) {
+                    agregarAListaUsuarioRegistrado(sistemaAlimentacionSaludable, preRegistroUsuario);
+                } else {
                     JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el USUARIO. Usuario ya ingresado en el SISTEMA",
                             "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
                 }
@@ -384,6 +390,10 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 jButton5.setIcon(null);
                 borrarModeloJList(jList2, modeloJListPreferencias);
                 borrarModeloJList(jList3, modeloJListRestricciones);
+
+                //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
+                //su propio pérfil de Usuario
+                perfilDeUsuarioRegistrado(preRegistroUsuario, menuUsuarios);
             } else {
                 JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un USUARIO sin APELLIDO. "
                         + "Completar campo: Primer Apellido", "Registrar Usuario", JOptionPane.ERROR_MESSAGE);

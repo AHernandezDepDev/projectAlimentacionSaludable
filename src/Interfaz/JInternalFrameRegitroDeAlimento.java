@@ -210,11 +210,13 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                 alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
                
                 //REGISTRAMOS NUEVO ALIMENTO
-                if (!agregarAListaAlimentoRegistrado(sistemaAlimentacionSaludable, alimentoAIngresar)) {
-                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
+                 if (!sistemaAlimentacionSaludable.getListaAlimentos().contains(alimentoAIngresar)) {
+                     agregarAListaAlimentoRegistrado(sistemaAlimentacionSaludable, alimentoAIngresar);
+                } else {
+                   JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
                             "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
                 }
-
+               
                 //Refrescamos para proximo registro
                 jTextField1.setText("");
                 jTextField4.setText("");

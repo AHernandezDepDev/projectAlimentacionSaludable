@@ -273,7 +273,9 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 preRegistroProfesional.setFotoPerfil(jButton2.getIcon());
 
                 //REGISTRAMOS NUEVO PROFESIONAL
-                if (!agregarAListaProfesionalRegistrado(sistemaAlimentacionSaludable, preRegistroProfesional)) {
+                if (!sistemaAlimentacionSaludable.getListaProfesionales().contains(preRegistroProfesional)) {
+                    agregarAListaProfesionalRegistrado(sistemaAlimentacionSaludable, preRegistroProfesional);
+                } else {
                     JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el PROFESIONAL. Profesional ya ingresado en el SISTEMA",
                             "Registrar Profesional", JOptionPane.ERROR_MESSAGE);
                 }

@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -23,7 +25,7 @@ public class InterfazAlimentacionSaludable {
 
     //JFileChooser
     public static String creacionJFileChooser(JInternalFrame JInternalFrame) {
-        String rutaFoto;
+        String rutaFoto = "";
 
         JFileChooser MyFileChooser = new JFileChooser();
         //Se elimina opción "Mostrar todos los archivos"
@@ -32,7 +34,10 @@ public class InterfazAlimentacionSaludable {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg", "JPG");
         MyFileChooser.setFileFilter(filter);
         MyFileChooser.showOpenDialog(JInternalFrame);
-        rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath();
+
+        if (!rutaFoto.equals("")) {
+            rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath();
+        }
 
         return rutaFoto;
     }
@@ -67,36 +72,33 @@ public class InterfazAlimentacionSaludable {
         return listaDatos;
     }
 
-    public static boolean agregarAListaUsuarioRegistrado(SistemaAlimentacionSaludable sistema, Usuario usuarioARegistrar) {
-        boolean usuarioARegistrarExiste = true;
+    public static ArrayList<Usuario> agregarAListaUsuarioRegistrado(SistemaAlimentacionSaludable sistema,
+            Usuario usuarioARegistrar) {
         if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
             sistema.agregarRegistroUsuario(usuarioARegistrar);
-        } else {
-            usuarioARegistrarExiste = false;
         }
-        return usuarioARegistrarExiste;
+
+        return sistema.getListaUsuarios();
     }
 
-    public static boolean agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema, Profesional usuarioAProfesional) {
-        boolean profesionalARegistrarExiste = true;
+    public static ArrayList<Profesional> agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema,
+            Profesional usuarioAProfesional) {
         if (!sistema.getListaProfesionales().contains(usuarioAProfesional)) {
             sistema.agregarRegistroProfesional(usuarioAProfesional);
-        } else {
-            profesionalARegistrarExiste = false;
         }
-        return profesionalARegistrarExiste;
+
+        return sistema.getListaProfesionales();
     }
 
-     public static boolean agregarAListaAlimentoRegistrado(SistemaAlimentacionSaludable sistema, Alimento alimentoARegistrar) {
-        boolean alimentoARegistrarExiste = true;
+    public static ArrayList<Alimento> agregarAListaAlimentoRegistrado(SistemaAlimentacionSaludable sistema,
+            Alimento alimentoARegistrar) {
         if (!sistema.getListaAlimentos().contains(alimentoARegistrar)) {
             sistema.agregarRegistroAlimento(alimentoARegistrar);
-        } else {
-            alimentoARegistrarExiste = false;
         }
-        return alimentoARegistrarExiste;
+
+        return sistema.getListaAlimentos();
     }
-     
+
     public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
         int sizeDelModel = modelo.getSize();
         for (int i = 0; i < sizeDelModel; i++) {
@@ -104,6 +106,12 @@ public class InterfazAlimentacionSaludable {
         }
         listaABorrar.setModel(modelo);
     }
-    
-    
+
+    public static void perfilDeUsuarioRegistrado(Usuario usuarioRegistrado, JMenu menuPefiles) {
+        JMenuItem usuarioRegistradoMenu = new JMenuItem();
+        usuarioRegistradoMenu.setText(usuarioRegistrado.getPrimerNombre() + " " + usuarioRegistrado.getPrimerNombre());
+        usuarioRegistradoMenu.setIcon(usuarioRegistrado.getFotoPerfil());
+        menuPefiles.add(usuarioRegistradoMenu);
+    }
+
 }
