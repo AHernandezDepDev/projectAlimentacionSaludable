@@ -16,14 +16,14 @@ import javax.swing.UnsupportedLookAndFeelException;
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
 public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame {
-
-    //Instancio Sistema Alimentacion Saludable
-    SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
+    
+    SistemaAlimentacionSaludable sistema;
 
     //Modelo de JList Agregar Nutrientes de Alimentos
     DefaultListModel modeloJListNutrientesAlimentos = new DefaultListModel();
 
-    public JInternalFrameRegitroDeAlimento() {
+    public JInternalFrameRegitroDeAlimento(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+        sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Alimento ");
     }
@@ -210,8 +210,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                 alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
                
                 //REGISTRAMOS NUEVO ALIMENTO
-                 if (!sistemaAlimentacionSaludable.getListaAlimentos().contains(alimentoAIngresar)) {
-                     agregarAListaAlimentoRegistrado(sistemaAlimentacionSaludable, alimentoAIngresar);
+                 if (!sistema.getListaAlimentos().contains(alimentoAIngresar)) {
+                     agregarAListaAlimentoRegistrado(sistema, alimentoAIngresar);
                 } else {
                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
                             "Registrar Alimento", JOptionPane.ERROR_MESSAGE);

@@ -12,13 +12,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInternalFrame {
 
-    //Instancio Sistema Alimentacion Saludable
-    SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
+    SistemaAlimentacionSaludable sistema;
 
     //Modelo de JList Registro de Alimentos Ingeridos
     DefaultListModel modeloJListAlimentosIngeridos = new DefaultListModel();
     
-    public JInternalFrameRegitroDeAlimentoIngeridos() {
+    public JInternalFrameRegitroDeAlimentoIngeridos(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+        sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Alimento ");
     }

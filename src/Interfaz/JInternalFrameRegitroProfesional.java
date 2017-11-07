@@ -16,10 +16,10 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame {
 
-    //Instancio Sistema Alimentacion Saludable
-    SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
+    SistemaAlimentacionSaludable sistema;
 
-    public JInternalFrameRegitroProfesional() {
+    public JInternalFrameRegitroProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+        sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Profesional ");
     }
@@ -273,8 +273,8 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 preRegistroProfesional.setFotoPerfil(jButton2.getIcon());
 
                 //REGISTRAMOS NUEVO PROFESIONAL
-                if (!sistemaAlimentacionSaludable.getListaProfesionales().contains(preRegistroProfesional)) {
-                    agregarAListaProfesionalRegistrado(sistemaAlimentacionSaludable, preRegistroProfesional);
+                if (!sistema.getListaProfesionales().contains(preRegistroProfesional)) {
+                    agregarAListaProfesionalRegistrado(sistema, preRegistroProfesional);
                 } else {
                     JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el PROFESIONAL. Profesional ya ingresado en el SISTEMA",
                             "Registrar Profesional", JOptionPane.ERROR_MESSAGE);

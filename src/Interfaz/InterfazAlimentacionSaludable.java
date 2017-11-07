@@ -107,11 +107,24 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static void perfilDeUsuarioRegistrado(Usuario usuarioRegistrado, JMenu menuPefiles) {
-        JMenuItem usuarioRegistradoMenu = new JMenuItem();
-        usuarioRegistradoMenu.setText(usuarioRegistrado.getPrimerNombre() + " " + usuarioRegistrado.getPrimerNombre());
-        usuarioRegistradoMenu.setIcon(usuarioRegistrado.getFotoPerfil());
-        menuPefiles.add(usuarioRegistradoMenu);
+    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles) {
+        for (int i = 0; i < listaUsuarios.size(); i++) {
+            Usuario user = listaUsuarios.get(i);
+            JMenuItem usuarioRegistradoMenu = new JMenuItem();
+            usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerNombre());
+            usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
+            menuPefiles.add(usuarioRegistradoMenu);
+        }
+    }
+
+    public static void cargarProfesionalRegistrado(ArrayList<Profesional> listaProfesional, JMenu menuPefiles) {
+        for (int i = 0; i < listaProfesional.size(); i++) {
+            Profesional prof = listaProfesional.get(i);
+            JMenuItem profesionalRegistradoMenu = new JMenuItem();
+            profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + prof.getPrimerNombre());
+            profesionalRegistradoMenu.setIcon(prof.getFotoPerfil());
+            menuPefiles.add(profesionalRegistradoMenu);
+        }
     }
 
 }
