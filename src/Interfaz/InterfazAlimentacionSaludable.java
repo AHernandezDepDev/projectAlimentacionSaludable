@@ -98,7 +98,8 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles) {
+    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, 
+            JMenu menuPefiles) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();

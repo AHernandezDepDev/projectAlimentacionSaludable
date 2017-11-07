@@ -5,8 +5,8 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.UIManager;
 
 /*
@@ -17,13 +17,15 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
     //Instancio Sistema Alimentacion Saludable
     SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
-
+    
+    
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
         this.setTitle("Alimentación Saludable");
         jDesktopPane1.setBorder(new JDesktopPanelBakground());
         this.setExtendedState(JFramePrincipalAlimentacionSaludable.MAXIMIZED_BOTH);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Imagenes/logoAppImagen.png")));
+        MenuScroller.setScrollerFor(jMenu7, 4, 1500, 2, 1);
     }
 
 
@@ -39,6 +41,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -122,6 +125,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu7);
+        jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
         jMenu2.setText("Registro ");
@@ -435,6 +439,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
