@@ -3,6 +3,7 @@ package Dominio;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 

@@ -26,7 +26,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     DefaultListModel modeloJListRestricciones = new DefaultListModel();
     JMenu menuUsuarios = null;
     SistemaAlimentacionSaludable sistema = null;
-            
+     
     public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados, SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         menuUsuarios = menuAddUsuariosRegistrados;
         sistema = sistemaAlimentacionSaludable;
@@ -129,7 +129,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                     .addComponent(jTextField7)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 70, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -262,7 +262,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(157, 157, 157)
                                 .addComponent(jButton4)))))
@@ -317,7 +317,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, Short.MAX_VALUE)
         );
 
         pack();
@@ -328,7 +328,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
         String rutaFotoPerfil = creacionJFileChooser(this);
         //Cargamos imagen y ajustamos al tamaño de nuestro contenedor
         ImageIcon fotoPerfil = new ImageIcon(rutaFotoPerfil);
-        Icon icono = new ImageIcon(fotoPerfil.getImage().getScaledInstance(jButton5.getWidth(), jButton5.getHeight(), Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(fotoPerfil.getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
         jButton5.setIcon(icono);
         this.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -347,8 +347,6 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
             if (!existeStringCargadoEnJList(modeloJListPreferencias, jTextField7.getText())) {
                 cargarJListRegistro(jList2, jTextField7.getText(), modeloJListPreferencias);
                 jTextField7.setText("");
-            } else {
-
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -366,7 +364,14 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 preRegistroUsuario.setSegundoApellido(jTextField5.getText());
                 preRegistroUsuario.setNacionalidad(jTextField6.getText());
                 preRegistroUsuario.setFechaNacimiento(dateChooserCombo1.getDateFormat());
-                preRegistroUsuario.setFotoPerfil(jButton5.getIcon());
+
+                if (jButton5.getIcon() == null) {
+                    ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
+                    preRegistroUsuario.setFotoPerfil(noPerfil);
+                } else {
+                    preRegistroUsuario.setFotoPerfil(jButton5.getIcon());
+                }
+                
                 preRegistroUsuario.setListaPreferencias(datosEnListaAArrayListString(modeloJListPreferencias));
                 preRegistroUsuario.setListaRestricciones(datosEnListaAArrayListString(modeloJListRestricciones));
 
@@ -388,7 +393,6 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 jButton5.setIcon(null);
                 borrarModeloJList(jList2, modeloJListPreferencias);
                 borrarModeloJList(jList3, modeloJListRestricciones);
-                
             } else {
                 JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un USUARIO sin APELLIDO. "
                         + "Completar campo: Primer Apellido", "Registrar Usuario", JOptionPane.ERROR_MESSAGE);

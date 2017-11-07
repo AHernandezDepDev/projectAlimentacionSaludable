@@ -6,6 +6,7 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 import javax.swing.UIManager;
 
 /*
@@ -24,6 +25,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         this.setExtendedState(JFramePrincipalAlimentacionSaludable.MAXIMIZED_BOTH);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Imagenes/logoAppImagen.png")));
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -294,7 +296,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             jMenuItem4.setVisible(false);
 
             jMenu2.setVisible(false); //PREGUNTARRRRR
-            
+
             //Se agrega el Profesional Registrado al Menú de Profesionales Registrados para tener 
             //su propio pérfil de Profesional
             jMenu7.removeAll();
@@ -400,6 +402,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private void jMenu7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseEntered
         if (jMenu7.getText().equals(" ADMINISTRADOR ")) {
             jMenu7.setEnabled(false);
+            jMenu7.removeAll();
         }
     }//GEN-LAST:event_jMenu7MouseEntered
 

@@ -34,10 +34,7 @@ public class InterfazAlimentacionSaludable {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg", "JPG");
         MyFileChooser.setFileFilter(filter);
         MyFileChooser.showOpenDialog(JInternalFrame);
-
-        if (!rutaFoto.equals("")) {
-            rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath();
-        }
+        rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath();
 
         return rutaFoto;
     }
@@ -74,28 +71,22 @@ public class InterfazAlimentacionSaludable {
 
     public static ArrayList<Usuario> agregarAListaUsuarioRegistrado(SistemaAlimentacionSaludable sistema,
             Usuario usuarioARegistrar) {
-        if (!sistema.getListaUsuarios().contains(usuarioARegistrar)) {
-            sistema.agregarRegistroUsuario(usuarioARegistrar);
-        }
 
+        sistema.agregarRegistroUsuario(usuarioARegistrar);
         return sistema.getListaUsuarios();
     }
 
     public static ArrayList<Profesional> agregarAListaProfesionalRegistrado(SistemaAlimentacionSaludable sistema,
             Profesional usuarioAProfesional) {
-        if (!sistema.getListaProfesionales().contains(usuarioAProfesional)) {
-            sistema.agregarRegistroProfesional(usuarioAProfesional);
-        }
 
+        sistema.agregarRegistroProfesional(usuarioAProfesional);
         return sistema.getListaProfesionales();
     }
 
     public static ArrayList<Alimento> agregarAListaAlimentoRegistrado(SistemaAlimentacionSaludable sistema,
             Alimento alimentoARegistrar) {
-        if (!sistema.getListaAlimentos().contains(alimentoARegistrar)) {
-            sistema.agregarRegistroAlimento(alimentoARegistrar);
-        }
 
+        sistema.agregarRegistroAlimento(alimentoARegistrar);
         return sistema.getListaAlimentos();
     }
 
