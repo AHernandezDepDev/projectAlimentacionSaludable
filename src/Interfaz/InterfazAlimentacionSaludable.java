@@ -4,6 +4,8 @@ import Dominio.Alimento;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
+import Interfaz.JFramePrincipalAlimentacionSaludable.SeleccionUsuarios;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultListModel;
@@ -98,13 +100,13 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, 
-            JMenu menuPefiles) {
+    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles, JMenu usuarioAutenticado) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
             usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerNombre());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
+            usuarioRegistradoMenu.addMouseListener(new SeleccionUsuarios(usuarioAutenticado));
             menuPefiles.add(usuarioRegistradoMenu);
         }
     }

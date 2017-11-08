@@ -1,10 +1,15 @@
 package Interfaz;
 
 import Dominio.SistemaAlimentacionSaludable;
+import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
+import java.awt.Component;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -18,7 +23,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     //Instancio Sistema Alimentacion Saludable
     SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
     
-    
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
         this.setTitle("Alimentación Saludable");
@@ -28,7 +32,38 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         MenuScroller.setScrollerFor(jMenu7, 4, 1500, 2, 1);
     }
 
+    public static class SeleccionUsuarios implements MouseListener {
+        
+        private JMenu menuUsuarioAutenticado;
+        
+        public SeleccionUsuarios(JMenu menuACrearUsuarioAutenticado) {
+            menuUsuarioAutenticado = menuACrearUsuarioAutenticado;
+        }
 
+        @Override
+        public void mouseReleased(MouseEvent arg0) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent arg0) {
+            JMenuItem fuente = ((JMenuItem) arg0.getSource());
+            menuUsuarioAutenticado.setText(fuente.getText());
+        }
+
+        @Override
+        public void mouseExited(MouseEvent arg0) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent arg0) {
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent arg0) {
+        }
+
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -41,6 +76,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -124,6 +160,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu7);
+        jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
         jMenu2.setText("Registro ");
@@ -273,7 +310,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
             //su propio pérfil de Usuario
             jMenu7.removeAll();
-            cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(), jMenu7);
+            cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(), jMenu7, jMenu8);
         } else {
             JOptionPane.showMessageDialog(null, "No existen USUARIOS REGISTRADOS en el Sistema por lo que "
                     + "no se puede acceder a el perfil USUARIO. \nDebe realizar el registro de USUARIO "
@@ -437,6 +474,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
