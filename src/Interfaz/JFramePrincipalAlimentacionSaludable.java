@@ -41,7 +41,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -125,7 +124,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu7);
-        jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
         jMenu2.setText("Registro ");
@@ -439,7 +437,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
