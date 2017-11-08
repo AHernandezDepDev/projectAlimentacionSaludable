@@ -4,6 +4,7 @@ import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
@@ -22,7 +23,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
     //Instancio Sistema Alimentacion Saludable
     SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
-    
+
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
         this.setTitle("Alimentación Saludable");
@@ -33,9 +34,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }
 
     public static class SeleccionUsuarios implements MouseListener {
-        
+
         private JMenu menuUsuarioAutenticado;
-        
+
         public SeleccionUsuarios(JMenu menuACrearUsuarioAutenticado) {
             menuUsuarioAutenticado = menuACrearUsuarioAutenticado;
         }
@@ -48,6 +49,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         public void mousePressed(MouseEvent arg0) {
             JMenuItem fuente = ((JMenuItem) arg0.getSource());
             menuUsuarioAutenticado.setText(fuente.getText());
+            menuUsuarioAutenticado.setIcon(fuente.getIcon());
+            //menuUsuarioAutenticado.setb
         }
 
         @Override
@@ -63,7 +66,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         }
 
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,6 +163,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu7);
+
+        jMenu8.setBackground(new java.awt.Color(255, 204, 102));
         jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
