@@ -60,9 +60,6 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu7">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="9e" green="9e" red="f1" type="rgb"/>
-            </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/Imagenes/adminImagen.png"/>
             </Property>
@@ -84,6 +81,9 @@
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="cc" red="ff" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Trebuchet MS" size="13" style="1"/>
             </Property>
           </Properties>
         </Menu>
@@ -183,7 +183,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Imagenes/nuevaConsultaImagen.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Nueva consulta con Profesional"/>
+                <Property name="text" type="java.lang.String" value="Consulta con Profesional"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
@@ -194,7 +194,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/Imagenes/responderConsultaImagen.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Responder consultas de Usuarios"/>
+                <Property name="text" type="java.lang.String" value="Consultas de Usuarios"/>
               </Properties>
             </MenuItem>
           </SubComponents>

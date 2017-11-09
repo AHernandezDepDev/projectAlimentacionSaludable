@@ -31,6 +31,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     JInternalFrameRegitroProfesional registroProfesional;
     JInternalFrameRegitroDeAlimento registroAlimento;
     JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido;
+    JInternalFrameConsultaProfesional consultaProfesional;
 
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
@@ -43,12 +44,12 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu8.setVisible(false);
     }
 
-    public static class SeleccionUsuarios implements MouseListener {
+    public static class SeleccionPerfiles implements MouseListener {
 
-        private JMenu menuUsuarioAutenticado;
+        private JMenu menuAutenticado;
 
-        public SeleccionUsuarios(JMenu menuACrearUsuarioAutenticado) {
-            menuUsuarioAutenticado = menuACrearUsuarioAutenticado;
+        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado) {
+            menuAutenticado = menuACrearUsuarioAutenticado;
         }
 
         @Override
@@ -58,27 +59,33 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         @Override
         public void mousePressed(MouseEvent arg0) {
             JMenuItem itemPressed = ((JMenuItem) arg0.getSource());
-            menuUsuarioAutenticado.setVisible(true);
-            menuUsuarioAutenticado.setText(itemPressed.getText());
-            menuUsuarioAutenticado.setIcon(itemPressed.getIcon());
+            menuAutenticado.setVisible(true);
+            menuAutenticado.setText("Autenticado: " + itemPressed.getText() + space(20));
+            menuAutenticado.setIcon(itemPressed.getIcon());
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
-            //JMenuItem itemExited = ((JMenuItem) arg0.getSource());
-            //itemExited.setBackground(Color.ORANGE);
         }
 
         @Override
         public void mouseEntered(MouseEvent arg0) {
-            //JMenuItem itemEntered = ((JMenuItem) arg0.getSource());
-            //itemEntered.setBackground(Color.ORANGE);
         }
 
         @Override
         public void mouseClicked(MouseEvent arg0) {
         }
 
+    }
+
+    public static String space(int cantSpace) {
+        String miSpace = "";
+
+        for (int i = 0; i < cantSpace; i++) {
+            miSpace = miSpace + " ";
+        }
+
+        return miSpace;
     }
 
     @SuppressWarnings("unchecked")
@@ -160,7 +167,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu7.setBackground(new java.awt.Color(241, 158, 158));
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adminImagen.png"))); // NOI18N
         jMenu7.setText(" ADMINISTRADOR");
         jMenu7.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -179,6 +185,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuBar1.add(jMenu7);
 
         jMenu8.setBackground(new java.awt.Color(255, 204, 102));
+        jMenu8.setFont(new java.awt.Font("Trebuchet MS", 1, 13)); // NOI18N
         jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
@@ -238,7 +245,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu4.setMargin(new java.awt.Insets(0, 40, 0, 0));
 
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/nuevaConsultaImagen.png"))); // NOI18N
-        jMenuItem4.setText("Nueva consulta con Profesional");
+        jMenuItem4.setText("Consulta con Profesional");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -247,7 +254,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu4.add(jMenuItem4);
 
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/responderConsultaImagen.png"))); // NOI18N
-        jMenuItem7.setText("Responder consultas de Usuarios");
+        jMenuItem7.setText("Consultas de Usuarios");
         jMenu4.add(jMenuItem7);
 
         jMenuBar1.add(jMenu4);
@@ -366,7 +373,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Profesional Registrado al Menú de Profesionales Registrados para tener 
             //su propio pérfil de Profesional
             jMenu7.removeAll();
-            cargarProfesionalRegistrado(sistemaAlimentacionSaludable.getListaProfesionales(), jMenu7);
+            cargarProfesionalRegistrado(sistemaAlimentacionSaludable.getListaProfesionales(), jMenu7, jMenu8);
 
             //Se da reset al jDesktopPane contendor principal
             //por si quedan funcionalidades levantadas de otros perfiles
@@ -374,6 +381,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             if (jMenu7.getText().equals(" PROFESIONAL ")) {
                 jDesktopPane1.removeAll();
                 jDesktopPane1.repaint();
+                //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
+                jMenu8.setVisible(false);
             }
         } else {
             JOptionPane.showMessageDialog(null, "No existen PROFESIONALES REGISTRADOS en el Sistema por lo que "
@@ -384,7 +393,16 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        //LookAndFeel
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable);
+        jDesktopPane1.add(consultaProfesional);
+        consultaProfesional.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -470,6 +488,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuItem11.setVisible(true);
 
         jMenu2.setVisible(true); //PREGUNTARRRRR
+
+        //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
+        jMenu8.setVisible(false);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenu7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseEntered

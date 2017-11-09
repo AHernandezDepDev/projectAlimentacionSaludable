@@ -250,7 +250,7 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
         String rutaFotoPerfil = creacionJFileChooser(this);
         //Cargamos imagen y ajustamos al tamaño de nuestro contenedor
         ImageIcon fotoPerfil = new ImageIcon(rutaFotoPerfil);
-        Icon icono = new ImageIcon(fotoPerfil.getImage().getScaledInstance(jButton2.getWidth(), jButton2.getHeight(), Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(fotoPerfil.getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
         jButton2.setIcon(icono);
         this.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -270,7 +270,13 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 preRegistroProfesional.setNombreTituloProfesional(jTextField2.getText());
                 preRegistroProfesional.setFechaGraduacion(dateChooserCombo2.getDateFormat());
                 preRegistroProfesional.setPaisObtuvoTitulo(jTextField6.getText());
-                preRegistroProfesional.setFotoPerfil(jButton2.getIcon());
+                
+                if (jButton2.getIcon() == null) {
+                    ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
+                    preRegistroProfesional.setFotoPerfil(noPerfil);
+                } else {
+                    preRegistroProfesional.setFotoPerfil(jButton2.getIcon());
+                }
 
                 //REGISTRAMOS NUEVO PROFESIONAL
                 if (!sistema.getListaProfesionales().contains(preRegistroProfesional)) {

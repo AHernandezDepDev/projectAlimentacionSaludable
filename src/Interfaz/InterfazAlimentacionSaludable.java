@@ -4,7 +4,7 @@ import Dominio.Alimento;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
-import Interfaz.JFramePrincipalAlimentacionSaludable.SeleccionUsuarios;
+import Interfaz.JFramePrincipalAlimentacionSaludable.SeleccionPerfiles;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,19 +106,21 @@ public class InterfazAlimentacionSaludable {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
-            usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerNombre());
+            usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerApellido());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
-            usuarioRegistradoMenu.addMouseListener(new SeleccionUsuarios(usuarioAutenticado));
+            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado));
             menuPefiles.add(usuarioRegistradoMenu);
         }
     }
 
-    public static void cargarProfesionalRegistrado(ArrayList<Profesional> listaProfesional, JMenu menuPefiles) {
+    public static void cargarProfesionalRegistrado(ArrayList<Profesional> listaProfesional, JMenu menuPefiles,
+         JMenu profesionalAutenticado) {
         for (int i = 0; i < listaProfesional.size(); i++) {
             Profesional prof = listaProfesional.get(i);
             JMenuItem profesionalRegistradoMenu = new JMenuItem();
-            profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + prof.getPrimerNombre());
+            profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + prof.getPrimerApellido());
             profesionalRegistradoMenu.setIcon(prof.getFotoPerfil());
+            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado));
             menuPefiles.add(profesionalRegistradoMenu);
         }
     }
