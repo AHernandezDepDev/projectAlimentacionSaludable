@@ -15,6 +15,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -100,13 +101,14 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles, JMenu usuarioAutenticado) {
+    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles, 
+            JMenu usuarioAutenticado, JMenuBar menuBarSistema) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
             usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerNombre());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
-            usuarioRegistradoMenu.addMouseListener(new SeleccionUsuarios(usuarioAutenticado));
+            usuarioRegistradoMenu.addMouseListener(new SeleccionUsuarios(usuarioAutenticado, menuBarSistema));
             menuPefiles.add(usuarioRegistradoMenu);
         }
     }
