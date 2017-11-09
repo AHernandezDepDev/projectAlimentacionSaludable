@@ -6,11 +6,13 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -25,25 +27,28 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
     //Instancio Sistema Alimentacion Saludable
     SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
-    JMenu menuUsuarioAutenticado;
-    
+    JInternalFrameRegitroUsuario registroUsuario;
+    JInternalFrameRegitroProfesional registroProfesional;
+    JInternalFrameRegitroDeAlimento registroAlimento;
+    JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido;
+
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
         this.setTitle("Alimentación Saludable");
         jDesktopPane1.setBorder(new JDesktopPanelBakground());
         this.setExtendedState(JFramePrincipalAlimentacionSaludable.MAXIMIZED_BOTH);
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/Imagenes/logoAppImagen.png")));
-        MenuScroller.setScrollerFor(jMenu7, 3, 1500, 2, 1);
+        MenuScroller.setScrollerFor(jMenu7, 4, 1500, 2, 1);
+        //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
+        jMenu8.setVisible(false);
     }
 
     public static class SeleccionUsuarios implements MouseListener {
 
-        JMenu menuUsuarioAutenticado = new JMenu();
-        private JMenuBar menuBar;
+        private JMenu menuUsuarioAutenticado;
 
-        public SeleccionUsuarios(JMenu menuACrearUsuarioAutenticado, JMenuBar op) {
+        public SeleccionUsuarios(JMenu menuACrearUsuarioAutenticado) {
             menuUsuarioAutenticado = menuACrearUsuarioAutenticado;
-            menuBar = op;
         }
 
         @Override
@@ -52,24 +57,22 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         @Override
         public void mousePressed(MouseEvent arg0) {
-            JMenuItem fuente = ((JMenuItem) arg0.getSource());
-            menuUsuarioAutenticado.setText(fuente.getText());
-            menuUsuarioAutenticado.setIcon(fuente.getIcon());
-            menuBar.add(Box.createHorizontalGlue());
-            menuBar.add(menuUsuarioAutenticado);  
-            
+            JMenuItem itemPressed = ((JMenuItem) arg0.getSource());
+            menuUsuarioAutenticado.setVisible(true);
+            menuUsuarioAutenticado.setText(itemPressed.getText());
+            menuUsuarioAutenticado.setIcon(itemPressed.getIcon());
         }
 
         @Override
         public void mouseExited(MouseEvent arg0) {
-            JMenuItem fuente = ((JMenuItem) arg0.getSource());
-            fuente.setBackground(Color.white);
+            //JMenuItem itemExited = ((JMenuItem) arg0.getSource());
+            //itemExited.setBackground(Color.ORANGE);
         }
 
         @Override
         public void mouseEntered(MouseEvent arg0) {
-            JMenuItem fuente = ((JMenuItem) arg0.getSource());
-            fuente.setBackground(Color.red);
+            //JMenuItem itemEntered = ((JMenuItem) arg0.getSource());
+            //itemEntered.setBackground(Color.ORANGE);
         }
 
         @Override
@@ -90,6 +93,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -173,6 +177,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu7);
+
+        jMenu8.setBackground(new java.awt.Color(255, 204, 102));
+        jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
         jMenu2.setText("Registro ");
@@ -322,7 +329,15 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
             //su propio pérfil de Usuario
             jMenu7.removeAll();
-            cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(), jMenu7, menuUsuarioAutenticado, jMenuBar1);
+            cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(), jMenu7, jMenu8);
+
+            //Se da reset al jDesktopPane contendor principal
+            //por si quedan funcionalidades levantadas de otros perfiles
+            //no correspondientes a el de USUARIO
+            if (jMenu7.getText().equals(" USUARIO ")) {
+                jDesktopPane1.removeAll();
+                jDesktopPane1.repaint();
+            }
         } else {
             JOptionPane.showMessageDialog(null, "No existen USUARIOS REGISTRADOS en el Sistema por lo que "
                     + "no se puede acceder a el perfil USUARIO. \nDebe realizar el registro de USUARIO "
@@ -352,6 +367,14 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //su propio pérfil de Profesional
             jMenu7.removeAll();
             cargarProfesionalRegistrado(sistemaAlimentacionSaludable.getListaProfesionales(), jMenu7);
+
+            //Se da reset al jDesktopPane contendor principal
+            //por si quedan funcionalidades levantadas de otros perfiles
+            //no correspondientes a el de PROFESIONAL
+            if (jMenu7.getText().equals(" PROFESIONAL ")) {
+                jDesktopPane1.removeAll();
+                jDesktopPane1.repaint();
+            }
         } else {
             JOptionPane.showMessageDialog(null, "No existen PROFESIONALES REGISTRADOS en el Sistema por lo que "
                     + "no se puede acceder a el perfil PROFESIONAL. \nDebe realizar el registro de PROFESIONAL "
@@ -372,7 +395,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        JInternalFrameRegitroUsuario registroUsuario = new JInternalFrameRegitroUsuario(jMenu7, sistemaAlimentacionSaludable);
+        registroUsuario = new JInternalFrameRegitroUsuario(jMenu7, sistemaAlimentacionSaludable);
         jDesktopPane1.add(registroUsuario);
         registroUsuario.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
@@ -402,7 +425,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        JInternalFrameRegitroProfesional registroProfesional = new JInternalFrameRegitroProfesional(sistemaAlimentacionSaludable);
+        registroProfesional = new JInternalFrameRegitroProfesional(sistemaAlimentacionSaludable);
         jDesktopPane1.add(registroProfesional);
         registroProfesional.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
@@ -415,7 +438,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        JInternalFrameRegitroDeAlimento registroAlimento = new JInternalFrameRegitroDeAlimento(sistemaAlimentacionSaludable);
+        registroAlimento = new JInternalFrameRegitroDeAlimento(sistemaAlimentacionSaludable);
         jDesktopPane1.add(registroAlimento);
         registroAlimento.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -428,8 +451,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido
-                = new JInternalFrameRegitroDeAlimentoIngeridos(sistemaAlimentacionSaludable);
+        registroAlimentoIngerido = new JInternalFrameRegitroDeAlimentoIngeridos(sistemaAlimentacionSaludable);
         jDesktopPane1.add(registroAlimentoIngerido);
         registroAlimentoIngerido.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
@@ -486,6 +508,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;

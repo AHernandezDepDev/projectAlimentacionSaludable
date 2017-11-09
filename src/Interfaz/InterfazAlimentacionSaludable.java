@@ -37,7 +37,7 @@ public class InterfazAlimentacionSaludable {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg", "JPG");
         MyFileChooser.setFileFilter(filter);
         MyFileChooser.showOpenDialog(JInternalFrame);
-        rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath();
+        rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath(); //tira exepciones tratar de controlar!!!
 
         return rutaFoto;
     }
@@ -102,13 +102,13 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles, 
-            JMenu usuarioAutenticado, JMenuBar menuBarSistema) {
+            JMenu usuarioAutenticado) {
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
             usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerNombre());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
-            usuarioRegistradoMenu.addMouseListener(new SeleccionUsuarios(usuarioAutenticado, menuBarSistema));
+            usuarioRegistradoMenu.addMouseListener(new SeleccionUsuarios(usuarioAutenticado));
             menuPefiles.add(usuarioRegistradoMenu);
         }
     }

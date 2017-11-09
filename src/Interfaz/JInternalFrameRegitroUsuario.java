@@ -27,7 +27,9 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     JMenu menuUsuarios = null;
     SistemaAlimentacionSaludable sistema = null;
      
-    public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados, SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+    public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados, 
+            SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+        
         menuUsuarios = menuAddUsuariosRegistrados;
         sistema = sistemaAlimentacionSaludable;
         initComponents();
