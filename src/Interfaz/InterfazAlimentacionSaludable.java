@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -102,41 +103,45 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles,
-            JMenu usuarioAutenticado) {
+    public static ArrayList<String> cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles,
+            JMenu usuarioAutenticado, JDesktopPane panelSistema) {
+        
+        ArrayList<String> datosUsuario = new ArrayList<String>();
         
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
             usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerApellido());
+            datosUsuario.add(user.getPrimerNombre() + " " + user.getPrimerApellido());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
-            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado));
+            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado, panelSistema));
             menuPefiles.add(usuarioRegistradoMenu);
         }
+        
+        return datosUsuario;
     }
 
     public static void cargarProfesionalRegistrado(ArrayList<Profesional> listaProfesional, JMenu menuPefiles,
-            JMenu profesionalAutenticado) {
+            JMenu profesionalAutenticado, JDesktopPane panelSistema) {
 
         for (int i = 0; i < listaProfesional.size(); i++) {
             Profesional prof = listaProfesional.get(i);
             JMenuItem profesionalRegistradoMenu = new JMenuItem();
             profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + prof.getPrimerApellido());
             profesionalRegistradoMenu.setIcon(prof.getFotoPerfil());
-            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado));
+            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado, panelSistema));
             menuPefiles.add(profesionalRegistradoMenu);
         }
     }
 
     public static void ingresarIngestasUsuarioAutenticado(SistemaAlimentacionSaludable sistema,
-            String primerNombreUsuario, String primerApellidoUsuario, ArrayList<String> listaIngestasAlimentos) {
+            String datosUsuarioAutenticado, ArrayList<String> listaIngestasAlimentos) {
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioRegistrado = sistema.getListaUsuarios().get(i);
+            String consultaDatosUsuario = usuarioRegistrado.getPrimerNombre() + " " + usuarioRegistrado.getPrimerApellido();
             
-            if (usuarioRegistrado.getPrimerNombre().equals(primerNombreUsuario) &&
-                    usuarioRegistrado.getPrimerApellido().equals(primerApellidoUsuario)) {
-                
+            if (consultaDatosUsuario.equals(datosUsuarioAutenticado)) {
                 for (int j = 0; j < listaIngestasAlimentos.size(); j++) {
                     String ingestaAlimento = listaIngestasAlimentos.get(j);
                     Alimento alimento = new Alimento();

@@ -11,7 +11,9 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -32,6 +34,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     JInternalFrameRegitroDeAlimento registroAlimento;
     JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido;
     JInternalFrameConsultaProfesional consultaProfesional;
+    static ArrayList<String> datosUsuariosSistema;
+    static String datosUsuarioAutenticado;
 
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
@@ -47,9 +51,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     public static class SeleccionPerfiles implements MouseListener {
 
         private JMenu menuAutenticado;
+        private JDesktopPane panelSistema;
 
-        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado) {
+        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado, JDesktopPane panel) {
             menuAutenticado = menuACrearUsuarioAutenticado;
+            panelSistema = panel;
         }
 
         @Override
@@ -58,8 +64,20 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         @Override
         public void mousePressed(MouseEvent arg0) {
+            
+            //Cerramos ventanas de registros que se encuentren abiertas
+            panelSistema.removeAll();
+            panelSistema.repaint();
+            
             JMenuItem itemPressed = ((JMenuItem) arg0.getSource());
             menuAutenticado.setVisible(true);
+            
+            for (int i = 0; i < datosUsuariosSistema.size(); i++) {
+                if (datosUsuariosSistema.get(i).equals(itemPressed.getText())) {
+                    datosUsuarioAutenticado = datosUsuariosSistema.get(i);
+                }
+            }
+            
             menuAutenticado.setText("Autenticado: "+ itemPressed.getText() + space(20));
             menuAutenticado.setIcon(itemPressed.getIcon());
         }
@@ -337,7 +355,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
             //su propio pérfil de Usuario
             jMenu7.removeAll();
-            cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(), jMenu7, jMenu8);
+            datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(), 
+                    jMenu7, jMenu8, jDesktopPane1);
 
             //Se da reset al jDesktopPane contendor principal
             //por si quedan funcionalidades levantadas de otros perfiles
@@ -374,7 +393,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Profesional Registrado al Menú de Profesionales Registrados para tener 
             //su propio pérfil de Profesional
             jMenu7.removeAll();
-            cargarProfesionalRegistrado(sistemaAlimentacionSaludable.getListaProfesionales(), jMenu7, jMenu8);
+            cargarProfesionalRegistrado(sistemaAlimentacionSaludable.getListaProfesionales(), jMenu7, jMenu8, jDesktopPane1);
 
             //Se da reset al jDesktopPane contendor principal
             //por si quedan funcionalidades levantadas de otros perfiles
@@ -470,7 +489,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        registroAlimentoIngerido = new JInternalFrameRegitroDeAlimentoIngeridos(sistemaAlimentacionSaludable, jMenu8);
+        registroAlimentoIngerido = new JInternalFrameRegitroDeAlimentoIngeridos(sistemaAlimentacionSaludable, 
+                jMenu8, datosUsuarioAutenticado);
         jDesktopPane1.add(registroAlimentoIngerido);
         registroAlimentoIngerido.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed

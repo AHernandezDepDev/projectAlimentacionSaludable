@@ -1,6 +1,7 @@
 package Interfaz;
 
 import Dominio.SistemaAlimentacionSaludable;
+import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
@@ -18,14 +19,16 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
 
     SistemaAlimentacionSaludable sistema;
     JMenu usuarioAutenticado;
+    String datosUsuarioAutenticado;
 
     //Modelo de JList Registro de Alimentos Ingeridos
     DefaultListModel modeloJListAlimentosIngeridos = new DefaultListModel();
 
     public JInternalFrameRegitroDeAlimentoIngeridos(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
-            JMenu menuUsuario) {
+            JMenu menuUsuario, String datosUsuario) {
         
         usuarioAutenticado = menuUsuario;
+        datosUsuarioAutenticado = datosUsuario;
         sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Ingestas de Alimentos ");
@@ -162,8 +165,9 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Agregamos un control para que no se pueda registrar ingestas de alimentos vacias
         if (modeloJListAlimentosIngeridos.getSize() >= 1) {
-            ingresarIngestasUsuarioAutenticado(sistema, usuarioAutenticado.getText(), 
-                    usuarioAutenticado.getText(), datosEnListaAArrayListString(modeloJListAlimentosIngeridos));
+            ingresarIngestasUsuarioAutenticado(sistema, datosUsuarioAutenticado, 
+                    datosEnListaAArrayListString(modeloJListAlimentosIngeridos));
+            borrarModeloJList(jList2, modeloJListAlimentosIngeridos);
         } else {
              JOptionPane.showMessageDialog(null, "No hay INGESTAS de ALIMENTOS cargadas para ingresar en el sistema",
                     "Registrar Ingestas de Alimentos", JOptionPane.ERROR_MESSAGE);
