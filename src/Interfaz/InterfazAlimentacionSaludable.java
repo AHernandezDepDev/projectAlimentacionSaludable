@@ -95,14 +95,16 @@ public class InterfazAlimentacionSaludable {
 
     public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
         int sizeDelModel = modelo.getSize();
+        
         for (int i = 0; i < sizeDelModel; i++) {
             modelo.remove(modelo.getSize() - 1);
         }
         listaABorrar.setModel(modelo);
     }
 
-    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles, 
+    public static void cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles,
             JMenu usuarioAutenticado) {
+        
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
@@ -114,7 +116,8 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static void cargarProfesionalRegistrado(ArrayList<Profesional> listaProfesional, JMenu menuPefiles,
-         JMenu profesionalAutenticado) {
+            JMenu profesionalAutenticado) {
+
         for (int i = 0; i < listaProfesional.size(); i++) {
             Profesional prof = listaProfesional.get(i);
             JMenuItem profesionalRegistradoMenu = new JMenuItem();
@@ -122,6 +125,25 @@ public class InterfazAlimentacionSaludable {
             profesionalRegistradoMenu.setIcon(prof.getFotoPerfil());
             profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado));
             menuPefiles.add(profesionalRegistradoMenu);
+        }
+    }
+
+    public static void ingresarIngestasUsuarioAutenticado(SistemaAlimentacionSaludable sistema,
+            String primerNombreUsuario, String primerApellidoUsuario, ArrayList<String> listaIngestasAlimentos) {
+
+        for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
+            Usuario usuarioRegistrado = sistema.getListaUsuarios().get(i);
+            
+            if (usuarioRegistrado.getPrimerNombre().equals(primerNombreUsuario) &&
+                    usuarioRegistrado.getPrimerApellido().equals(primerApellidoUsuario)) {
+                
+                for (int j = 0; j < listaIngestasAlimentos.size(); j++) {
+                    String ingestaAlimento = listaIngestasAlimentos.get(j);
+                    Alimento alimento = new Alimento();
+                    alimento.setNombre(ingestaAlimento);
+                    usuarioRegistrado.getListaAlimentosIngeridos().add(alimento);
+                }
+            }
         }
     }
 

@@ -2,8 +2,12 @@ package Interfaz;
 
 import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
+import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
+import static Interfaz.InterfazAlimentacionSaludable.ingresarIngestasUsuarioAutenticado;
 import javax.swing.DefaultListModel;
+import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /*
@@ -13,14 +17,18 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInternalFrame {
 
     SistemaAlimentacionSaludable sistema;
+    JMenu usuarioAutenticado;
 
     //Modelo de JList Registro de Alimentos Ingeridos
     DefaultListModel modeloJListAlimentosIngeridos = new DefaultListModel();
-    
-    public JInternalFrameRegitroDeAlimentoIngeridos(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+
+    public JInternalFrameRegitroDeAlimentoIngeridos(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
+            JMenu menuUsuario) {
+        
+        usuarioAutenticado = menuUsuario;
         sistema = sistemaAlimentacionSaludable;
         initComponents();
-        this.setTitle(" Registrar Alimento ");
+        this.setTitle(" Registrar Ingestas de Alimentos ");
     }
 
     @SuppressWarnings("unchecked")
@@ -152,10 +160,13 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       //Agregamos un control para que no se pueda registrar ingestas de alimentos vacias
+        //Agregamos un control para que no se pueda registrar ingestas de alimentos vacias
         if (modeloJListAlimentosIngeridos.getSize() >= 1) {
-            
+            ingresarIngestasUsuarioAutenticado(sistema, usuarioAutenticado.getText(), 
+                    usuarioAutenticado.getText(), datosEnListaAArrayListString(modeloJListAlimentosIngeridos));
         } else {
+             JOptionPane.showMessageDialog(null, "No hay INGESTAS de ALIMENTOS cargadas para ingresar en el sistema",
+                    "Registrar Ingestas de Alimentos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -60,7 +60,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         public void mousePressed(MouseEvent arg0) {
             JMenuItem itemPressed = ((JMenuItem) arg0.getSource());
             menuAutenticado.setVisible(true);
-            menuAutenticado.setText("Autenticado: " + itemPressed.getText() + space(20));
+            menuAutenticado.setText("Autenticado: "+ itemPressed.getText() + space(20));
             menuAutenticado.setIcon(itemPressed.getIcon());
         }
 
@@ -87,7 +87,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         return miSpace;
     }
-
+       
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -185,7 +185,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuBar1.add(jMenu7);
 
         jMenu8.setBackground(new java.awt.Color(255, 204, 102));
-        jMenu8.setFont(new java.awt.Font("Trebuchet MS", 1, 13)); // NOI18N
+        jMenu8.setForeground(new java.awt.Color(255, 0, 0));
+        jMenu8.setFont(new java.awt.Font("Segoe UI Symbol", 1, 15)); // NOI18N
         jMenuBar1.add(jMenu8);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
@@ -469,7 +470,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        registroAlimentoIngerido = new JInternalFrameRegitroDeAlimentoIngeridos(sistemaAlimentacionSaludable);
+        registroAlimentoIngerido = new JInternalFrameRegitroDeAlimentoIngeridos(sistemaAlimentacionSaludable, jMenu8);
         jDesktopPane1.add(registroAlimentoIngerido);
         registroAlimentoIngerido.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
@@ -491,6 +492,13 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
         jMenu8.setVisible(false);
+
+        //Se da reset al jDesktopPane contendor principal
+        if (jMenu7.getText().equals(" ADMINISTRADOR ")) {
+            jDesktopPane1.removeAll();
+            jDesktopPane1.repaint();
+            jMenu8.setVisible(false);
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenu7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseEntered
