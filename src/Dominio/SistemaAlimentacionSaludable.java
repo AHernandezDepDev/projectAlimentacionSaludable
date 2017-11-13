@@ -11,6 +11,7 @@ public class SistemaAlimentacionSaludable {
     private ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
     private ArrayList<Profesional> listaProfesionales = new ArrayList<Profesional>();
     private ArrayList<Alimento> listaAlimentos = new ArrayList<Alimento>();
+    private ArrayList<Consulta> listaConsultas = new ArrayList<Consulta>();
 
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
@@ -22,6 +23,10 @@ public class SistemaAlimentacionSaludable {
 
     public ArrayList<Alimento> getListaAlimentos() {
         return listaAlimentos;
+    }
+
+    public ArrayList<Consulta> getListaConsultas() {
+        return listaConsultas;
     }
 
     public void setListaUsuarios(ArrayList<Usuario> listaUsuarios) {
@@ -36,6 +41,10 @@ public class SistemaAlimentacionSaludable {
         this.listaAlimentos = listaAlimentos;
     }
 
+    public void setListaConsultas(ArrayList<Consulta> listaConsultas) {
+        this.listaConsultas = listaConsultas;
+    }
+
     //*************************************************************************//
     public void agregarRegistroUsuario(Usuario nuevoUsuario) {
         this.listaUsuarios.add(nuevoUsuario);
@@ -47,6 +56,10 @@ public class SistemaAlimentacionSaludable {
 
     public void agregarRegistroAlimento(Alimento nuevoAlimento) {
         this.listaAlimentos.add(nuevoAlimento);
+    }
+    
+    public void agregarRegistroConsulta(Consulta nuevaConsulta) {
+        this.listaConsultas.add(nuevaConsulta);
     }
 
 }

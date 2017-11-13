@@ -10,8 +10,9 @@ public class Consulta {
 
     private Profesional profesionalRespondeConsulta;
     private Alimento alimentoConsultado;
-    private ArrayList<String> listaVentajas = new ArrayList<String>();
-    private ArrayList<String> listaDesventajas = new ArrayList<String>();
+    private String titularConsulta;
+    private String descripcionConsulta;
+    private String respuestaConsulta;
 
     public Profesional getProfesionalRespondeConsulta() {
         return profesionalRespondeConsulta;
@@ -21,12 +22,16 @@ public class Consulta {
         return alimentoConsultado;
     }
 
-    public ArrayList<String> getListaVentajas() {
-        return listaVentajas;
+    public String getTitularConsulta() {
+        return titularConsulta;
     }
 
-    public ArrayList<String> getListaDesventajas() {
-        return listaDesventajas;
+    public String getDescripcionConsulta() {
+        return descripcionConsulta;
+    }
+
+    public String getRespuestaConsulta() {
+        return respuestaConsulta;
     }
 
     public void setProfesionalRespondeConsulta(Profesional profesionalRespondeConsulta) {
@@ -37,12 +42,16 @@ public class Consulta {
         this.alimentoConsultado = alimentoConsultado;
     }
 
-    public void setListaVentajas(ArrayList<String> listaVentajas) {
-        this.listaVentajas = listaVentajas;
+    public void setTitularConsulta(String titularConsulta) {
+        this.titularConsulta = titularConsulta;
     }
 
-    public void setListaDesventajas(ArrayList<String> listaDesventajas) {
-        this.listaDesventajas = listaDesventajas;
+    public void setDescripcionConsulta(String descripcionConsulta) {
+        this.descripcionConsulta = descripcionConsulta;
+    }
+
+    public void setRespuestaConsulta(String respuestaConsulta) {
+        this.respuestaConsulta = respuestaConsulta;
     }
 
 }
