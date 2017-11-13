@@ -25,7 +25,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
     DefaultListModel modeloJListPreferencias = new DefaultListModel();
     DefaultListModel modeloJListRestricciones = new DefaultListModel();
     JMenu menuUsuarios = null;
-    SistemaAlimentacionSaludable sistema = null;
+    SistemaAlimentacionSaludable sistema;
      
     public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados, 
             SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {

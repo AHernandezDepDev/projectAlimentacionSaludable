@@ -1,6 +1,7 @@
 package Interfaz;
 
 import Dominio.Alimento;
+import Dominio.Consulta;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
@@ -8,6 +9,7 @@ import Interfaz.JFramePrincipalAlimentacionSaludable.SeleccionPerfiles;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -93,10 +95,17 @@ public class InterfazAlimentacionSaludable {
         sistema.agregarRegistroAlimento(alimentoARegistrar);
         return sistema.getListaAlimentos();
     }
+    
+     public static ArrayList<Consulta> agregarAListaConsultaRegistrada(SistemaAlimentacionSaludable sistema,
+            Consulta consultaARegistrar) {
+
+        sistema.agregarRegistroConsulta(consultaARegistrar);
+        return sistema.getListaConsultas();
+    }
 
     public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
         int sizeDelModel = modelo.getSize();
-        
+
         for (int i = 0; i < sizeDelModel; i++) {
             modelo.remove(modelo.getSize() - 1);
         }
@@ -105,9 +114,9 @@ public class InterfazAlimentacionSaludable {
 
     public static ArrayList<String> cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles,
             JMenu usuarioAutenticado, JDesktopPane panelSistema) {
-        
+
         ArrayList<String> datosUsuario = new ArrayList<String>();
-        
+
         for (int i = 0; i < listaUsuarios.size(); i++) {
             Usuario user = listaUsuarios.get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
@@ -117,7 +126,7 @@ public class InterfazAlimentacionSaludable {
             usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado, panelSistema));
             menuPefiles.add(usuarioRegistradoMenu);
         }
-        
+
         return datosUsuario;
     }
 
@@ -135,12 +144,12 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static void ingresarIngestasUsuarioAutenticado(SistemaAlimentacionSaludable sistema,
-            String datosUsuarioAutenticado, ArrayList<String> listaIngestasAlimentos) {
+            String datosUsuarioAutenticado, ArrayList<String> listaIngestasAlimentos) { //REVISAR LUEGO DE RESPUESTA DE MARTIN!!!
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioRegistrado = sistema.getListaUsuarios().get(i);
             String consultaDatosUsuario = usuarioRegistrado.getPrimerNombre() + " " + usuarioRegistrado.getPrimerApellido();
-            
+
             if (consultaDatosUsuario.equals(datosUsuarioAutenticado)) {
                 for (int j = 0; j < listaIngestasAlimentos.size(); j++) {
                     String ingestaAlimento = listaIngestasAlimentos.get(j);
@@ -152,4 +161,35 @@ public class InterfazAlimentacionSaludable {
         }
     }
 
+    public static DefaultComboBoxModel cargarComboAlimentos(DefaultComboBoxModel modeloAlimentos, 
+            SistemaAlimentacionSaludable sistema) {
+        
+        DefaultComboBoxModel modeloAlimentosCagado = modeloAlimentos;
+        
+        for (int i = 0; i < sistema.getListaAlimentos().size(); i++) {
+            Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
+            modeloAlimentos.addElement(alimentoSistema.getNombre());
+        }
+        
+        return modeloAlimentosCagado;
+    }
+    
+     public static Alimento alimentoDeConsulta(SistemaAlimentacionSaludable sistema, String seleccionAlimento) {
+        
+        Alimento alimentoDeConsultaNueva = null;
+        boolean encontroAlimento = false;
+        
+        for (int i = 0; i < sistema.getListaAlimentos().size() && !encontroAlimento; i++) {
+            Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
+            String nombreAlimentoSistema = alimentoSistema.getNombre().toUpperCase();
+            
+            if (nombreAlimentoSistema.equals(seleccionAlimento.toUpperCase())) {
+                alimentoDeConsultaNueva = alimentoSistema;
+            }
+        }
+        
+        return alimentoDeConsultaNueva;
+    }
+    
+    
 }
