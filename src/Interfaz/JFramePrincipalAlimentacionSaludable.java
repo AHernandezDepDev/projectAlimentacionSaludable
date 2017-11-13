@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado;
@@ -28,7 +29,7 @@ import javax.swing.UIManager;
 public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
     //Instancio Sistema Alimentacion Saludable
-    SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
+    static SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
     JInternalFrameRegitroUsuario registroUsuario;
     JInternalFrameRegitroProfesional registroProfesional;
     JInternalFrameRegitroDeAlimento registroAlimento;
@@ -78,7 +79,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
                 JMenu menuAActivar = activarMenuPrincipal.get(i);
                 menuAActivar.setVisible(true);
             }
-            
+
             JMenuItem itemPressed = ((JMenuItem) arg0.getSource());
             menuAutenticado.setVisible(true);
 
@@ -128,18 +129,6 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu5.setVisible(false);
     }
 
-    /*public ArrayList<JMenu> listaMenuParametros(JMenu registro, JMenu alimento,
-            JMenu consulta, JMenu planAlimentación) {
-
-        ArrayList<JMenu> menusPrincipales = new ArrayList<JMenu>();
-        menusPrincipales.add(registro);
-        menusPrincipales.add(alimento);
-        menusPrincipales.add(consulta);
-        menusPrincipales.add(planAlimentación);
-
-        return menusPrincipales;
-    }*/
-    
     public ArrayList<JMenu> listaMenuParametros() {
 
         ArrayList<JMenu> menusPrincipales = new ArrayList<JMenu>();
@@ -384,10 +373,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
         jMenu8.setVisible(false);
 
-        //Se deshabilita menu hasta que no haya seleccion de Usuario
-        menuDisabled();
-
         if (sistemaAlimentacionSaludable.getListaUsuarios().size() >= 1) {
+
+            //Se deshabilita menu hasta que no haya seleccion de Usuario
+            menuDisabled();
+
             jMenu7.setText(" USUARIO ");
             jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png")));
 
@@ -405,7 +395,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
             //su propio pérfil de Usuario
             jMenu7.removeAll();
-            datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, jMenu7, 
+            datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, jMenu7,
                     jMenu8, jDesktopPane1, listaMenuParametros());
 
             //Se da reset al jDesktopPane contendor principal
@@ -428,10 +418,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
         jMenu8.setVisible(false);
 
-        //Se deshabilita menu hasta que no haya seleccion de Profesional
-        menuDisabled();
-
         if (sistemaAlimentacionSaludable.getListaProfesionales().size() >= 1) {
+
+            //Se deshabilita menu hasta que no haya seleccion de Profesional
+            menuDisabled();
+
             jMenu7.setText(" PROFESIONAL ");
             jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png")));
 
@@ -450,7 +441,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Profesional Registrado al Menú de Profesionales Registrados para tener 
             //su propio pérfil de Profesional
             jMenu7.removeAll();
-            cargarProfesionalRegistrado(sistemaAlimentacionSaludable, jMenu7, 
+            datosUsuariosSistema = cargarProfesionalRegistrado(sistemaAlimentacionSaludable, jMenu7,
                     jMenu8, jDesktopPane1, listaMenuParametros());
 
             //Se da reset al jDesktopPane contendor principal
@@ -606,7 +597,21 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+
                 new JFramePrincipalAlimentacionSaludable().setVisible(true);
+
+                /*Usuario u = new Usuario();
+                u.setPrimerNombre("a");
+                u.setPrimerApellido("b");
+
+                Profesional p = new Profesional();
+                p.setPrimerNombre("adzdvz");
+                p.setPrimerApellido("bzzdvzdv");
+                p.setNombreTituloProfesional("tiyulo");
+                p.setPaisObtuvoTitulo("acaaa");
+
+                sistemaAlimentacionSaludable.agregarRegistroUsuario(u);
+                sistemaAlimentacionSaludable.agregarRegistroProfesional(p);*/
             }
         });
     }

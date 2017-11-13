@@ -5,10 +5,15 @@ import Dominio.Consulta;
 import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaRegistrada;
 import static Interfaz.InterfazAlimentacionSaludable.alimentoDeConsulta;
+import static Interfaz.InterfazAlimentacionSaludable.borrarFilasTablaConsultas;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultas;
 import java.awt.Component;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -18,6 +23,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
     SistemaAlimentacionSaludable sistema;
     DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
+    DefaultTableModel modeloTablaConsultas = new DefaultTableModel();
 
     public JInternalFrameConsultaProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;
@@ -43,7 +49,6 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -68,19 +73,20 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         jLabel8.setText("Historial de Consultas");
         jPanel1.add(jLabel8, java.awt.BorderLayout.PAGE_START);
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Titular de Consulta realizada", "Atendida por Profesional", "Ver respuesta"
+                "Titular de Consulta", "Descripción de Consulta", "Atendida por Profesional", "Ver Detalles"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -121,17 +127,12 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addComponent(jLabel10)
-                .addGap(0, 180, Short.MAX_VALUE))
+                .addGap(0, 167, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel7);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
-
-        jPanel4.setBackground(new java.awt.Color(247, 219, 219));
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Manejo de Turnos"));
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel2.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
         jPanel5.setBackground(new java.awt.Color(204, 255, 204));
 
@@ -219,15 +220,21 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             nuevaConsulta.setTitularConsulta(jTextField1.getText());
             nuevaConsulta.setDescripcionConsulta(jTextPane1.getText());
-            
+
             Alimento alimentoSeleccionado = alimentoDeConsulta(sistema, jComboBox1.getSelectedItem().toString());
             nuevaConsulta.setAlimentoConsultado(alimentoSeleccionado);
-            
+
             agregarAListaConsultaRegistrada(sistema, nuevaConsulta);
 
             //Refrescamos para proximo consulta
             jTextField1.setText("");
             jTextPane1.setText("");
+
+            //Cargamos JTable con Consultas ingresadas
+            borrarFilasTablaConsultas(modeloTablaConsultas);
+            
+            modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel());
+            jTable1.setModel(modeloTablaConsultas);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -243,7 +250,6 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
