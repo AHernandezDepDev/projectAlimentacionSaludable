@@ -51,10 +51,14 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     public static class SeleccionPerfiles implements MouseListener {
 
         private JMenu menuAutenticado;
+        private ArrayList<JMenu> activarMenuPrincipal;
         private JDesktopPane panelSistema;
 
-        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado, JDesktopPane panel) {
+        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado, JDesktopPane panel,
+                ArrayList<JMenu> menuPrincipalSistema) {
+
             menuAutenticado = menuACrearUsuarioAutenticado;
+            activarMenuPrincipal = menuPrincipalSistema;
             panelSistema = panel;
         }
 
@@ -69,6 +73,12 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             panelSistema.removeAll();
             panelSistema.repaint();
 
+            //Controles sobre activacion de menu principal del sistema
+            for (int i = 0; i < activarMenuPrincipal.size(); i++) {
+                JMenu menuAActivar = activarMenuPrincipal.get(i);
+                menuAActivar.setVisible(true);
+            }
+            
             JMenuItem itemPressed = ((JMenuItem) arg0.getSource());
             menuAutenticado.setVisible(true);
 
@@ -104,6 +114,40 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         }
 
         return miSpace;
+    }
+
+    public void menuEnabled() {
+        jMenu3.setVisible(true);
+        jMenu4.setVisible(true);
+        jMenu5.setVisible(true);
+    }
+
+    public void menuDisabled() {
+        jMenu3.setVisible(false);
+        jMenu4.setVisible(false);
+        jMenu5.setVisible(false);
+    }
+
+    /*public ArrayList<JMenu> listaMenuParametros(JMenu registro, JMenu alimento,
+            JMenu consulta, JMenu planAlimentación) {
+
+        ArrayList<JMenu> menusPrincipales = new ArrayList<JMenu>();
+        menusPrincipales.add(registro);
+        menusPrincipales.add(alimento);
+        menusPrincipales.add(consulta);
+        menusPrincipales.add(planAlimentación);
+
+        return menusPrincipales;
+    }*/
+    
+    public ArrayList<JMenu> listaMenuParametros() {
+
+        ArrayList<JMenu> menusPrincipales = new ArrayList<JMenu>();
+        menusPrincipales.add(jMenu3);
+        menusPrincipales.add(jMenu4);
+        menusPrincipales.add(jMenu5);
+
+        return menusPrincipales;
     }
 
     @SuppressWarnings("unchecked")
@@ -340,6 +384,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
         jMenu8.setVisible(false);
 
+        //Se deshabilita menu hasta que no haya seleccion de Usuario
+        menuDisabled();
+
         if (sistemaAlimentacionSaludable.getListaUsuarios().size() >= 1) {
             jMenu7.setText(" USUARIO ");
             jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png")));
@@ -358,8 +405,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
             //su propio pérfil de Usuario
             jMenu7.removeAll();
-            datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable.getListaUsuarios(),
-                    jMenu7, jMenu8, jDesktopPane1);
+            datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, jMenu7, 
+                    jMenu8, jDesktopPane1, listaMenuParametros());
 
             //Se da reset al jDesktopPane contendor principal
             //por si quedan funcionalidades levantadas de otros perfiles
@@ -381,6 +428,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
         jMenu8.setVisible(false);
 
+        //Se deshabilita menu hasta que no haya seleccion de Profesional
+        menuDisabled();
+
         if (sistemaAlimentacionSaludable.getListaProfesionales().size() >= 1) {
             jMenu7.setText(" PROFESIONAL ");
             jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png")));
@@ -400,7 +450,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             //Se agrega el Profesional Registrado al Menú de Profesionales Registrados para tener 
             //su propio pérfil de Profesional
             jMenu7.removeAll();
-            cargarProfesionalRegistrado(sistemaAlimentacionSaludable.getListaProfesionales(), jMenu7, jMenu8, jDesktopPane1);
+            cargarProfesionalRegistrado(sistemaAlimentacionSaludable, jMenu7, 
+                    jMenu8, jDesktopPane1, listaMenuParametros());
 
             //Se da reset al jDesktopPane contendor principal
             //por si quedan funcionalidades levantadas de otros perfiles
@@ -503,6 +554,10 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+
+        //Se habilita menu para Administrador
+        menuEnabled();
+
         jMenu7.setText(" ADMINISTRADOR ");
         jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/adminImagen.png")));
 

@@ -112,33 +112,33 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static ArrayList<String> cargarUsuarioRegistrado(ArrayList<Usuario> listaUsuarios, JMenu menuPefiles,
-            JMenu usuarioAutenticado, JDesktopPane panelSistema) {
+    public static ArrayList<String> cargarUsuarioRegistrado(SistemaAlimentacionSaludable sistema, JMenu menuPefiles,
+            JMenu usuarioAutenticado, JDesktopPane panelSistema, ArrayList<JMenu> listaMenus) {
 
         ArrayList<String> datosUsuario = new ArrayList<String>();
 
-        for (int i = 0; i < listaUsuarios.size(); i++) {
-            Usuario user = listaUsuarios.get(i);
+        for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
+            Usuario user = sistema.getListaUsuarios().get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
             usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerApellido());
             datosUsuario.add(user.getPrimerNombre() + " " + user.getPrimerApellido());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
-            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado, panelSistema));
+            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado, panelSistema, listaMenus));
             menuPefiles.add(usuarioRegistradoMenu);
         }
 
         return datosUsuario;
     }
 
-    public static void cargarProfesionalRegistrado(ArrayList<Profesional> listaProfesional, JMenu menuPefiles,
-            JMenu profesionalAutenticado, JDesktopPane panelSistema) {
+    public static void cargarProfesionalRegistrado(SistemaAlimentacionSaludable sistema, JMenu menuPefiles,
+            JMenu profesionalAutenticado, JDesktopPane panelSistema, ArrayList<JMenu> listaMenus) {
 
-        for (int i = 0; i < listaProfesional.size(); i++) {
-            Profesional prof = listaProfesional.get(i);
+        for (int i = 0; i < sistema.getListaProfesionales().size(); i++) {
+            Profesional prof = sistema.getListaProfesionales().get(i);
             JMenuItem profesionalRegistradoMenu = new JMenuItem();
             profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + prof.getPrimerApellido());
             profesionalRegistradoMenu.setIcon(prof.getFotoPerfil());
-            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado, panelSistema));
+            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado, panelSistema, listaMenus));
             menuPefiles.add(profesionalRegistradoMenu);
         }
     }
