@@ -350,5 +350,34 @@ public class InterfazAlimentacionSaludable {
         return profesionalSistema;
 
     }
+    
+     public static DefaultTableModel cargarJTableAlimentosIngresados(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaConsultas) {
+
+        for (int i = 0; i < sistema.getListaAlimentos().size(); i++) {
+            Object[] objectConsulta = new Object[4];
+
+            Alimento alimento = sistema.getListaAlimentos().get(i);
+            
+            String nombreAlimento = alimento.getNombre();
+            objectConsulta[0] = nombreAlimento;
+            String tipoAlimento = alimento.getTipo();
+            objectConsulta[1] = tipoAlimento;
+            int porcionAlimento = alimento.getPorcion();
+            objectConsulta[2] = porcionAlimento;
+            
+            ArrayList<String> nutrientesAlimento = alimento.getListaDeNutrientes();
+            String nutrientesTodosAlimento = "";
+            for (int j = 0; j < nutrientesAlimento.size(); j++) {
+                String nutriente = nutrientesAlimento.get(j);
+                nutrientesTodosAlimento = nutrientesTodosAlimento + "," + nutriente;
+            }
+            objectConsulta[3] = nutrientesTodosAlimento;
+           
+            modeloTablaConsultas.addRow(objectConsulta);
+        }
+
+        return modeloTablaConsultas;
+    }
 
 }

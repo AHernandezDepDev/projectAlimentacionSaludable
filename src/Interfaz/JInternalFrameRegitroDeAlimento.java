@@ -5,27 +5,36 @@ import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaAlimentoRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJTableAlimentosIngresados;
 import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
+import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
 public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame {
-    
+
     SistemaAlimentacionSaludable sistema;
 
     //Modelo de JList Agregar Nutrientes de Alimentos
     DefaultListModel modeloJListNutrientesAlimentos = new DefaultListModel();
+    DefaultTableModel modeloTablaAlimentos = new DefaultTableModel();
 
     public JInternalFrameRegitroDeAlimento(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Alimento ");
+
+        //Cargamos JTable con Alimentos ingresadas
+        limpiarTablaConsultas(jTable1);
+        modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
+        jTable1.setModel(modeloTablaAlimentos);
     }
 
     @SuppressWarnings("unchecked")
@@ -48,6 +57,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
         jList2 = new javax.swing.JList();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -100,7 +111,7 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                     .addComponent(jTextField7)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addGap(0, 15, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,7 +123,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jButton4.setText("Registrar Alimento");
@@ -121,6 +133,31 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                 jButton4ActionPerformed(evt);
             }
         });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Tipo", "Porción (grs)", "Nutrientes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -131,8 +168,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,35 +182,42 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel1)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton4))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(13, 13, 13)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -202,27 +246,32 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Se deben completar todos los campos para el registro de Aliemento
         if (!jTextField1.getText().equals("") || !jTextField4.getText().equals("") || !jTextField5.getText().equals("")) {
-                Alimento alimentoAIngresar = new Alimento();
-                
-                alimentoAIngresar.setNombre(jTextField1.getText());
-                alimentoAIngresar.setTipo(jTextField4.getText());
-                alimentoAIngresar.setPorcion(Integer.parseInt(jTextField5.getText()));
-                alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
-               
-                //REGISTRAMOS NUEVO ALIMENTO
-                 if (!sistema.getListaAlimentos().contains(alimentoAIngresar)) {
-                     agregarAListaAlimentoRegistrado(sistema, alimentoAIngresar);
-                } else {
-                   JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
-                            "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
-                }
-               
-                //Refrescamos para proximo registro
-                jTextField1.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
-                borrarModeloJList(jList2, modeloJListNutrientesAlimentos);
-                
+            Alimento alimentoAIngresar = new Alimento();
+
+            alimentoAIngresar.setNombre(jTextField1.getText());
+            alimentoAIngresar.setTipo(jTextField4.getText());
+            alimentoAIngresar.setPorcion(Integer.parseInt(jTextField5.getText()));
+            alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
+
+            //REGISTRAMOS NUEVO ALIMENTO
+            if (!sistema.getListaAlimentos().contains(alimentoAIngresar)) {
+                agregarAListaAlimentoRegistrado(sistema, alimentoAIngresar);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
+                        "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
+            }
+
+            //Cargamos JTable con Alimentos ingresadas
+            limpiarTablaConsultas(jTable1);
+            modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
+            jTable1.setModel(modeloTablaAlimentos);
+
+            //Refrescamos para proximo registro
+            jTextField1.setText("");
+            jTextField4.setText("");
+            jTextField5.setText("");
+            borrarModeloJList(jList2, modeloJListNutrientesAlimentos);
+
         } else {
             JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO sin completar"
                     + " todos los datos del formulario",
@@ -243,6 +292,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
