@@ -4,9 +4,12 @@ import Dominio.Alimento;
 import Dominio.Consulta;
 import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaRegistrada;
+import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.alimentoDeConsulta;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultas;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultasTodosUsuarios;
+import static Interfaz.InterfazAlimentacionSaludable.guardarRespuesta;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.Component;
 import java.awt.Point;
@@ -14,6 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -30,13 +34,42 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
     DefaultTableModel modeloTablaConsultas = new DefaultTableModel();
     int valorIDConsultaClickeado = 0;
+    JMenu menuUSUARIO;
+    JMenu infoMenuUSUARIO;
 
-    public JInternalFrameConsultaProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
+    public JInternalFrameConsultaProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
+            JMenu menuUsuario, JMenu infoMenuUsuario) {
         sistema = sistemaAlimentacionSaludable;
+        menuUSUARIO = menuUsuario;
+        infoMenuUSUARIO = infoMenuUsuario;
         initComponents();
         iniciarCombo();
         this.setTitle(" Consulta Profesionales ");
         eventoTablaConsultas(jTable1, sistema);
+
+        if (menuUsuario.getText().equals(" USUARIO ")) {
+            jTextPane4.setEnabled(false);
+            jButton2.setEnabled(false);
+            jButton3.setEnabled(false);
+            jPanel5.setVisible(true);
+            
+            limpiarTablaConsultas(jTable1);
+            //Al iniciar el sistema cagamos las consultas realizadas previamente por el Usuarios autenticado
+            modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
+            jTable1.setModel(modeloTablaConsultas);
+        }
+
+        if (menuUsuario.getText().equals(" PROFESIONAL ")) {
+            jTextField2.setText(infoMenuUsuario.getText());
+            jButton2.setEnabled(true);
+            jButton3.setEnabled(true);
+            jPanel5.setVisible(false);
+            
+             limpiarTablaConsultas(jTable1);
+            //Al iniciar el sistema cagamos todas las consultas realizadas previamente por los Usuarios
+            modeloTablaConsultas = cargarJTableConsultasTodosUsuarios(sistema, (DefaultTableModel) jTable1.getModel());
+            jTable1.setModel(modeloTablaConsultas);
+        }
     }
 
     public void iniciarCombo() {
@@ -72,14 +105,14 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                 String descripcionConsulta = consultaAVerDetalles.getDescripcionConsulta();
                 String atendidaPorProfesional = "Consulta sin atender";
                 String respuestaConsulta = "Sin respuesta Profesional";
-                
+
                 if (consultaAVerDetalles.getProfesionalRespondeConsulta() != null) {
                     atendidaPorProfesional = consultaAVerDetalles.getProfesionalRespondeConsulta().getPrimerNombre() + " "
-                        + consultaAVerDetalles.getProfesionalRespondeConsulta().getPrimerApellido();
+                            + consultaAVerDetalles.getProfesionalRespondeConsulta().getPrimerApellido();
                 }
-             
+
                 String alimentoConsultado = consultaAVerDetalles.getAlimentoConsultado().getNombre();
-                
+
                 if (consultaAVerDetalles.getRespuestaConsulta() != null) {
                     respuestaConsulta = consultaAVerDetalles.getRespuestaConsulta();
                 }
@@ -142,6 +175,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         jTextPane4 = new javax.swing.JTextPane();
         jScrollPane6 = new javax.swing.JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -172,14 +207,14 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             },
             new String [] {
-                "ID", "Titular de Consulta", "Descripción de Consulta", "Atendida por Profesional", "Alimento Consultado", "Ver Detalles"
+                "ID", "Solicitante", "Titular", "Descripción", "Atendida por Profesional", "Alimento Consultado", "Ver Detalles"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false
+                true, true, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -230,11 +265,24 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setText("Respuesta de Profesional:");
 
-        jTextPane4.setEnabled(false);
         jScrollPane5.setViewportView(jTextPane4);
 
         jEditorPane1.setEnabled(false);
         jScrollPane6.setViewportView(jEditorPane1);
+
+        jButton2.setText("Guardar Respuesta");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Editar Respuesta");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -252,17 +300,22 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel11)
-                        .addGap(0, 134, Short.MAX_VALUE))
+                        .addGap(0, 123, Short.MAX_VALUE))
                     .addComponent(jScrollPane5))
                 .addContainerGap())
         );
@@ -282,19 +335,22 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
                                 .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE))
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel6)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(13, 13, 13))
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2))
+                        .addGap(10, 10, 10))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(5, 5, 5)
@@ -402,7 +458,10 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             Alimento alimentoSeleccionado = alimentoDeConsulta(sistema, jComboBox1.getSelectedItem().toString());
             nuevaConsulta.setAlimentoConsultado(alimentoSeleccionado);
 
+            //Agregar consulta al SISTEMA
             agregarAListaConsultaRegistrada(sistema, nuevaConsulta);
+            //Agregar consulta al USUARIO asociado
+            agregarAListaConsultaUsuario(sistema, nuevaConsulta, infoMenuUSUARIO.getText());
 
             //Refrescamos para proximo consulta
             jTextField1.setText("");
@@ -410,13 +469,24 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             //Cargamos JTable con Consultas ingresadas
             limpiarTablaConsultas(jTable1);
-            modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel());
+            modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
             jTable1.setModel(modeloTablaConsultas);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        guardarRespuesta(sistema, valorIDConsultaClickeado, jTextPane4.getText(), infoMenuUSUARIO.getText());
+        jTextPane4.setEnabled(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+         jTextPane4.setEnabled(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;

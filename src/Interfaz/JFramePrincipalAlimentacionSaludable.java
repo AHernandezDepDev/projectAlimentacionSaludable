@@ -94,7 +94,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
                 }
             }
 
-            menuAutenticado.setText("Autenticado: " + itemPressed.getText() + space(20));
+            menuAutenticado.setText(itemPressed.getText() + space(20));
             menuAutenticado.setIcon(itemPressed.getIcon());
         }
 
@@ -339,6 +339,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/responderConsultaImagen.png"))); // NOI18N
         jMenuItem7.setText("Consultas de Usuarios");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem7);
 
         jMenuBar1.add(jMenu4);
@@ -501,7 +506,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable);
+        consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, jMenu7, jMenu8);
         jDesktopPane1.add(consultaProfesional);
         consultaProfesional.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
@@ -620,6 +625,19 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             jMenu7.setEnabled(false);
         }
     }//GEN-LAST:event_jMenu7MouseClicked
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+       //LookAndFeel
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, jMenu7, jMenu8);
+        jDesktopPane1.add(consultaProfesional);
+        consultaProfesional.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     public static void main(String args[]) {
 
