@@ -13,6 +13,7 @@ public class Consulta {
     private String titularConsulta;
     private String descripcionConsulta;
     private String respuestaConsulta;
+    private int idConsulta = 1;
 
     public Profesional getProfesionalRespondeConsulta() {
         return profesionalRespondeConsulta;
@@ -34,6 +35,10 @@ public class Consulta {
         return respuestaConsulta;
     }
 
+    public int getIdConsulta() {
+        return idConsulta;
+    }
+
     public void setProfesionalRespondeConsulta(Profesional profesionalRespondeConsulta) {
         this.profesionalRespondeConsulta = profesionalRespondeConsulta;
     }
@@ -52,6 +57,10 @@ public class Consulta {
 
     public void setRespuestaConsulta(String respuestaConsulta) {
         this.respuestaConsulta = respuestaConsulta;
+    }
+
+    public void setIdConsulta(int idConsulta) {
+        this.idConsulta = idConsulta;
     }
 
 }

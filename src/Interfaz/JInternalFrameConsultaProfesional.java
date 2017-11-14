@@ -9,12 +9,16 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultas;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -25,36 +29,94 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     SistemaAlimentacionSaludable sistema;
     DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
     DefaultTableModel modeloTablaConsultas = new DefaultTableModel();
+    int valorIDConsultaClickeado = 0;
 
     public JInternalFrameConsultaProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;
         initComponents();
         iniciarCombo();
         this.setTitle(" Consulta Profesionales ");
+        eventoTablaConsultas(jTable1, sistema);
     }
 
     public void iniciarCombo() {
         DefaultComboBoxModel modeloAlimentos = cargarComboAlimentos(modeloComboAlimentos, sistema);
         jComboBox1.setModel(modeloAlimentos);
     }
-    
-    public int tomarUltimoValorContador(){
+
+    public int tomarUltimoValorContador() {
         int maxId = 0;
-        
+
         for (int i = 0; i < sistema.getListaConsultas().size(); i++) {
             Consulta consulta = sistema.getListaConsultas().get(i);
             int idConsulta = consulta.getIdConsulta();
-            
+
             if (idConsulta > maxId) {
                 maxId = idConsulta;
             }
         }
-        
+
         return maxId;
     }
-   
-    
-    
+
+    public void eventoTablaConsultas(final JTable tablaConsultas, final SistemaAlimentacionSaludable sistema) {
+        tablaConsultas.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent evt) {
+                Object valorIDConsulta = tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 0);
+                valorIDConsultaClickeado = (int) valorIDConsulta;
+
+                //Buscamos la consulta y la cargamos en Detalles
+                Consulta consultaAVerDetalles = buscarConsultaClickeada(sistema, valorIDConsultaClickeado);
+
+                String titularConsulta = consultaAVerDetalles.getTitularConsulta();
+                String descripcionConsulta = consultaAVerDetalles.getDescripcionConsulta();
+                String atendidaPorProfesional = "Consulta sin atender";
+                String respuestaConsulta = "Sin respuesta Profesional";
+                
+                if (consultaAVerDetalles.getProfesionalRespondeConsulta() != null) {
+                    atendidaPorProfesional = consultaAVerDetalles.getProfesionalRespondeConsulta().getPrimerNombre() + " "
+                        + consultaAVerDetalles.getProfesionalRespondeConsulta().getPrimerApellido();
+                }
+             
+                String alimentoConsultado = consultaAVerDetalles.getAlimentoConsultado().getNombre();
+                
+                if (consultaAVerDetalles.getRespuestaConsulta() != null) {
+                    respuestaConsulta = consultaAVerDetalles.getRespuestaConsulta();
+                }
+
+                cargarDatosConsultaDetalle(titularConsulta, descripcionConsulta,
+                        atendidaPorProfesional, alimentoConsultado, respuestaConsulta);
+            }
+        }
+        );
+    }
+
+    public Consulta buscarConsultaClickeada(SistemaAlimentacionSaludable sistema, int idClickConsulta) {
+        Consulta consultaClickeada = null;
+        boolean encontroConsulta = false;
+
+        for (int i = 0; i < sistema.getListaConsultas().size() && !encontroConsulta; i++) {
+            Consulta consultaSistema = sistema.getListaConsultas().get(i);
+            int idConsultaSistema = consultaSistema.getIdConsulta();
+
+            if (idConsultaSistema == idClickConsulta) {
+                consultaClickeada = consultaSistema;
+            }
+        }
+
+        return consultaClickeada;
+    }
+
+    public void cargarDatosConsultaDetalle(String titularConsulta, String descripcionConsulta,
+            String atendidaPorProfesional, String alimentoConsultado, String respuestaConsulta) {
+
+        jTextPane2.setText(titularConsulta);
+        jEditorPane1.setText(descripcionConsulta);
+        jTextField2.setText(atendidaPorProfesional);
+        jTextField3.setText(alimentoConsultado);
+        jTextPane4.setText(respuestaConsulta);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -332,7 +394,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             nuevaConsulta.setTitularConsulta(jTextField1.getText());
             nuevaConsulta.setDescripcionConsulta(jTextPane1.getText());
-            
+
             //Seteamos el contador de ID-CONSULTA
             int proximoIDConsulta = tomarUltimoValorContador() + 1;
             nuevaConsulta.setIdConsulta(proximoIDConsulta);
@@ -350,7 +412,6 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             limpiarTablaConsultas(jTable1);
             modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel());
             jTable1.setModel(modeloTablaConsultas);
-
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
