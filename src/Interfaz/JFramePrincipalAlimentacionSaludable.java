@@ -425,7 +425,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
             jMenuItem6.setVisible(true);
             jMenuItem8.setVisible(false);
-            jMenuItem9.setVisible(false);
+            jMenuItem9.setVisible(true);
             jMenuItem5.setVisible(true);
             jMenuItem4.setVisible(true);
             jMenuItem7.setVisible(false);
