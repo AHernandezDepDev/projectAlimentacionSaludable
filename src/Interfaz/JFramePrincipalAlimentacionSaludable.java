@@ -1,5 +1,6 @@
 package Interfaz;
 
+import Dominio.Alimento;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
@@ -47,6 +48,10 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         MenuScroller.setScrollerFor(jMenu7, 4, 1500, 2, 1);
         //Ocultamos menu de USUARIO/PROFESIONAL AUTENTICADO
         jMenu8.setVisible(false);
+        //INICIO DE SISTEMA - PERFIL ADMINISTRADOR 
+        jMenu3.setVisible(false);
+        jMenu4.setVisible(false);
+        jMenu5.setVisible(false);
     }
 
     public static class SeleccionPerfiles implements MouseListener {
@@ -137,6 +142,33 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         menusPrincipales.add(jMenu5);
 
         return menusPrincipales;
+    }
+    
+    /* 
+    **********************************************************************
+    ********************** CREACION DATOS DE PRUEBA **********************
+    **********************************************************************
+    */
+    public static void crearDatosPruebaSistema(Usuario usuarioA, Profesional profesionalA, 
+            Alimento alimentoA, SistemaAlimentacionSaludable sistema){
+        
+        //USUARIO A
+        usuarioA.setPrimerNombre("André");
+        usuarioA.setPrimerApellido("Hernández");
+        sistema.agregarRegistroUsuario(usuarioA);
+        
+         //PROFESIONAL A
+        profesionalA.setPrimerNombre("Jorge");
+        profesionalA.setPrimerApellido("Armando");
+        profesionalA.setNombreTituloProfesional("Licenciado en Nutrición");
+        profesionalA.setPaisObtuvoTitulo("Uruguay");
+        sistema.agregarRegistroProfesional(profesionalA);
+        
+         //ALIMENTO A
+        alimentoA.setNombre("Pera");
+        alimentoA.setTipo("Fruta");
+        alimentoA.setPorcion(32);
+        sistema.agregarRegistroAlimento(alimentoA);
     }
 
     @SuppressWarnings("unchecked")
@@ -545,20 +577,16 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-
-        //Se habilita menu para Administrador
-        menuEnabled();
-
+        //Menu Administrador
+        menuDisabled();
+        
         jMenu7.setText(" ADMINISTRADOR ");
         jMenu7.setIcon(new ImageIcon(getClass().getResource("/Imagenes/adminImagen.png")));
 
         jMenuItem6.setVisible(true);
         jMenuItem8.setVisible(true);
         jMenuItem9.setVisible(true);
-        jMenuItem5.setVisible(true);
-        jMenuItem4.setVisible(true);
         jMenuItem7.setVisible(true);
-        jMenuItem3.setVisible(true);
         jMenuItem11.setVisible(true);
 
         jMenu2.setVisible(true);
@@ -600,18 +628,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
                 new JFramePrincipalAlimentacionSaludable().setVisible(true);
 
-                /*Usuario u = new Usuario();
-                u.setPrimerNombre("a");
-                u.setPrimerApellido("b");
-
+                Usuario u = new Usuario();
                 Profesional p = new Profesional();
-                p.setPrimerNombre("adzdvz");
-                p.setPrimerApellido("bzzdvzdv");
-                p.setNombreTituloProfesional("tiyulo");
-                p.setPaisObtuvoTitulo("acaaa");
-
-                sistemaAlimentacionSaludable.agregarRegistroUsuario(u);
-                sistemaAlimentacionSaludable.agregarRegistroProfesional(p);*/
+                Alimento a = new Alimento();
+                
+                crearDatosPruebaSistema(u, p, a, sistemaAlimentacionSaludable);
             }
         });
     }

@@ -202,29 +202,36 @@ public class InterfazAlimentacionSaludable {
             DefaultTableModel modeloTablaConsultas) {
 
         for (int i = 0; i < sistema.getListaConsultas().size(); i++) {
-            Object[] objectConsulta = new Object[4];
+            Object[] objectConsulta = new Object[6];
 
             Consulta consulta = sistema.getListaConsultas().get(i);
+            int idConsulta = consulta.getIdConsulta();
+            objectConsulta[0] = idConsulta;
             String titularConsulta = consulta.getTitularConsulta();
-            objectConsulta[0] = titularConsulta;
+            objectConsulta[1] = titularConsulta;
             String descripcionConsulta = consulta.getDescripcionConsulta();
-            objectConsulta[1] = descripcionConsulta;
+            objectConsulta[2] = descripcionConsulta;
             String atendidaPorProfesional = "Consulta sin atender";
-            objectConsulta[2] = atendidaPorProfesional;
-            JButton botonDetallesCosulta = new JButton("Ver Detalles");
-            objectConsulta[3] = botonDetallesCosulta;
+            objectConsulta[3] = atendidaPorProfesional;
+            String alimentoConsultado = consulta.getAlimentoConsultado().getNombre();
+            objectConsulta[4] = alimentoConsultado;
+            String botonVerDetalles = "Click para ver Detalles";
+            objectConsulta[5] = botonVerDetalles;
+            
             modeloTablaConsultas.addRow(objectConsulta);
         }
 
         return modeloTablaConsultas;
     }
 
-    public static void borrarFilasTablaConsultas(DefaultTableModel modeloTablaConsultas) {
-        for (int f = 0; f < modeloTablaConsultas.getRowCount(); f++) {
-            for (int c = 0; c < modeloTablaConsultas.getColumnCount(); c++) {
-                modeloTablaConsultas.removeRow(f);
-            }
+    public static void limpiarTablaConsultas(JTable tabla) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        int filas = tabla.getRowCount();
+        for (int i = 0; filas > i; i++) {
+            modelo.removeRow(0);
         }
     }
+    
+    
 
 }
