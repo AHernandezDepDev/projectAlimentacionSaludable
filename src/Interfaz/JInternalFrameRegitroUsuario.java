@@ -3,6 +3,7 @@ package Interfaz;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaUsuarioRegistrado;
+import static Interfaz.InterfazAlimentacionSaludable.altaUsuarioOK;
 import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.creacionJFileChooser;
@@ -378,7 +379,8 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 preRegistroUsuario.setListaRestricciones(datosEnListaAArrayListString(modeloJListRestricciones));
 
                 //REGISTRAMOS NUEVO USUARIO
-                if (!sistema.getListaUsuarios().contains(preRegistroUsuario)) {
+                if (altaUsuarioOK(sistema, preRegistroUsuario.getPrimerNombre() + " " + 
+                        preRegistroUsuario.getPrimerApellido())) {
                     agregarAListaUsuarioRegistrado(sistema, preRegistroUsuario);
                 } else {
                     JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el USUARIO. Usuario ya ingresado en el SISTEMA",

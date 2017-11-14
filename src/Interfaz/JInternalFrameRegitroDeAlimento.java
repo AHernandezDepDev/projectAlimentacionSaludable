@@ -3,6 +3,7 @@ package Interfaz;
 import Dominio.Alimento;
 import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaAlimentoRegistrado;
+import static Interfaz.InterfazAlimentacionSaludable.altaAlimentoOK;
 import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableAlimentosIngresados;
@@ -254,7 +255,7 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
             alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
 
             //REGISTRAMOS NUEVO ALIMENTO
-            if (!sistema.getListaAlimentos().contains(alimentoAIngresar)) {
+            if (altaAlimentoOK(sistema, alimentoAIngresar.getNombre())) {
                 agregarAListaAlimentoRegistrado(sistema, alimentoAIngresar);
             } else {
                 JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",

@@ -380,4 +380,48 @@ public class InterfazAlimentacionSaludable {
         return modeloTablaConsultas;
     }
 
+     public static boolean altaUsuarioOK(SistemaAlimentacionSaludable sistema, String datosUsuarioAIngresar){
+         boolean usuarioSePuedeIngresar = true;
+         
+         for (int i = 0; i < sistema.getListaUsuarios().size() && usuarioSePuedeIngresar; i++) {
+             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+             String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+             
+             if (datosUsuarioSistema.trim().equals(datosUsuarioAIngresar.trim())) {
+                 usuarioSePuedeIngresar = false;
+             }
+         }
+         
+         return usuarioSePuedeIngresar;
+     }
+     
+     public static boolean altaProfesionalOK(SistemaAlimentacionSaludable sistema, String datosProfesionalAIngresar){
+         boolean profesionalSePuedeIngresar = true;
+         
+         for (int i = 0; i < sistema.getListaProfesionales().size() && profesionalSePuedeIngresar; i++) {
+             Profesional profesionalSistema = sistema.getListaProfesionales().get(i);
+             String datosProfesionalSistema = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+             
+             if (datosProfesionalSistema.trim().equals(datosProfesionalAIngresar.trim())) {
+                 profesionalSePuedeIngresar = false;
+             }
+         }
+         
+         return profesionalSePuedeIngresar;
+     }
+     
+     public static boolean altaAlimentoOK(SistemaAlimentacionSaludable sistema, String datosAlimentoAIngresar){
+         boolean alimentoSePuedeIngresar = true;
+         
+         for (int i = 0; i < sistema.getListaAlimentos().size() && alimentoSePuedeIngresar; i++) {
+             Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
+             String datosAlimentoSistema = alimentoSistema.getNombre();
+             
+             if (datosAlimentoSistema.trim().equals(datosAlimentoAIngresar.trim())) {
+                 alimentoSePuedeIngresar = false;
+             }
+         }
+         
+         return alimentoSePuedeIngresar;
+     }
 }

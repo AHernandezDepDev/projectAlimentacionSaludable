@@ -3,6 +3,7 @@ package Interfaz;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaProfesionalRegistrado;
+import static Interfaz.InterfazAlimentacionSaludable.altaProfesionalOK;
 import static Interfaz.InterfazAlimentacionSaludable.creacionJFileChooser;
 import java.awt.Image;
 import javax.swing.Icon;
@@ -270,7 +271,7 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 preRegistroProfesional.setNombreTituloProfesional(jTextField2.getText());
                 preRegistroProfesional.setFechaGraduacion(dateChooserCombo2.getDateFormat());
                 preRegistroProfesional.setPaisObtuvoTitulo(jTextField6.getText());
-                
+
                 if (jButton2.getIcon() == null) {
                     ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
                     preRegistroProfesional.setFotoPerfil(noPerfil);
@@ -279,7 +280,8 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 }
 
                 //REGISTRAMOS NUEVO PROFESIONAL
-                if (!sistema.getListaProfesionales().contains(preRegistroProfesional)) {
+                if (altaProfesionalOK(sistema, preRegistroProfesional.getPrimerNombre() + " " + 
+                        preRegistroProfesional.getPrimerApellido())) {
                     agregarAListaProfesionalRegistrado(sistema, preRegistroProfesional);
                 } else {
                     JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el PROFESIONAL. Profesional ya ingresado en el SISTEMA",
