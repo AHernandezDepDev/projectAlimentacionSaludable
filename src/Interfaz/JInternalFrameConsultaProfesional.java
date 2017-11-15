@@ -3,9 +3,11 @@ package Interfaz;
 import Dominio.Alimento;
 import Dominio.Consulta;
 import Dominio.SistemaAlimentacionSaludable;
+import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaRegistrada;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.alimentoDeConsulta;
+import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultas;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultasTodosUsuarios;
@@ -15,8 +17,11 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -33,6 +38,11 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     SistemaAlimentacionSaludable sistema;
     DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
     DefaultTableModel modeloTablaConsultas = new DefaultTableModel();
+    //Modelo de listas preferencias, restricciones y alimientos ingeridos
+    DefaultListModel modeloListaPreferencias = new DefaultListModel();
+    DefaultListModel modeloListaRestricciones = new DefaultListModel();
+    DefaultListModel modeloListaAlimentosIngeridos = new DefaultListModel();
+    
     int valorIDConsultaClickeado = 0;
     JMenu menuUSUARIO;
     JMenu infoMenuUSUARIO;
@@ -52,6 +62,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jPanel5.setVisible(true);
+            jPanel4.setVisible(false);
             
             limpiarTablaConsultas(jTable1);
             //Al iniciar el sistema cagamos las consultas realizadas previamente por el Usuarios autenticado
@@ -64,6 +75,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jButton2.setEnabled(true);
             jButton3.setEnabled(true);
             jPanel5.setVisible(false);
+            jPanel4.setVisible(true);
             
              limpiarTablaConsultas(jTable1);
             //Al iniciar el sistema cagamos todas las consultas realizadas previamente por los Usuarios
@@ -91,6 +103,37 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
         return maxId;
     }
+    
+    public void cargarJListPreferenciasUsuario(String datosSolicitante) {
+
+        boolean encontreUsuario = false;
+
+        for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+
+            if (datosUsuarioSistema.trim().equals(datosSolicitante.trim())) {
+                encontreUsuario = true;
+                ArrayList<String> listaPreferencias = usuarioSistema.getListaPreferencias();
+
+                for (int j = 0; j < listaPreferencias.size(); j++) {
+                    String preferencia = listaPreferencias.get(j);
+                    modeloListaPreferencias.addElement(preferencia);
+                }
+            }
+        }
+        
+        jList1.setModel(modeloListaPreferencias);
+    }
+    
+    public void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
+        int sizeDelModel = modelo.getSize();
+
+        for (int i = 0; i < sizeDelModel; i++) {
+            modelo.remove(modelo.getSize() - 1);
+        }
+        listaABorrar.setModel(modelo);
+    }
 
     public void eventoTablaConsultas(final JTable tablaConsultas, final SistemaAlimentacionSaludable sistema) {
         tablaConsultas.addMouseListener(new MouseAdapter() {
@@ -100,7 +143,10 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
                 //Buscamos la consulta y la cargamos en Detalles
                 Consulta consultaAVerDetalles = buscarConsultaClickeada(sistema, valorIDConsultaClickeado);
-
+                
+                Usuario solicitante = consultaAVerDetalles.getSolcitante();
+                String datosSolicitante = solicitante.getPrimerNombre() + " " + solicitante.getPrimerApellido();
+                
                 String titularConsulta = consultaAVerDetalles.getTitularConsulta();
                 String descripcionConsulta = consultaAVerDetalles.getDescripcionConsulta();
                 String atendidaPorProfesional = "Consulta sin atender";
@@ -119,6 +165,10 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
                 cargarDatosConsultaDetalle(titularConsulta, descripcionConsulta,
                         atendidaPorProfesional, alimentoConsultado, respuestaConsulta);
+                
+                //Buscamos lista de preferencias, restricciones y alimentos ingeridos y cargamos
+                borrarModeloJList(jList1, modeloListaPreferencias);
+                cargarJListPreferenciasUsuario(datosSolicitante);
             }
         }
         );
@@ -161,7 +211,11 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         jPanel4 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
         jPanel8 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
         jPanel9 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -219,7 +273,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                 java.lang.Integer.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -241,28 +295,44 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Preferencias"));
 
+        jScrollPane4.setViewportView(jList1);
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 233, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4)
+                .addContainerGap())
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Restricciones"));
+
+        jScrollPane7.setViewportView(jList2);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 233, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 224, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane7)
+                .addContainerGap())
         );
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Alimentos Ingeridos"));
@@ -533,6 +603,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             Consulta nuevaConsulta = new Consulta();
 
+            nuevaConsulta.setSolcitante(buscarUsuario(sistema, infoMenuUSUARIO.getText()));
             nuevaConsulta.setTitularConsulta(jTextField1.getText());
             nuevaConsulta.setDescripcionConsulta(jTextPane1.getText());
 
@@ -591,6 +662,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -603,8 +676,10 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;

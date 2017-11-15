@@ -13,6 +13,7 @@ public class Consulta {
     private String titularConsulta;
     private String descripcionConsulta;
     private String respuestaConsulta;
+    private Usuario solcitante;
     private int idConsulta = 1;
 
     public Profesional getProfesionalRespondeConsulta() {
@@ -33,6 +34,10 @@ public class Consulta {
 
     public String getRespuestaConsulta() {
         return respuestaConsulta;
+    }
+
+    public Usuario getSolcitante() {
+        return solcitante;
     }
 
     public int getIdConsulta() {
@@ -57,6 +62,10 @@ public class Consulta {
 
     public void setRespuestaConsulta(String respuestaConsulta) {
         this.respuestaConsulta = respuestaConsulta;
+    }
+
+    public void setSolcitante(Usuario solcitante) {
+        this.solcitante = solcitante;
     }
 
     public void setIdConsulta(int idConsulta) {

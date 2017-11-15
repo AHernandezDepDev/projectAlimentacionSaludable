@@ -44,7 +44,7 @@ public class InterfazAlimentacionSaludable {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("jpg", "JPG");
         MyFileChooser.setFileFilter(filter);
         MyFileChooser.showOpenDialog(JInternalFrame);
-        rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath(); //tira exepciones tratar de controlar!!!
+        rutaFoto = MyFileChooser.getSelectedFile().getAbsolutePath();
 
         return rutaFoto;
     }
@@ -183,14 +183,14 @@ public class InterfazAlimentacionSaludable {
     public static DefaultComboBoxModel cargarComboAlimentos(DefaultComboBoxModel modeloAlimentos,
             SistemaAlimentacionSaludable sistema) {
 
-        DefaultComboBoxModel modeloAlimentosCagado = modeloAlimentos;
+        DefaultComboBoxModel modeloAlimentosCargado = modeloAlimentos;
 
         for (int i = 0; i < sistema.getListaAlimentos().size(); i++) {
             Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
             modeloAlimentos.addElement(alimentoSistema.getNombre());
         }
 
-        return modeloAlimentosCagado;
+        return modeloAlimentosCargado;
     }
 
     public static Alimento alimentoDeConsulta(SistemaAlimentacionSaludable sistema, String seleccionAlimento) {
@@ -222,7 +222,7 @@ public class InterfazAlimentacionSaludable {
 
             int idConsulta = consulta.getIdConsulta();
             objectConsulta[0] = idConsulta;
-            String solicitante = datosUsuario;
+            String solicitante = datosUsuario.trim();
             objectConsulta[1] = solicitante;
             String titularConsulta = consulta.getTitularConsulta();
             objectConsulta[2] = titularConsulta;
@@ -458,17 +458,17 @@ public class InterfazAlimentacionSaludable {
                 objectConsulta[1] = tipoAlimentoIngerido;
                 int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
                 objectConsulta[2] = porcionAlimentoIngerido;
-                
+
                 ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
                 String nutrientes = "";
-                
+
                 for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
                     String nutrienteAlimento = listaNutrientesAlimento.get(j);
                     nutrientes = nutrientes + "," + nutrienteAlimento;
                 }
-                
+
                 objectConsulta[3] = nutrientes;
-                
+
                 modeloTablaConsultas.addRow(objectConsulta);
             }
         }
@@ -492,4 +492,22 @@ public class InterfazAlimentacionSaludable {
 
         return ingestasDeUsuario;
     }
+    
+    public static Usuario buscarUsuario(SistemaAlimentacionSaludable sistema, String datosUsuario) {
+        Usuario usuarioSistema = null;
+        boolean encontreUsuario = false;
+
+        for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
+            Usuario usuario = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuario.getPrimerNombre() + " " + usuario.getPrimerApellido();
+
+            if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
+                encontreUsuario = true;
+                usuarioSistema = usuario;
+            }
+        }
+
+        return usuarioSistema;
+    }
+    
 }
