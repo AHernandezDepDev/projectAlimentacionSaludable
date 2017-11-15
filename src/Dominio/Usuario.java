@@ -11,7 +11,7 @@ public class Usuario extends Persona {
     private String nacionalidad;
     private ArrayList<String> listaPreferencias = new ArrayList<String>();
     private ArrayList<String> listaRestricciones = new ArrayList<String>();
-    private ArrayList<Alimento> listaAlimentosIngeridos = new ArrayList<Alimento>();
+    private ArrayList<Ingesta> listaAlimentosIngeridos = new ArrayList<Ingesta>();
     private ArrayList<Consulta> listaConsultasRealizadas = new ArrayList<Consulta>();
     private ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = new ArrayList<PlanAlimentacion>();
 
@@ -27,7 +27,7 @@ public class Usuario extends Persona {
         return listaRestricciones;
     }
 
-    public ArrayList<Alimento> getListaAlimentosIngeridos() {
+    public ArrayList<Ingesta> getListaAlimentosIngeridos() {
         return listaAlimentosIngeridos;
     }
 
@@ -51,7 +51,7 @@ public class Usuario extends Persona {
         this.listaRestricciones = listaRestricciones;
     }
 
-    public void setListaAlimentosIngeridos(ArrayList<Alimento> listaAlimentosIngeridos) {
+    public void setListaAlimentosIngeridos(ArrayList<Ingesta> listaAlimentosIngeridos) {
         this.listaAlimentosIngeridos = listaAlimentosIngeridos;
     }
 
@@ -62,5 +62,7 @@ public class Usuario extends Persona {
     public void setListaPlanesDeAlimentacion(ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion) {
         this.listaPlanesDeAlimentacion = listaPlanesDeAlimentacion;
     }
+
+   
     
 }

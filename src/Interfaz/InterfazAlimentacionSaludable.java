@@ -2,6 +2,7 @@ package Interfaz;
 
 import Dominio.Alimento;
 import Dominio.Consulta;
+import Dominio.Ingesta;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
@@ -166,19 +167,15 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static void ingresarIngestasUsuarioAutenticado(SistemaAlimentacionSaludable sistema,
-            String datosUsuarioAutenticado, ArrayList<String> listaIngestasAlimentos) { //REVISAR LUEGO DE RESPUESTA DE MARTIN!!!
+            String datosUsuarioAutenticado, Ingesta nuevaIngesta) {
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioRegistrado = sistema.getListaUsuarios().get(i);
             String consultaDatosUsuario = usuarioRegistrado.getPrimerNombre() + " " + usuarioRegistrado.getPrimerApellido();
+            ArrayList<Ingesta> listaIngestasUsuario = usuarioRegistrado.getListaAlimentosIngeridos();
 
-            if (consultaDatosUsuario.equals(datosUsuarioAutenticado)) {
-                for (int j = 0; j < listaIngestasAlimentos.size(); j++) {
-                    String ingestaAlimento = listaIngestasAlimentos.get(j);
-                    Alimento alimento = new Alimento();
-                    alimento.setNombre(ingestaAlimento);
-                    usuarioRegistrado.getListaAlimentosIngeridos().add(alimento);
-                }
+            if (consultaDatosUsuario.trim().equals(datosUsuarioAutenticado.trim())) {
+                listaIngestasUsuario.add(nuevaIngesta);
             }
         }
     }
@@ -350,22 +347,22 @@ public class InterfazAlimentacionSaludable {
         return profesionalSistema;
 
     }
-    
-     public static DefaultTableModel cargarJTableAlimentosIngresados(SistemaAlimentacionSaludable sistema,
+
+    public static DefaultTableModel cargarJTableAlimentosIngresados(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaConsultas) {
 
         for (int i = 0; i < sistema.getListaAlimentos().size(); i++) {
             Object[] objectConsulta = new Object[4];
 
             Alimento alimento = sistema.getListaAlimentos().get(i);
-            
+
             String nombreAlimento = alimento.getNombre();
             objectConsulta[0] = nombreAlimento;
             String tipoAlimento = alimento.getTipo();
             objectConsulta[1] = tipoAlimento;
             int porcionAlimento = alimento.getPorcion();
             objectConsulta[2] = porcionAlimento;
-            
+
             ArrayList<String> nutrientesAlimento = alimento.getListaDeNutrientes();
             String nutrientesTodosAlimento = "";
             for (int j = 0; j < nutrientesAlimento.size(); j++) {
@@ -373,55 +370,126 @@ public class InterfazAlimentacionSaludable {
                 nutrientesTodosAlimento = nutrientesTodosAlimento + "," + nutriente;
             }
             objectConsulta[3] = nutrientesTodosAlimento;
-           
+
             modeloTablaConsultas.addRow(objectConsulta);
         }
 
         return modeloTablaConsultas;
     }
 
-     public static boolean altaUsuarioOK(SistemaAlimentacionSaludable sistema, String datosUsuarioAIngresar){
-         boolean usuarioSePuedeIngresar = true;
-         
-         for (int i = 0; i < sistema.getListaUsuarios().size() && usuarioSePuedeIngresar; i++) {
-             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-             String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
-             
-             if (datosUsuarioSistema.trim().equals(datosUsuarioAIngresar.trim())) {
-                 usuarioSePuedeIngresar = false;
-             }
-         }
-         
-         return usuarioSePuedeIngresar;
-     }
-     
-     public static boolean altaProfesionalOK(SistemaAlimentacionSaludable sistema, String datosProfesionalAIngresar){
-         boolean profesionalSePuedeIngresar = true;
-         
-         for (int i = 0; i < sistema.getListaProfesionales().size() && profesionalSePuedeIngresar; i++) {
-             Profesional profesionalSistema = sistema.getListaProfesionales().get(i);
-             String datosProfesionalSistema = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
-             
-             if (datosProfesionalSistema.trim().equals(datosProfesionalAIngresar.trim())) {
-                 profesionalSePuedeIngresar = false;
-             }
-         }
-         
-         return profesionalSePuedeIngresar;
-     }
-     
-     public static boolean altaAlimentoOK(SistemaAlimentacionSaludable sistema, String datosAlimentoAIngresar){
-         boolean alimentoSePuedeIngresar = true;
-         
-         for (int i = 0; i < sistema.getListaAlimentos().size() && alimentoSePuedeIngresar; i++) {
-             Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
-             String datosAlimentoSistema = alimentoSistema.getNombre();
-             
-             if (datosAlimentoSistema.trim().equals(datosAlimentoAIngresar.trim())) {
-                 alimentoSePuedeIngresar = false;
-             }
-         }
-         
-         return alimentoSePuedeIngresar;
-     }
+    public static boolean altaUsuarioOK(SistemaAlimentacionSaludable sistema, String datosUsuarioAIngresar) {
+        boolean usuarioSePuedeIngresar = true;
+
+        for (int i = 0; i < sistema.getListaUsuarios().size() && usuarioSePuedeIngresar; i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+
+            if (datosUsuarioSistema.trim().equals(datosUsuarioAIngresar.trim())) {
+                usuarioSePuedeIngresar = false;
+            }
+        }
+
+        return usuarioSePuedeIngresar;
+    }
+
+    public static boolean altaProfesionalOK(SistemaAlimentacionSaludable sistema, String datosProfesionalAIngresar) {
+        boolean profesionalSePuedeIngresar = true;
+
+        for (int i = 0; i < sistema.getListaProfesionales().size() && profesionalSePuedeIngresar; i++) {
+            Profesional profesionalSistema = sistema.getListaProfesionales().get(i);
+            String datosProfesionalSistema = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+
+            if (datosProfesionalSistema.trim().equals(datosProfesionalAIngresar.trim())) {
+                profesionalSePuedeIngresar = false;
+            }
+        }
+
+        return profesionalSePuedeIngresar;
+    }
+
+    public static boolean altaAlimentoOK(SistemaAlimentacionSaludable sistema, String datosAlimentoAIngresar) {
+        boolean alimentoSePuedeIngresar = true;
+
+        for (int i = 0; i < sistema.getListaAlimentos().size() && alimentoSePuedeIngresar; i++) {
+            Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
+            String datosAlimentoSistema = alimentoSistema.getNombre();
+
+            if (datosAlimentoSistema.trim().equals(datosAlimentoAIngresar.trim())) {
+                alimentoSePuedeIngresar = false;
+            }
+        }
+
+        return alimentoSePuedeIngresar;
+    }
+
+    public static Alimento buscarAlimento(SistemaAlimentacionSaludable sistema, String nombreAlimento) {
+        Alimento alimento = null;
+        boolean encontreAlimento = false;
+
+        for (int i = 0; i < sistema.getListaAlimentos().size() && !encontreAlimento; i++) {
+            Alimento alimentoSistema = sistema.getListaAlimentos().get(i);
+            String nombreAlimentoSistema = alimentoSistema.getNombre();
+
+            if (nombreAlimento.trim().equals(nombreAlimentoSistema.trim())) {
+                alimento = alimentoSistema;
+                encontreAlimento = true;
+            }
+        }
+
+        return alimento;
+    }
+
+    public static DefaultTableModel cargarJTableAlimentosIngestas(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaConsultas, String datosUsuario, String diaSemana) {
+
+        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+
+        for (int i = 0; i < ingestasDeUsuario.size(); i++) {
+            Object[] objectConsulta = new Object[4];
+
+            Ingesta ingesta = ingestasDeUsuario.get(i);
+            String diaIngesta = ingesta.getDiaIngesta();
+
+            if (diaIngesta.trim().equals(diaSemana.trim())) {
+                Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
+                String nombreAlimentoIngerido = alimentoDeIngesta.getNombre();
+                objectConsulta[0] = nombreAlimentoIngerido;
+                String tipoAlimentoIngerido = alimentoDeIngesta.getTipo();
+                objectConsulta[1] = tipoAlimentoIngerido;
+                int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
+                objectConsulta[2] = porcionAlimentoIngerido;
+                
+                ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
+                String nutrientes = "";
+                
+                for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
+                    String nutrienteAlimento = listaNutrientesAlimento.get(j);
+                    nutrientes = nutrientes + "," + nutrienteAlimento;
+                }
+                
+                objectConsulta[3] = nutrientes;
+                
+                modeloTablaConsultas.addRow(objectConsulta);
+            }
+        }
+
+        return modeloTablaConsultas;
+    }
+
+    public static ArrayList<Ingesta> buscarUsuarioIngestas(SistemaAlimentacionSaludable sistema, String datosUsuario) {
+        ArrayList<Ingesta> ingestasDeUsuario = new ArrayList<Ingesta>();
+        boolean encontreUsuario = false;
+
+        for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+
+            if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
+                encontreUsuario = true;
+                ingestasDeUsuario = usuarioSistema.getListaAlimentosIngeridos();
+            }
+        }
+
+        return ingestasDeUsuario;
+    }
 }
