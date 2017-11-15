@@ -33,7 +33,6 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
         this.setTitle(" Registrar Alimento ");
 
         //Cargamos JTable con Alimentos ingresadas
-        limpiarTablaConsultas(jTable1);
         modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
         jTable1.setModel(modeloTablaAlimentos);
     }

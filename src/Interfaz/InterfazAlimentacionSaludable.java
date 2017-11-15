@@ -22,6 +22,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -311,7 +312,7 @@ public class InterfazAlimentacionSaludable {
             modelo.removeRow(0);
         }
     }
-
+    
     public static void guardarRespuesta(SistemaAlimentacionSaludable sistema, int idConsulta,
             String respuestaProfesional, String nombreProfesional) {
         boolean consultaEncontrada = false;
@@ -440,37 +441,39 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static DefaultTableModel cargarJTableAlimentosIngestas(SistemaAlimentacionSaludable sistema,
-            DefaultTableModel modeloTablaConsultas, String datosUsuario, String diaSemana) {
+            DefaultTableModel modeloTablaConsultas, String datosUsuario) {
 
         ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
 
         for (int i = 0; i < ingestasDeUsuario.size(); i++) {
-            Object[] objectConsulta = new Object[4];
+            Object[] objectConsulta = new Object[5];
 
             Ingesta ingesta = ingestasDeUsuario.get(i);
+            
             String diaIngesta = ingesta.getDiaIngesta();
+            objectConsulta[0] = diaIngesta;
+            
+            Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
+            String nombreAlimentoIngerido = alimentoDeIngesta.getNombre();
+            objectConsulta[1] = nombreAlimentoIngerido;
+            
+            String tipoAlimentoIngerido = alimentoDeIngesta.getTipo();
+            objectConsulta[2] = tipoAlimentoIngerido;
+            
+            int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
+            objectConsulta[3] = porcionAlimentoIngerido;
 
-            if (diaIngesta.trim().equals(diaSemana.trim())) {
-                Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
-                String nombreAlimentoIngerido = alimentoDeIngesta.getNombre();
-                objectConsulta[0] = nombreAlimentoIngerido;
-                String tipoAlimentoIngerido = alimentoDeIngesta.getTipo();
-                objectConsulta[1] = tipoAlimentoIngerido;
-                int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
-                objectConsulta[2] = porcionAlimentoIngerido;
+            ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
+            String nutrientes = "";
 
-                ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
-                String nutrientes = "";
-
-                for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
-                    String nutrienteAlimento = listaNutrientesAlimento.get(j);
-                    nutrientes = nutrientes + "," + nutrienteAlimento;
-                }
-
-                objectConsulta[3] = nutrientes;
-
-                modeloTablaConsultas.addRow(objectConsulta);
+            for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
+                String nutrienteAlimento = listaNutrientesAlimento.get(j);
+                nutrientes = nutrientes + "," + nutrienteAlimento;
             }
+
+            objectConsulta[4] = nutrientes;
+
+            modeloTablaConsultas.addRow(objectConsulta);
         }
 
         return modeloTablaConsultas;
@@ -492,7 +495,7 @@ public class InterfazAlimentacionSaludable {
 
         return ingestasDeUsuario;
     }
-    
+
     public static Usuario buscarUsuario(SistemaAlimentacionSaludable sistema, String datosUsuario) {
         Usuario usuarioSistema = null;
         boolean encontreUsuario = false;
@@ -509,5 +512,5 @@ public class InterfazAlimentacionSaludable {
 
         return usuarioSistema;
     }
-    
+
 }
