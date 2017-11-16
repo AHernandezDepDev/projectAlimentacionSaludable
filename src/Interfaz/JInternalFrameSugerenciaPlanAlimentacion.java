@@ -111,14 +111,14 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
             },
             new String [] {
-                "ID", "Solicitante", "Titular", "Descripción", "Sugerido por Profesional", "Ver Detalles"
+                "ID", "Solicitante", "Titular", "Descripción", "Sugerido por Profesional", "Observaciones", "Ver Detalles"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {

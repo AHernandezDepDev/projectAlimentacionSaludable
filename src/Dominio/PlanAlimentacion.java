@@ -9,22 +9,112 @@ import java.util.ArrayList;
 public class PlanAlimentacion {
 
     private Profesional planCreadoPorProfesional;
-    private ArrayList<Alimento> listaAlimentos = new ArrayList<Alimento>();
+    private Usuario solicitante;
+    private String nombrePlanAlimentacion;
+    private String descripcionPlanAlimentacion;
+    private String observaciones;
+    private ArrayList<Alimento> listaAlimentosLunes = new ArrayList<Alimento>();
+    private ArrayList<Alimento> listaAlimentosMartes = new ArrayList<Alimento>();
+    private ArrayList<Alimento> listaAlimentosMiercoles = new ArrayList<Alimento>();
+    private ArrayList<Alimento> listaAlimentosJueves = new ArrayList<Alimento>();
+    private ArrayList<Alimento> listaAlimentosViernes = new ArrayList<Alimento>();
+    private ArrayList<Alimento> listaAlimentosSabado = new ArrayList<Alimento>();
+    private ArrayList<Alimento> listaAlimentosDomingo = new ArrayList<Alimento>();
 
     public Profesional getPlanCreadoPorProfesional() {
         return planCreadoPorProfesional;
     }
 
-    public ArrayList<Alimento> getListaAlimentos() {
-        return listaAlimentos;
+    public Usuario getSolicitante() {
+        return solicitante;
+    }
+
+    public String getNombrePlanAlimentacion() {
+        return nombrePlanAlimentacion;
+    }
+
+    public String getDescripcionPlanAlimentacion() {
+        return descripcionPlanAlimentacion;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosLunes() {
+        return listaAlimentosLunes;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosMartes() {
+        return listaAlimentosMartes;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosMiercoles() {
+        return listaAlimentosMiercoles;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosJueves() {
+        return listaAlimentosJueves;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosViernes() {
+        return listaAlimentosViernes;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosSabado() {
+        return listaAlimentosSabado;
+    }
+
+    public ArrayList<Alimento> getListaAlimentosDomingo() {
+        return listaAlimentosDomingo;
     }
 
     public void setPlanCreadoPorProfesional(Profesional planCreadoPorProfesional) {
         this.planCreadoPorProfesional = planCreadoPorProfesional;
     }
 
-    public void setListaAlimentos(ArrayList<Alimento> listaAlimentos) {
-        this.listaAlimentos = listaAlimentos;
+    public void setSolicitante(Usuario solicitante) {
+        this.solicitante = solicitante;
+    }
+
+    public void setNombrePlanAlimentacion(String nombrePlanAlimentacion) {
+        this.nombrePlanAlimentacion = nombrePlanAlimentacion;
+    }
+
+    public void setDescripcionPlanAlimentacion(String descripcionPlanAlimentacion) {
+        this.descripcionPlanAlimentacion = descripcionPlanAlimentacion;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public void setListaAlimentosLunes(ArrayList<Alimento> listaAlimentosLunes) {
+        this.listaAlimentosLunes = listaAlimentosLunes;
+    }
+
+    public void setListaAlimentosMartes(ArrayList<Alimento> listaAlimentosMartes) {
+        this.listaAlimentosMartes = listaAlimentosMartes;
+    }
+
+    public void setListaAlimentosMiercoles(ArrayList<Alimento> listaAlimentosMiercoles) {
+        this.listaAlimentosMiercoles = listaAlimentosMiercoles;
+    }
+
+    public void setListaAlimentosJueves(ArrayList<Alimento> listaAlimentosJueves) {
+        this.listaAlimentosJueves = listaAlimentosJueves;
+    }
+
+    public void setListaAlimentosViernes(ArrayList<Alimento> listaAlimentosViernes) {
+        this.listaAlimentosViernes = listaAlimentosViernes;
+    }
+
+    public void setListaAlimentosSabado(ArrayList<Alimento> listaAlimentosSabado) {
+        this.listaAlimentosSabado = listaAlimentosSabado;
+    }
+
+    public void setListaAlimentosDomingo(ArrayList<Alimento> listaAlimentosDomingo) {
+        this.listaAlimentosDomingo = listaAlimentosDomingo;
     }
 
 }
