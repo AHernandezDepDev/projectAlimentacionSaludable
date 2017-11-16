@@ -12,13 +12,13 @@ public class PlanAlimentacion {
     private Profesional planCreadoPorProfesional;
     private Usuario solicitante;
     private String observaciones;
-    private ArrayList<Alimento> listaAlimentosLunes = new ArrayList<Alimento>();
-    private ArrayList<Alimento> listaAlimentosMartes = new ArrayList<Alimento>();
-    private ArrayList<Alimento> listaAlimentosMiercoles = new ArrayList<Alimento>();
-    private ArrayList<Alimento> listaAlimentosJueves = new ArrayList<Alimento>();
-    private ArrayList<Alimento> listaAlimentosViernes = new ArrayList<Alimento>();
-    private ArrayList<Alimento> listaAlimentosSabado = new ArrayList<Alimento>();
-    private ArrayList<Alimento> listaAlimentosDomingo = new ArrayList<Alimento>();
+    private String listaConsejosLunes;
+    private String listaConsejosMartes;
+    private String listaConsejosMiercoles;
+    private String listaConsejosJueves;
+    private String listaConsejosViernes;
+    private String listaConsejosSabado;
+    private String listaConsejosDomingo;
 
     public int getIdPlanAlimentacion() {
         return idPlanAlimentacion;
@@ -36,32 +36,32 @@ public class PlanAlimentacion {
         return observaciones;
     }
 
-    public ArrayList<Alimento> getListaAlimentosLunes() {
-        return listaAlimentosLunes;
+    public String getListaConsejosLunes() {
+        return listaConsejosLunes;
     }
 
-    public ArrayList<Alimento> getListaAlimentosMartes() {
-        return listaAlimentosMartes;
+    public String getListaConsejosMartes() {
+        return listaConsejosMartes;
     }
 
-    public ArrayList<Alimento> getListaAlimentosMiercoles() {
-        return listaAlimentosMiercoles;
+    public String getListaConsejosMiercoles() {
+        return listaConsejosMiercoles;
     }
 
-    public ArrayList<Alimento> getListaAlimentosJueves() {
-        return listaAlimentosJueves;
+    public String getListaConsejosJueves() {
+        return listaConsejosJueves;
     }
 
-    public ArrayList<Alimento> getListaAlimentosViernes() {
-        return listaAlimentosViernes;
+    public String getListaConsejosViernes() {
+        return listaConsejosViernes;
     }
 
-    public ArrayList<Alimento> getListaAlimentosSabado() {
-        return listaAlimentosSabado;
+    public String getListaConsejosSabado() {
+        return listaConsejosSabado;
     }
 
-    public ArrayList<Alimento> getListaAlimentosDomingo() {
-        return listaAlimentosDomingo;
+    public String getListaConsejosDomingo() {
+        return listaConsejosDomingo;
     }
 
     public void setIdPlanAlimentacion(int idPlanAlimentacion) {
@@ -80,32 +80,33 @@ public class PlanAlimentacion {
         this.observaciones = observaciones;
     }
 
-    public void setListaAlimentosLunes(ArrayList<Alimento> listaAlimentosLunes) {
-        this.listaAlimentosLunes = listaAlimentosLunes;
+    public void setListaConsejosLunes(String listaConsejosLunes) {
+        this.listaConsejosLunes = listaConsejosLunes;
     }
 
-    public void setListaAlimentosMartes(ArrayList<Alimento> listaAlimentosMartes) {
-        this.listaAlimentosMartes = listaAlimentosMartes;
+    public void setListaConsejosMartes(String listaConsejosMartes) {
+        this.listaConsejosMartes = listaConsejosMartes;
     }
 
-    public void setListaAlimentosMiercoles(ArrayList<Alimento> listaAlimentosMiercoles) {
-        this.listaAlimentosMiercoles = listaAlimentosMiercoles;
+    public void setListaConsejosMiercoles(String listaConsejosMiercoles) {
+        this.listaConsejosMiercoles = listaConsejosMiercoles;
     }
 
-    public void setListaAlimentosJueves(ArrayList<Alimento> listaAlimentosJueves) {
-        this.listaAlimentosJueves = listaAlimentosJueves;
+    public void setListaConsejosJueves(String listaConsejosJueves) {
+        this.listaConsejosJueves = listaConsejosJueves;
     }
 
-    public void setListaAlimentosViernes(ArrayList<Alimento> listaAlimentosViernes) {
-        this.listaAlimentosViernes = listaAlimentosViernes;
+    public void setListaConsejosViernes(String listaConsejosViernes) {
+        this.listaConsejosViernes = listaConsejosViernes;
     }
 
-    public void setListaAlimentosSabado(ArrayList<Alimento> listaAlimentosSabado) {
-        this.listaAlimentosSabado = listaAlimentosSabado;
+    public void setListaConsejosSabado(String listaConsejosSabado) {
+        this.listaConsejosSabado = listaConsejosSabado;
     }
 
-    public void setListaAlimentosDomingo(ArrayList<Alimento> listaAlimentosDomingo) {
-        this.listaAlimentosDomingo = listaAlimentosDomingo;
+    public void setListaConsejosDomingo(String listaConsejosDomingo) {
+        this.listaConsejosDomingo = listaConsejosDomingo;
     }
+   
     
 }

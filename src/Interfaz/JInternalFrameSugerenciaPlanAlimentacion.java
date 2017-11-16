@@ -1,49 +1,88 @@
 package Interfaz;
 
+import Dominio.Alimento;
+import Dominio.Ingesta;
 import Dominio.PlanAlimentacion;
 import Dominio.SistemaAlimentacionSaludable;
+import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesAlimentacionTodosUsuarios;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesDeAlimentacion;
+import static Interfaz.InterfazAlimentacionSaludable.guardarElavoracionPlanAlimentacion;
+import static Interfaz.InterfazAlimentacionSaludable.infoPlanAlimentacionLunesAJueves;
+import static Interfaz.InterfazAlimentacionSaludable.infoPlanAlimentacionViernesADomingo;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
-
 public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInternalFrame {
 
     SistemaAlimentacionSaludable sistema;
     JMenu menuAutenticado;
     JMenu infoUsuarioAutenticado;
-    
-    DefaultTableModel modeloTablaPlanesDeAlimentacion= new DefaultTableModel();
-    
+    int valorIDPlanAlimentacionClickeado = 0;
+
+    DefaultTableModel modeloTablaPlanesDeAlimentacion = new DefaultTableModel();
+
+    //Modelo de listas preferencias, restricciones y alimientos ingeridos
+    DefaultListModel modeloListaPreferencias = new DefaultListModel();
+    DefaultListModel modeloListaRestricciones = new DefaultListModel();
+    DefaultListModel modeloListaAlimentosIngeridos = new DefaultListModel();
+
+    //Modelos de Listas por dia - Alimentos Ingeridos
+    DefaultListModel modeloAlimentosIngeridosLunes = new DefaultListModel();
+    DefaultListModel modeloAlimentosIngeridosMartes = new DefaultListModel();
+    DefaultListModel modeloAlimentosIngeridosMiercoles = new DefaultListModel();
+    DefaultListModel modeloAlimentosIngeridosJueves = new DefaultListModel();
+    DefaultListModel modeloAlimentosIngeridosViernes = new DefaultListModel();
+    DefaultListModel modeloAlimentosIngeridosSabado = new DefaultListModel();
+    DefaultListModel modeloAlimentosIngeridosDomingo = new DefaultListModel();
+
     public JInternalFrameSugerenciaPlanAlimentacion(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
             JMenu munuAutenticadoSistema, JMenu menuInfoUsuario) {
-        
+
         sistema = sistemaAlimentacionSaludable;
         menuAutenticado = munuAutenticadoSistema;
         infoUsuarioAutenticado = menuInfoUsuario;
         initComponents();
         this.setTitle(" Sugerencia de Planes de Alimentación Pofesional ");
-        
-         if (menuAutenticado.getText().equals(" USUARIO ")) {
+        eventoTablaPlanesDeAlimentacion(jTable1, sistema);
+
+        if (menuAutenticado.getText().equals(" USUARIO ")) {
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jPanel13.setVisible(false);
             jPanel5.setVisible(true);
-            
+
+            //Para el Usuario las respuesta de los Profesionales
+            //al momento de responder su solicitud de Plan de Alimentacion
+            //no pueden ser editables.
+            jTextPane2.setEnabled(false);
+            jTextPane3.setEnabled(false);
+            jTextPane4.setEnabled(false);
+            jTextPane5.setEnabled(false);
+            jTextPane6.setEnabled(false);
+            jTextPane7.setEnabled(false);
+            jTextPane8.setEnabled(false);
+
             //Al iniciar el sistema cagamos los Planes de Alimentacion
             //solicitados por Usuarios y formulados por Profesionales
             limpiarTablaConsultas(jTable1);
-            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema, 
+            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema,
                     (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
@@ -54,15 +93,25 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             jPanel13.setVisible(true);
             jPanel5.setVisible(false);
 
+            //Habilitamos para que los Profesionales
+            //puedan elvorar con detalle el Plan de Alimentacion
+            jTextPane2.setEnabled(true);
+            jTextPane3.setEnabled(true);
+            jTextPane4.setEnabled(true);
+            jTextPane5.setEnabled(true);
+            jTextPane6.setEnabled(true);
+            jTextPane7.setEnabled(true);
+            jTextPane8.setEnabled(true);
+
             //Al iniciar el sistema cagamos los Planes de Alimentacion
             //solicitados por Usuarios y formulados por Profesionales
             limpiarTablaConsultas(jTable1);
-            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesAlimentacionTodosUsuarios(sistema, 
+            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesAlimentacionTodosUsuarios(sistema,
                     (DefaultTableModel) jTable1.getModel());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
     }
-    
+
     public int tomarUltimoValorContador() {
         int maxId = 0;
 
@@ -78,6 +127,159 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         return maxId;
     }
 
+    public void cargarJListUsuario(String datosSolicitante, String segunDatosUsuario) {
+
+        boolean encontreUsuario = false;
+
+        for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+
+            if (datosUsuarioSistema.trim().equals(datosSolicitante.trim())) {
+                encontreUsuario = true;
+
+                if (segunDatosUsuario.endsWith("PREFERENCIAS")) {
+                    ArrayList<String> listaPreferencias = usuarioSistema.getListaPreferencias();
+                    modeloListaPreferencias = cargarModeloPreferenciasRestricciones(listaPreferencias);
+                    jList1.setModel(modeloListaPreferencias);
+                } else {
+                    ArrayList<String> listaRestricciones = usuarioSistema.getListaRestricciones();
+                    modeloListaRestricciones = cargarModeloPreferenciasRestricciones(listaRestricciones);;
+                    jList2.setModel(modeloListaRestricciones);
+                }
+            }
+        }
+
+    }
+
+    public DefaultListModel cargarModeloPreferenciasRestricciones(ArrayList<String> datosUsuarioPreferenciasRestricciones) {
+        DefaultListModel modelo = new DefaultListModel();
+
+        for (int i = 0; i < datosUsuarioPreferenciasRestricciones.size(); i++) {
+            String datosListaUsuario = datosUsuarioPreferenciasRestricciones.get(i);
+            modelo.addElement(datosListaUsuario.toString());
+        }
+
+        return modelo;
+    }
+
+    public void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
+        int sizeDelModel = modelo.getSize();
+
+        for (int i = 0; i < sizeDelModel; i++) {
+            modelo.remove(modelo.getSize() - 1);
+        }
+        listaABorrar.setModel(modelo);
+    }
+
+    public void cargarInfoIngestasUsuarios(Usuario usuarioConsultado) {
+
+        ArrayList<Ingesta> listaIngestas = usuarioConsultado.getListaAlimentosIngeridos();
+
+        for (int i = 0; i < listaIngestas.size(); i++) {
+            Ingesta ingestaSistema = listaIngestas.get(i);
+            Alimento alimentoIngerido = ingestaSistema.getAlimentoIngerido();
+            String diaIngesa = ingestaSistema.getDiaIngesta();
+
+            switch (diaIngesa) {
+                case "Lunes":
+                    cargarJListRegistro(jList3, alimentoIngerido.getNombre(), modeloAlimentosIngeridosLunes);
+                    break;
+                case "Martes":
+                    cargarJListRegistro(jList4, alimentoIngerido.getNombre(), modeloAlimentosIngeridosMartes);
+                    break;
+                case "Miercoles":
+                    cargarJListRegistro(jList5, alimentoIngerido.getNombre(), modeloAlimentosIngeridosMiercoles);
+                    break;
+                case "Jueves":
+                    cargarJListRegistro(jList6, alimentoIngerido.getNombre(), modeloAlimentosIngeridosJueves);
+                    break;
+                case "Viernes":
+                    cargarJListRegistro(jList7, alimentoIngerido.getNombre(), modeloAlimentosIngeridosViernes);
+                    break;
+                case "Sabado":
+                    cargarJListRegistro(jList8, alimentoIngerido.getNombre(), modeloAlimentosIngeridosSabado);
+                    break;
+                case "Domingo":
+                    cargarJListRegistro(jList9, alimentoIngerido.getNombre(), modeloAlimentosIngeridosDomingo);
+                    break;
+            }
+        }
+    }
+
+    public PlanAlimentacion buscarPlanDeAlimentacionClickeado(SistemaAlimentacionSaludable sistema,
+            int idClickPlanDeAlimentacion) {
+
+        PlanAlimentacion planAlimentacionClickeado = null;
+        boolean encontroPlanDeAlimentacion = false;
+
+        for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !encontroPlanDeAlimentacion; i++) {
+            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanDeAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+
+            if (idPlanDeAlimentacionSistema == idClickPlanDeAlimentacion) {
+                planAlimentacionClickeado = planAlimentacionSistema;
+            }
+        }
+
+        return planAlimentacionClickeado;
+    }
+
+    public void cargarDetallePlanAlimentacionLunesAJueves(String sugerenciaLunes, String sugerenciaMartes,
+            String sugerenciaMiercoles, String sugerenciaJueves) {
+
+        jTextPane2.setText(sugerenciaLunes);
+        jTextPane3.setText(sugerenciaMartes);
+        jTextPane4.setText(sugerenciaMiercoles);
+        jTextPane5.setText(sugerenciaJueves);
+    }
+
+    public void cargarDetallePlanAlimentacionViernesADomingo(String sugerenciaViernes, String sugerenciaSabado,
+            String sugerenciaDomingo) {
+
+        jTextPane6.setText(sugerenciaViernes);
+        jTextPane7.setText(sugerenciaSabado);
+        jTextPane8.setText(sugerenciaDomingo);
+    }
+
+    public void eventoTablaPlanesDeAlimentacion(final JTable tablaPlanesAlimetacion,
+            final SistemaAlimentacionSaludable sistema) {
+        tablaPlanesAlimetacion.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent evt) {
+                Object idPlanAlimentacion = tablaPlanesAlimetacion.getValueAt(tablaPlanesAlimetacion.getSelectedRow(), 0);
+                valorIDPlanAlimentacionClickeado = (int) idPlanAlimentacion;
+
+                //Buscamos el plan de Alimentacion y la cargamos en Detalles
+                PlanAlimentacion planDeAlimentacionDetalles = buscarPlanDeAlimentacionClickeado(sistema,
+                        valorIDPlanAlimentacionClickeado);
+
+                Usuario solicitante = planDeAlimentacionDetalles.getSolicitante();
+                String datosSolicitante = solicitante.getPrimerNombre() + " " + solicitante.getPrimerApellido();
+
+                String sugerenciaLunes = planDeAlimentacionDetalles.getListaConsejosLunes();
+                String sugerenciaMartes = planDeAlimentacionDetalles.getListaConsejosMartes();
+                String sugerenciaMiercoles = planDeAlimentacionDetalles.getListaConsejosMiercoles();
+                String sugerenciaJueves = planDeAlimentacionDetalles.getListaConsejosJueves();
+                String sugerenciaViernes = planDeAlimentacionDetalles.getListaConsejosViernes();
+                String sugerenciaSabado = planDeAlimentacionDetalles.getListaConsejosSabado();
+                String sugerenciaDomingo = planDeAlimentacionDetalles.getListaConsejosDomingo();
+
+                cargarDetallePlanAlimentacionLunesAJueves(sugerenciaLunes, sugerenciaMartes,
+                        sugerenciaMiercoles, sugerenciaJueves);
+
+                cargarDetallePlanAlimentacionViernesADomingo(sugerenciaViernes, sugerenciaSabado,
+                        sugerenciaDomingo);
+
+                //Buscamos lista de preferencias, restricciones y alimentos ingeridos y cargamos
+                borrarModeloJList(jList1, modeloListaPreferencias);
+                borrarModeloJList(jList2, modeloListaRestricciones);
+                cargarJListUsuario(datosSolicitante, "PREFERENCIAS");
+                cargarJListUsuario(datosSolicitante, "RESTRICCIONES");
+                cargarInfoIngestasUsuarios(solicitante);
+            }
+        }
+        );
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -125,12 +327,26 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         jButton3 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextPane2 = new javax.swing.JTextPane();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextPane3 = new javax.swing.JTextPane();
         jPanel8 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextPane4 = new javax.swing.JTextPane();
         jPanel9 = new javax.swing.JPanel();
+        jScrollPane15 = new javax.swing.JScrollPane();
+        jTextPane5 = new javax.swing.JTextPane();
         jPanel10 = new javax.swing.JPanel();
+        jScrollPane16 = new javax.swing.JScrollPane();
+        jTextPane6 = new javax.swing.JTextPane();
         jPanel11 = new javax.swing.JPanel();
+        jScrollPane17 = new javax.swing.JScrollPane();
+        jTextPane7 = new javax.swing.JTextPane();
         jPanel12 = new javax.swing.JPanel();
+        jScrollPane18 = new javax.swing.JScrollPane();
+        jTextPane8 = new javax.swing.JTextPane();
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -434,93 +650,149 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             }
         });
 
+        jScrollPane3.setViewportView(jTextPane2);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Lunes      ", jPanel4);
+
+        jScrollPane5.setViewportView(jTextPane3);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Martes     ", jPanel6);
+
+        jScrollPane6.setViewportView(jTextPane4);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Miercoles     ", jPanel8);
+
+        jScrollPane15.setViewportView(jTextPane5);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane15, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane15, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Jueves     ", jPanel9);
+
+        jScrollPane16.setViewportView(jTextPane6);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane16, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane16, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Viernes     ", jPanel10);
+
+        jScrollPane17.setViewportView(jTextPane7);
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane17, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane17, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Sabado     ", jPanel11);
+
+        jScrollPane18.setViewportView(jTextPane8);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane18, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane18, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("     Domingo     ", jPanel12);
@@ -624,15 +896,35 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       
+        guardarElavoracionPlanAlimentacion(sistema, valorIDPlanAlimentacionClickeado,
+                infoPlanAlimentacionLunesAJueves(jTextPane2.getText(), jTextPane3.getText(),
+                        jTextPane4.getText(), jTextPane5.getText()),
+                infoPlanAlimentacionViernesADomingo(jTextPane6.getText(), jTextPane7.getText(), jTextPane8.getText()),
+                infoUsuarioAutenticado.getText());
+
+        jTextPane2.setEnabled(false);
+        jTextPane3.setEnabled(false);
+        jTextPane4.setEnabled(false);
+        jTextPane5.setEnabled(false);
+        jTextPane6.setEnabled(false);
+        jTextPane7.setEnabled(false);
+        jTextPane8.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       
+        //Habilitamos para que los Profesionales
+        //puedan elvorar con detalle el Plan de Alimentacion
+        jTextPane2.setEnabled(true);
+        jTextPane3.setEnabled(true);
+        jTextPane4.setEnabled(true);
+        jTextPane5.setEnabled(true);
+        jTextPane6.setEnabled(true);
+        jTextPane7.setEnabled(true);
+        jTextPane8.setEnabled(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         //Se realiza un control para que no se pueda ingresar una nota vacia
+        //Se realiza un control para que no se pueda ingresar una nota vacia
         if (!jTextPane1.getText().equals("")) {
 
             PlanAlimentacion planDeAlimentacion = new PlanAlimentacion();
@@ -654,7 +946,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
             //Cargamos JTable con Consultas ingresadas
             limpiarTablaConsultas(jTable1);
-            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema, 
+            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema,
                     (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
@@ -706,8 +998,15 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane15;
+    private javax.swing.JScrollPane jScrollPane16;
+    private javax.swing.JScrollPane jScrollPane17;
+    private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
@@ -715,5 +1014,12 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JTextPane jTextPane3;
+    private javax.swing.JTextPane jTextPane4;
+    private javax.swing.JTextPane jTextPane5;
+    private javax.swing.JTextPane jTextPane6;
+    private javax.swing.JTextPane jTextPane7;
+    private javax.swing.JTextPane jTextPane8;
     // End of variables declaration//GEN-END:variables
 }

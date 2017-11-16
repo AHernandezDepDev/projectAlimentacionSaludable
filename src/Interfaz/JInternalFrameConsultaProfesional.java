@@ -230,7 +230,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
                 //Buscamos lista de preferencias, restricciones y alimentos ingeridos y cargamos
                 borrarModeloJList(jList1, modeloListaPreferencias);
-                borrarModeloJList(jList1, modeloListaRestricciones);
+                borrarModeloJList(jList2, modeloListaRestricciones);
                 cargarJListUsuario(datosSolicitante, "PREFERENCIAS");
                 cargarJListUsuario(datosSolicitante, "RESTRICCIONES");
                 cargarInfoIngestasUsuarios(solicitante);
