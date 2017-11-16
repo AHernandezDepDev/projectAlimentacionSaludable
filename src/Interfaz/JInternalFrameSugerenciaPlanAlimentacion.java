@@ -1,8 +1,16 @@
 package Interfaz;
 
+import Dominio.PlanAlimentacion;
 import Dominio.SistemaAlimentacionSaludable;
+import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionRegistrado;
+import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionUsuario;
+import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesAlimentacionTodosUsuarios;
+import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesDeAlimentacion;
+import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.BorderLayout;
 import javax.swing.JMenu;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -13,23 +21,61 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
     SistemaAlimentacionSaludable sistema;
     JMenu menuAutenticado;
-
+    JMenu infoUsuarioAutenticado;
+    
+    DefaultTableModel modeloTablaPlanesDeAlimentacion= new DefaultTableModel();
+    
     public JInternalFrameSugerenciaPlanAlimentacion(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
-            JMenu munuAutenticadoSistema) {
+            JMenu munuAutenticadoSistema, JMenu menuInfoUsuario) {
+        
         sistema = sistemaAlimentacionSaludable;
         menuAutenticado = munuAutenticadoSistema;
+        infoUsuarioAutenticado = menuInfoUsuario;
         initComponents();
         this.setTitle(" Sugerencia de Planes de Alimentación Pofesional ");
         
-        if (menuAutenticado.getText().equals(" USUARIO ")) {
-           jPanel5.setVisible(true);
+         if (menuAutenticado.getText().equals(" USUARIO ")) {
+            jButton2.setEnabled(false);
+            jButton3.setEnabled(false);
+            jPanel13.setVisible(false);
+            jPanel5.setVisible(true);
+            
+            //Al iniciar el sistema cagamos los Planes de Alimentacion
+            //solicitados por Usuarios y formulados por Profesionales
+            limpiarTablaConsultas(jTable1);
+            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema, 
+                    (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
+            jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
 
         if (menuAutenticado.getText().equals(" PROFESIONAL ")) {
+            jButton2.setEnabled(true);
+            jButton3.setEnabled(true);
+            jPanel13.setVisible(true);
             jPanel5.setVisible(false);
-            jPanel5.setVisible(false);
-            jPanel2.repaint();
+
+            //Al iniciar el sistema cagamos los Planes de Alimentacion
+            //solicitados por Usuarios y formulados por Profesionales
+            limpiarTablaConsultas(jTable1);
+            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesAlimentacionTodosUsuarios(sistema, 
+                    (DefaultTableModel) jTable1.getModel());
+            jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
+    }
+    
+    public int tomarUltimoValorContador() {
+        int maxId = 0;
+
+        for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size(); i++) {
+            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
+            int idConsulta = planAlimentacionSistema.getIdPlanAlimentacion();
+
+            if (idConsulta > maxId) {
+                maxId = idConsulta;
+            }
+        }
+
+        return maxId;
     }
 
 
@@ -111,14 +157,14 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
             },
             new String [] {
-                "ID", "Solicitante", "Titular", "Descripción", "Sugerido por Profesional", "Observaciones", "Ver Detalles"
+                "ID", "Solicitante", "Sugerido por Profesional", "Observaciones", "Ver Detalles"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -586,7 +632,32 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         //Se realiza un control para que no se pueda ingresar una nota vacia
+        if (!jTextPane1.getText().equals("")) {
 
+            PlanAlimentacion planDeAlimentacion = new PlanAlimentacion();
+
+            planDeAlimentacion.setObservaciones(jTextPane1.getText());
+            planDeAlimentacion.setSolicitante(buscarUsuario(sistema, infoUsuarioAutenticado.getText()));
+
+            //Seteamos el contador de ID-PLANdeALIMENTACION
+            int proximoIDPlanAlimentacion = tomarUltimoValorContador() + 1;
+            planDeAlimentacion.setIdPlanAlimentacion(proximoIDPlanAlimentacion);
+
+            //Agregar Solicitud de Plan de Alimentacion al SISTEMA
+            agregarAListaPlanDeAlimentacionRegistrado(sistema, planDeAlimentacion);
+            //Agregar Plan de Alimentacion al USUARIO que lo solicita
+            agregarAListaPlanDeAlimentacionUsuario(sistema, planDeAlimentacion, infoUsuarioAutenticado.getText());
+
+            //Refrescamos para proxima solicitud de creacion de Plan de Alimentacion
+            jTextPane1.setText("");
+
+            //Cargamos JTable con Consultas ingresadas
+            limpiarTablaConsultas(jTable1);
+            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema, 
+                    (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
+            jTable1.setModel(modeloTablaPlanesDeAlimentacion);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

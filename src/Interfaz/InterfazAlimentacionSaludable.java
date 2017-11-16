@@ -3,6 +3,7 @@ package Interfaz;
 import Dominio.Alimento;
 import Dominio.Consulta;
 import Dominio.Ingesta;
+import Dominio.PlanAlimentacion;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
@@ -107,6 +108,13 @@ public class InterfazAlimentacionSaludable {
         sistema.agregarRegistroConsulta(consultaARegistrar);
         return sistema.getListaConsultas();
     }
+    
+    public static ArrayList<PlanAlimentacion> agregarAListaPlanDeAlimentacionRegistrado(SistemaAlimentacionSaludable sistema,
+            PlanAlimentacion planAlimentacionARegistrar) {
+
+        sistema.agregarRegistroPlanDeAlimentacion(planAlimentacionARegistrar);
+        return sistema.getListaPlanesDeAlimentacion();
+    }
 
     public static void agregarAListaConsultaUsuario(SistemaAlimentacionSaludable sistema,
             Consulta consultaARegistrar, String datosUsuario) {
@@ -119,6 +127,21 @@ public class InterfazAlimentacionSaludable {
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
                 consultasUsuario.add(consultaARegistrar);
+            }
+        }
+    }
+    
+    public static void agregarAListaPlanDeAlimentacionUsuario(SistemaAlimentacionSaludable sistema,
+            PlanAlimentacion planDeAlimentacionARegistrar, String datosUsuario) {
+
+        boolean encontreUsuario = false;
+        for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            ArrayList<PlanAlimentacion> planesAlimentacionUsuario = usuarioSistema.getListaPlanesDeAlimentacion();
+
+            if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
+                planesAlimentacionUsuario.add(planDeAlimentacionARegistrar);
             }
         }
     }
@@ -247,6 +270,39 @@ public class InterfazAlimentacionSaludable {
 
         return modeloTablaConsultas;
     }
+    
+    public static DefaultTableModel cargarJTablePlanesDeAlimentacion(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaPlanesDeAlimentacion, String datosUsuario) {
+
+        ArrayList<PlanAlimentacion> planesDeAlimentacionUsuario = buscarUsuarioPlanesDeAlimentacion(sistema, datosUsuario);
+
+        for (int i = 0; i < planesDeAlimentacionUsuario.size(); i++) {
+            Object[] objectPlanesDeAlimentacion = new Object[5];
+
+            PlanAlimentacion planDeAlimentacion = planesDeAlimentacionUsuario.get(i);
+
+            int idPlanAlimentacion = planDeAlimentacion.getIdPlanAlimentacion();
+            objectPlanesDeAlimentacion[0] = idPlanAlimentacion;
+            String solicitante = datosUsuario.trim();
+            objectPlanesDeAlimentacion[1] = solicitante;
+            
+            String atendidaPorProfesional = "Solicitud enviada";
+            if (planDeAlimentacion.getPlanCreadoPorProfesional()!= null) {
+                Profesional profesionalSistema = planDeAlimentacion.getPlanCreadoPorProfesional();
+                atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+            }
+
+            objectPlanesDeAlimentacion[2] = atendidaPorProfesional;
+            String observaciones = planDeAlimentacion.getObservaciones();
+            objectPlanesDeAlimentacion[3] = observaciones;
+            String botonVerDetalles = "Click para ver Detalles";
+            objectPlanesDeAlimentacion[4] = botonVerDetalles;
+
+            modeloTablaPlanesDeAlimentacion.addRow(objectPlanesDeAlimentacion);
+        }
+
+        return modeloTablaPlanesDeAlimentacion;
+    }
 
     public static DefaultTableModel cargarJTableConsultasTodosUsuarios(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaConsultas) {
@@ -288,6 +344,42 @@ public class InterfazAlimentacionSaludable {
         return modeloTablaConsultas;
     }
 
+    public static DefaultTableModel cargarJTablePlanesAlimentacionTodosUsuarios(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaPlanesDeAlimentacion) {
+
+        for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            ArrayList<PlanAlimentacion> planesAlimentacionUsuarioSistema = usuarioSistema.getListaPlanesDeAlimentacion();
+
+            for (int j = 0; j < planesAlimentacionUsuarioSistema.size(); j++) {
+                Object[] objectPlanDeAlimentacion = new Object[5];
+                PlanAlimentacion planAlimentacion = planesAlimentacionUsuarioSistema.get(j);
+
+                int idPlanAlimentacion = planAlimentacion.getIdPlanAlimentacion();
+                objectPlanDeAlimentacion[0] = idPlanAlimentacion;
+                String solicitante = datosUsuarioSistema;
+                objectPlanDeAlimentacion[1] = solicitante;
+               
+                String atendidaPorProfesional = "Solicitud enviada";
+                if (planAlimentacion.getPlanCreadoPorProfesional() != null) {
+                    Profesional profesional = planAlimentacion.getPlanCreadoPorProfesional();
+                    atendidaPorProfesional = profesional.getPrimerNombre() + " " + profesional.getPrimerApellido();
+                }
+
+                objectPlanDeAlimentacion[2] = atendidaPorProfesional;
+                String observaciones = planAlimentacion.getObservaciones();
+                objectPlanDeAlimentacion[3] = observaciones;
+                String botonVerDetalles = "Click para ver Detalles";
+                objectPlanDeAlimentacion[4] = botonVerDetalles;
+
+                modeloTablaPlanesDeAlimentacion.addRow(objectPlanDeAlimentacion);
+            }
+        }
+
+        return modeloTablaPlanesDeAlimentacion;
+    }
+    
     public static ArrayList<Consulta> buscarUsuarioConsultas(SistemaAlimentacionSaludable sistema, String datosUsuario) {
         ArrayList<Consulta> consultasDeUsuario = new ArrayList<Consulta>();
         boolean encontreUsuario = false;
@@ -303,6 +395,25 @@ public class InterfazAlimentacionSaludable {
         }
 
         return consultasDeUsuario;
+    }
+    
+    public static ArrayList<PlanAlimentacion> buscarUsuarioPlanesDeAlimentacion(SistemaAlimentacionSaludable sistema, 
+            String datosUsuario) {
+        
+        ArrayList<PlanAlimentacion> planDeAlimentacionUsuario = new ArrayList<PlanAlimentacion>();
+        boolean encontreUsuario = false;
+
+        for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
+            Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+
+            if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
+                encontreUsuario = true;
+                planDeAlimentacionUsuario = usuarioSistema.getListaPlanesDeAlimentacion();
+            }
+        }
+
+        return planDeAlimentacionUsuario;
     }
 
     public static void limpiarTablaConsultas(JTable tabla) {

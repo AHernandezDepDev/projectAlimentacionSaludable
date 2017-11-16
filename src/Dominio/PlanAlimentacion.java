@@ -8,10 +8,9 @@ import java.util.ArrayList;
  */
 public class PlanAlimentacion {
 
+    private int idPlanAlimentacion = 1;
     private Profesional planCreadoPorProfesional;
     private Usuario solicitante;
-    private String nombrePlanAlimentacion;
-    private String descripcionPlanAlimentacion;
     private String observaciones;
     private ArrayList<Alimento> listaAlimentosLunes = new ArrayList<Alimento>();
     private ArrayList<Alimento> listaAlimentosMartes = new ArrayList<Alimento>();
@@ -21,20 +20,16 @@ public class PlanAlimentacion {
     private ArrayList<Alimento> listaAlimentosSabado = new ArrayList<Alimento>();
     private ArrayList<Alimento> listaAlimentosDomingo = new ArrayList<Alimento>();
 
+    public int getIdPlanAlimentacion() {
+        return idPlanAlimentacion;
+    }
+
     public Profesional getPlanCreadoPorProfesional() {
         return planCreadoPorProfesional;
     }
 
     public Usuario getSolicitante() {
         return solicitante;
-    }
-
-    public String getNombrePlanAlimentacion() {
-        return nombrePlanAlimentacion;
-    }
-
-    public String getDescripcionPlanAlimentacion() {
-        return descripcionPlanAlimentacion;
     }
 
     public String getObservaciones() {
@@ -69,20 +64,16 @@ public class PlanAlimentacion {
         return listaAlimentosDomingo;
     }
 
+    public void setIdPlanAlimentacion(int idPlanAlimentacion) {
+        this.idPlanAlimentacion = idPlanAlimentacion;
+    }
+
     public void setPlanCreadoPorProfesional(Profesional planCreadoPorProfesional) {
         this.planCreadoPorProfesional = planCreadoPorProfesional;
     }
 
     public void setSolicitante(Usuario solicitante) {
         this.solicitante = solicitante;
-    }
-
-    public void setNombrePlanAlimentacion(String nombrePlanAlimentacion) {
-        this.nombrePlanAlimentacion = nombrePlanAlimentacion;
-    }
-
-    public void setDescripcionPlanAlimentacion(String descripcionPlanAlimentacion) {
-        this.descripcionPlanAlimentacion = descripcionPlanAlimentacion;
     }
 
     public void setObservaciones(String observaciones) {
@@ -116,5 +107,5 @@ public class PlanAlimentacion {
     public void setListaAlimentosDomingo(ArrayList<Alimento> listaAlimentosDomingo) {
         this.listaAlimentosDomingo = listaAlimentosDomingo;
     }
-
+    
 }

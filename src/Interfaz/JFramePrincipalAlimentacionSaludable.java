@@ -546,7 +546,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        sugerenciaPlanesDeAlimetacion = new JInternalFrameSugerenciaPlanAlimentacion(sistemaAlimentacionSaludable, jMenu7);
+        sugerenciaPlanesDeAlimetacion = new JInternalFrameSugerenciaPlanAlimentacion(sistemaAlimentacionSaludable, 
+                jMenu7, jMenu8);
         jDesktopPane1.add(sugerenciaPlanesDeAlimetacion);
         sugerenciaPlanesDeAlimetacion.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
@@ -559,7 +560,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        sugerenciaPlanesDeAlimetacion = new JInternalFrameSugerenciaPlanAlimentacion(sistemaAlimentacionSaludable, jMenu7);
+        sugerenciaPlanesDeAlimetacion = new JInternalFrameSugerenciaPlanAlimentacion(sistemaAlimentacionSaludable,
+                jMenu7, jMenu8);
         jDesktopPane1.add(sugerenciaPlanesDeAlimetacion);
         sugerenciaPlanesDeAlimetacion.setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
