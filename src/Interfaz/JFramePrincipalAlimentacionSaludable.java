@@ -4,6 +4,7 @@ import Dominio.Alimento;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
+import static Interfaz.InterfazAlimentacionSaludable.cantidadDeConsultasTodosUsuarios;
 import static Interfaz.InterfazAlimentacionSaludable.cantidadDeConsultasUsuarioDado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
@@ -15,6 +16,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
@@ -23,6 +25,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -42,9 +45,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     static ArrayList<String> datosUsuariosSistema;
     static String datosUsuarioAutenticado;
     int cantidadConsultasUsuario = 0;
+    static Border borderJMenuConsultas;
 
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
+        agregarEventosMenu();
         this.setTitle("Alimentación Saludable");
         jDesktopPane1.setBorder(new JDesktopPanelBakground());
         this.setExtendedState(JFramePrincipalAlimentacionSaludable.MAXIMIZED_BOTH);
@@ -68,6 +73,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Cargamos Lista de Usuarios cargados en el Sistema por si se quiere cambiar de Autenticacion
         datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, jMenu7,
                 jMenu8, jDesktopPane1, listaMenuParametros());
+
+        //Borde de los JMenu
+        borderJMenuConsultas = jMenu4.getBorder();
     }
 
     public Usuario usuarioAutenticadoInicio() {
@@ -131,6 +139,76 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         public void mouseClicked(MouseEvent arg0) {
         }
 
+    }
+
+    public static class HuboSeleccionDeMenu implements MouseListener {
+
+        ArrayList<JMenu> menuSistema;
+
+        public HuboSeleccionDeMenu(ArrayList<JMenu> menuDelSistema) {
+            menuSistema = menuDelSistema;
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent arg0) {
+        }
+
+        @Override
+        public void mousePressed(MouseEvent arg0) {
+
+            for (int i = 0; i < menuSistema.size(); i++) {
+                JMenu menu = menuSistema.get(i);
+                if (menu.getName() != null) {
+                    menu.setBorder(borderJMenuConsultas);
+                }
+            }
+
+            JMenu itemPressed = ((JMenu) arg0.getSource());
+            if (itemPressed.getName() != null) {
+                itemPressed.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                itemPressed.setToolTipText("Seccion: " + itemPressed.getText());
+            }
+        }
+
+        @Override
+        public void mouseExited(MouseEvent arg0) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent arg0) {
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent arg0) {
+        }
+
+    }
+
+    public ArrayList<JMenu> menuEstadoOriginal() {
+        ArrayList<JMenu> arrayJMenu = new ArrayList<JMenu>();
+        arrayJMenu.add(jMenu1);
+        arrayJMenu.add(jMenu2);
+        arrayJMenu.add(jMenu3);
+        arrayJMenu.add(jMenu4);
+        arrayJMenu.add(jMenu5);
+        arrayJMenu.add(jMenu6);
+        arrayJMenu.add(jMenu7);
+        arrayJMenu.add(jMenu8);
+        arrayJMenu.add(jMenu9);
+
+        return arrayJMenu;
+    }
+
+    public void agregarEventosMenu() {
+        jMenu1.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu2.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu3.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu4.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu5.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu6.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu7.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu8.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
+        jMenu9.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
     }
 
     public static String space(int cantSpace) {
@@ -290,6 +368,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/rolUsuarioImagen.png"))); // NOI18N
         jMenu1.setText("Rol del Sistema ");
         jMenu1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu1.setName("rolSistema"); // NOI18N
 
         jMenuItem12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adminImagen.png"))); // NOI18N
@@ -328,6 +407,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu7.setActionCommand("Usuario");
         jMenu7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenu7.setMargin(new java.awt.Insets(0, 40, 0, 40));
+        jMenu7.setName("rolAutenticado"); // NOI18N
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu7MouseClicked(evt);
@@ -352,6 +432,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu6.setText("Salir");
         jMenu6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenu6.setMargin(new java.awt.Insets(0, 40, 0, 0));
+        jMenu6.setName("salir"); // NOI18N
 
         jMenuItem10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/singOutImagen.png"))); // NOI18N
@@ -374,6 +455,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu2.setActionCommand("Registro");
         jMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenu2.setMargin(new java.awt.Insets(0, 40, 0, 0));
+        jMenu2.setName("registroTiposUsuarios"); // NOI18N
 
         jMenuItem6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png"))); // NOI18N
@@ -401,6 +483,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu3.setText("Alimento");
         jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenu3.setMargin(new java.awt.Insets(0, 40, 0, 0));
+        jMenu3.setName("registroAlimento"); // NOI18N
 
         jMenuItem9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroAlimentoImagen.png"))); // NOI18N
@@ -428,6 +511,12 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu4.setText("Consulta");
         jMenu4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenu4.setMargin(new java.awt.Insets(0, 40, 0, 0));
+        jMenu4.setName("consulta"); // NOI18N
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jMenu4MouseExited(evt);
+            }
+        });
 
         jMenuItem4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/nuevaConsultaImagen.png"))); // NOI18N
@@ -456,6 +545,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu5.setActionCommand("Se");
         jMenu5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenu5.setMargin(new java.awt.Insets(0, 40, 0, 0));
+        jMenu5.setName("planDeAlimentacion"); // NOI18N
 
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/sugerenciaPAImagen.png"))); // NOI18N
@@ -732,10 +822,25 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, jMenu7, jMenu8, jDesktopPane1);
-        jDesktopPane1.add(consultaProfesional);
-        consultaProfesional.setVisible(true);
+        cantidadConsultasUsuario = cantidadDeConsultasTodosUsuarios(sistemaAlimentacionSaludable);
+        //Si no existen consultas ingresadas por los usuarios por buena practica de usabilidad
+        //no abrimos el ventana responder consultas de Usuarios.
+        if (cantidadConsultasUsuario == 0) {
+            jMenu4.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            jMenu4.setToolTipText("No hay Consultas de Usuarios para Responder");
+        } else {
+            consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, jMenu7, jMenu8, jDesktopPane1);
+            jDesktopPane1.add(consultaProfesional);
+            consultaProfesional.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenu4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseExited
+        cantidadConsultasUsuario = cantidadDeConsultasTodosUsuarios(sistemaAlimentacionSaludable);
+        if (cantidadConsultasUsuario == 0) {
+            jMenu4.setBorder(borderJMenuConsultas);
+        }
+    }//GEN-LAST:event_jMenu4MouseExited
 
     public static void main(String args[]) {
 

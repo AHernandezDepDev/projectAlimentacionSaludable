@@ -93,7 +93,6 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             limpiarTablaConsultas(jTable1);
             modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
             jTable1.setModel(modeloTablaConsultas);
-
         }
 
         if (menuUsuario.getText().trim().equals("Profesional")) {

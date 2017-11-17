@@ -39,6 +39,7 @@ public class JInternalFrameNuevaConsulta extends javax.swing.JInternalFrame {
         menuAutenticadoSistema = menuAutenticado;
         panelSistemaPrincipal = panelSistema;
         initComponents();
+        this.setTitle(" Nueva Consulta con Profesional ");
 
         iniciarCombo();
         //Borde de los campos de ingreso de datos para el Usuario
