@@ -1,6 +1,7 @@
 package Dominio;
 
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -63,6 +64,4 @@ public class Usuario extends Persona {
         this.listaPlanesDeAlimentacion = listaPlanesDeAlimentacion;
     }
 
-   
-    
 }

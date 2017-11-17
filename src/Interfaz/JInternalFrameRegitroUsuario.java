@@ -9,32 +9,39 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.creacionJFileChooser;
 import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
+import java.awt.Color;
 import java.awt.Image;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
  */
 public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
-    
+
     //Modelo de JList Agregar Preferencia y Restricciones de Alimento
     DefaultListModel modeloJListPreferencias = new DefaultListModel();
     DefaultListModel modeloJListRestricciones = new DefaultListModel();
     JMenu menuUsuarios = null;
+    Border campoUsuario;
     SistemaAlimentacionSaludable sistema;
-     
-    public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados, 
+
+    public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados,
             SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
-        
+
         menuUsuarios = menuAddUsuariosRegistrados;
         sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Usuario ");
+
+        //Borde de los campos de ingreso de datos para el Usuario
+        campoUsuario = jTextField4.getBorder();
     }
 
     @SuppressWarnings("unchecked")
@@ -374,36 +381,40 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 } else {
                     preRegistroUsuario.setFotoPerfil(jButton5.getIcon());
                 }
-                
+
                 preRegistroUsuario.setListaPreferencias(datosEnListaAArrayListString(modeloJListPreferencias));
                 preRegistroUsuario.setListaRestricciones(datosEnListaAArrayListString(modeloJListRestricciones));
 
                 //REGISTRAMOS NUEVO USUARIO
-                if (altaUsuarioOK(sistema, preRegistroUsuario.getPrimerNombre() + " " + 
-                        preRegistroUsuario.getPrimerApellido())) {
+                if (altaUsuarioOK(sistema, preRegistroUsuario.getPrimerNombre() + " "
+                        + preRegistroUsuario.getPrimerApellido())) {
                     agregarAListaUsuarioRegistrado(sistema, preRegistroUsuario);
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el USUARIO. Usuario ya ingresado en el SISTEMA",
-                            "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
-                }
 
-                //Refrescamos para proximo registro
-                jTextField4.setText("");
-                jTextField1.setText("");
-                jTextField3.setText("");
-                jTextField5.setText("");
-                jTextField6.setText("");
-                dateChooserCombo1.setDateFormat(null);
-                jButton5.setIcon(null);
-                borrarModeloJList(jList2, modeloJListPreferencias);
-                borrarModeloJList(jList3, modeloJListRestricciones);
+                    //Refrescamos para proximo registro
+                    jTextField4.setText("");
+                    jTextField1.setText("");
+                    jTextField3.setText("");
+                    jTextField5.setText("");
+                    jTextField6.setText("");
+                    dateChooserCombo1.setDateFormat(null);
+                    jButton5.setIcon(null);
+                    borrarModeloJList(jList2, modeloJListPreferencias);
+                    borrarModeloJList(jList3, modeloJListRestricciones);
+                    jTextField4.setBorder(campoUsuario);
+                    jTextField3.setBorder(campoUsuario);
+                } else {
+                    jTextField4.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                    jTextField4.setToolTipText("Usuario existente en el Sistema");
+                    jTextField3.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                    jTextField3.setToolTipText("Usuario existente en el Sistema");
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un USUARIO sin APELLIDO. "
-                        + "Completar campo: Primer Apellido", "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
+                jTextField3.setToolTipText("Ingrese primer apellido para el Usuario");
+                jTextField3.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un USUARIO sin NOMBRE. "
-                    + "Completar al menos uno de los campos: Primer Nombre - Segundo Nombre", "Registrar Usuario", JOptionPane.ERROR_MESSAGE);
+            jTextField4.setToolTipText("Ingrese primer nombre para el Usuario");
+            jTextField4.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

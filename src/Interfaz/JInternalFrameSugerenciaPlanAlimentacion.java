@@ -360,7 +360,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         setResizable(true);
         getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(211, 234, 216));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
@@ -395,7 +395,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel13.setBackground(new java.awt.Color(249, 220, 220));
+        jPanel13.setBackground(new java.awt.Color(211, 234, 216));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel12.setText("Información de Usuario");
@@ -623,14 +623,14 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         getContentPane().add(jPanel1);
 
-        jPanel2.setBackground(new java.awt.Color(102, 102, 0));
+        jPanel2.setBackground(new java.awt.Color(211, 234, 216));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setBackground(new java.awt.Color(204, 255, 204));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel7.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel7.setBackground(new java.awt.Color(211, 234, 216));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel10.setText("Detalle de Planes de Alimentación");
@@ -834,7 +834,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jPanel5.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel5.setBackground(new java.awt.Color(211, 234, 216));
         jPanel5.setPreferredSize(new java.awt.Dimension(200, 243));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N

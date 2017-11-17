@@ -678,5 +678,15 @@ public class InterfazAlimentacionSaludable {
 
         return usuarioSistema;
     }
+    
+    public static int cantidadDeConsultasUsuarioDado(String datosUsuarioSistema, SistemaAlimentacionSaludable sistema){
+        int cantConsultas = 0;
+        
+        Usuario usuario = buscarUsuario(sistema, datosUsuarioSistema);
+        ArrayList<Consulta> listaConsultasUsuario = usuario.getListaConsultasRealizadas();
+        cantConsultas = listaConsultasUsuario.size();
+        
+        return cantConsultas;
+    }
 
 }

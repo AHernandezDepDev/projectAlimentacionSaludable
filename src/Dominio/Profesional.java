@@ -2,6 +2,7 @@ package Dominio;
 
 import java.text.DateFormat;
 import java.util.Date;
+import javax.swing.ImageIcon;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -36,5 +37,6 @@ public class Profesional extends Persona {
     public void setPaisObtuvoTitulo(String paisObtuvoTitulo) {
         this.paisObtuvoTitulo = paisObtuvoTitulo;
     }
+
 
 }

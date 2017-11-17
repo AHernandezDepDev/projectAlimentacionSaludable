@@ -5,11 +5,14 @@ import Dominio.SistemaAlimentacionSaludable;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaProfesionalRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.altaProfesionalOK;
 import static Interfaz.InterfazAlimentacionSaludable.creacionJFileChooser;
+import java.awt.Color;
 import java.awt.Image;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -18,11 +21,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame {
 
     SistemaAlimentacionSaludable sistema;
+    Border campoProfesional;
 
     public JInternalFrameRegitroProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Profesional ");
+
+        //Borde de los campos de ingreso de datos para el Profesional
+        campoProfesional = jTextField3.getBorder();
     }
 
     @SuppressWarnings("unchecked")
@@ -259,7 +266,7 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Se realiza un control que al menos el Profesional tenga que registrarse
         //con su primer o segundo nombre / primer apellido y su nombre del titulo profesional
-        if (!jTextField3.getText().equals("") || !jTextField5.getText().equals("")) {
+        if (!jTextField3.getText().equals("") && !jTextField1.getText().equals("")) {
             if (!jTextField2.getText().equals("")) {
                 Profesional preRegistroProfesional = new Profesional();
 
@@ -280,31 +287,41 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 }
 
                 //REGISTRAMOS NUEVO PROFESIONAL
-                if (altaProfesionalOK(sistema, preRegistroProfesional.getPrimerNombre() + " " + 
-                        preRegistroProfesional.getPrimerApellido())) {
+                if (altaProfesionalOK(sistema, preRegistroProfesional.getPrimerNombre() + " "
+                        + preRegistroProfesional.getPrimerApellido())) {
                     agregarAListaProfesionalRegistrado(sistema, preRegistroProfesional);
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el PROFESIONAL. Profesional ya ingresado en el SISTEMA",
-                            "Registrar Profesional", JOptionPane.ERROR_MESSAGE);
-                }
 
-                //Refrescamos para proximo registro
-                jTextField4.setText("");
-                jTextField1.setText("");
-                jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField5.setText("");
-                jTextField6.setText("");
-                dateChooserCombo1.setDateFormat(null);
-                dateChooserCombo2.setDateFormat(null);
-                jButton2.setIcon(null);
+                    //Refrescamos para proximo registro
+                    jTextField4.setText("");
+                    jTextField1.setText("");
+                    jTextField2.setText("");
+                    jTextField3.setText("");
+                    jTextField5.setText("");
+                    jTextField6.setText("");
+                    dateChooserCombo1.setDateFormat(null);
+                    dateChooserCombo2.setDateFormat(null);
+                    jButton2.setIcon(null);
+                    jTextField1.setBorder(campoProfesional);
+                    jTextField2.setBorder(campoProfesional);
+                    jTextField3.setBorder(campoProfesional);
+                } else {
+                    jTextField3.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                    jTextField3.setToolTipText("Profesional existente en el Sistema");
+                    jTextField1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                    jTextField1.setToolTipText("Profesional existente en el Sistema");
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un PROFESIONAL sin ingresar su TITULO. "
-                        + "Completar el campo: Nombre del Título Profesional", "Registrar Profesional", JOptionPane.ERROR_MESSAGE);
+                jTextField2.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                jTextField2.setToolTipText("Ingrese nombre de Titulo Profesional");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se puede REGISTRAR un PROFESIONAL sin NOMBRE. "
-                    + "Completar al menos uno de los campos: Primer Nombre - Segundo Nombre", "Registrar Profesional", JOptionPane.ERROR_MESSAGE);
+            if (jTextField3.getText().equals("")) {
+                jTextField3.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                jTextField3.setToolTipText("Ingrese primer nombre para el Profesional");
+            } else {
+                jTextField1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                jTextField1.setToolTipText("Ingrese primer apellido para el Profesional");
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

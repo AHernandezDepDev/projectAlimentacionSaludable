@@ -66,4 +66,9 @@ public class Persona {
         this.fotoPerfil = fotoPerfil;
     }
 
+    //Setear FOTO DE PERFIL por DEFECTO
+    public void ingresarFotoPerfilDefecto() {
+        this.setFotoPerfil(new ImageIcon(getClass().getResource("/Imagenes/noPerfilImagen.png")));
+    }
+
 }

@@ -66,13 +66,14 @@ public class SistemaAlimentacionSaludable {
     public void agregarRegistroAlimento(Alimento nuevoAlimento) {
         this.listaAlimentos.add(nuevoAlimento);
     }
-    
+
     public void agregarRegistroConsulta(Consulta nuevaConsulta) {
         this.listaConsultas.add(nuevaConsulta);
     }
-    
-     public void agregarRegistroPlanDeAlimentacion(PlanAlimentacion nuevoPlanDeAlimentacion) {
+
+    public void agregarRegistroPlanDeAlimentacion(PlanAlimentacion nuevoPlanDeAlimentacion) {
         this.listaPlanesDeAlimentacion.add(nuevoPlanDeAlimentacion);
     }
 
+    
 }
