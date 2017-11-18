@@ -6,6 +6,7 @@ import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.cantidadDeConsultasTodosUsuarios;
 import static Interfaz.InterfazAlimentacionSaludable.cantidadDeConsultasUsuarioDado;
+import static Interfaz.InterfazAlimentacionSaludable.cantidadPlanesAlimentacionUsuarioDado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
 import java.awt.Color;
@@ -42,9 +43,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
     JInternalFrameConsultaProfesional consultaProfesional;
     JInternalFrameSugerenciaPlanAlimentacion sugerenciaPlanesDeAlimetacion;
     JInternalFrameNuevaConsulta registroNuevaConsulta;
+    JInternalFrameSolicitudPlanDeAlimentacion solicitudPlanDeAlimentacion;
     static ArrayList<String> datosUsuariosSistema;
     static String datosUsuarioAutenticado;
     int cantidadConsultasUsuario = 0;
+    int cantidadPlanesDeAlimentacionUsuario = 0;
     static Border borderJMenuConsultas;
 
     public JFramePrincipalAlimentacionSaludable() {
@@ -58,6 +61,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         //Se inicia la aplicacion y mostramos un USUARIO AUTENTICADO.
         Usuario inicioSistema = usuarioAutenticadoInicio();
+        datosUsuarioAutenticado = inicioSistema.getPrimerNombre() + " " + inicioSistema.getPrimerApellido();
         jMenu8.setIcon(inicioSistema.getFotoPerfil());
         jMenu8.setText(inicioSistema.getPrimerNombre() + " " + inicioSistema.getPrimerApellido() + space(10));
         //INICIO DE SISTEMA - MENU USUARIO AUTENTICADO
@@ -367,10 +371,10 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu1.setBackground(new java.awt.Color(255, 255, 255));
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/rolUsuarioImagen.png"))); // NOI18N
         jMenu1.setText("Rol del Sistema ");
-        jMenu1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu1.setName("rolSistema"); // NOI18N
 
-        jMenuItem12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem12.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/adminImagen.png"))); // NOI18N
         jMenuItem12.setText("Administrador");
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
@@ -380,7 +384,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem12);
 
-        jMenuItem1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png"))); // NOI18N
         jMenuItem1.setText("Usuario ");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -390,7 +394,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png"))); // NOI18N
         jMenuItem2.setText("Profesional");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -405,7 +409,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png"))); // NOI18N
         jMenu7.setText(" Usuario");
         jMenu7.setActionCommand("Usuario");
-        jMenu7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu7.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu7.setMargin(new java.awt.Insets(0, 40, 0, 40));
         jMenu7.setName("rolAutenticado"); // NOI18N
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -422,19 +426,19 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuBar1.add(jMenu7);
 
         jMenu8.setBackground(new java.awt.Color(255, 204, 102));
-        jMenu8.setForeground(new java.awt.Color(255, 0, 0));
-        jMenu8.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jMenu8.setForeground(new java.awt.Color(245, 19, 26));
+        jMenu8.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         jMenu8.setRequestFocusEnabled(false);
         jMenu8.setRolloverEnabled(false);
         jMenuBar1.add(jMenu8);
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/salirImagen.png"))); // NOI18N
         jMenu6.setText("Salir");
-        jMenu6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu6.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu6.setMargin(new java.awt.Insets(0, 40, 0, 0));
         jMenu6.setName("salir"); // NOI18N
 
-        jMenuItem10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem10.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/singOutImagen.png"))); // NOI18N
         jMenuItem10.setText("Salir de Alimentación Saludable");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
@@ -453,11 +457,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroImagen.png"))); // NOI18N
         jMenu2.setText("Registro ");
         jMenu2.setActionCommand("Registro");
-        jMenu2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu2.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu2.setMargin(new java.awt.Insets(0, 40, 0, 0));
         jMenu2.setName("registroTiposUsuarios"); // NOI18N
 
-        jMenuItem6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem6.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroUsuarioImagen.png"))); // NOI18N
         jMenuItem6.setText("Registrar Usuario");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
@@ -467,7 +471,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem6);
 
-        jMenuItem8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem8.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroProfesionalImagen.png"))); // NOI18N
         jMenuItem8.setText("Registrar Profesional");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -481,11 +485,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ingestaImagen.png"))); // NOI18N
         jMenu3.setText("Alimento");
-        jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu3.setMargin(new java.awt.Insets(0, 40, 0, 0));
         jMenu3.setName("registroAlimento"); // NOI18N
 
-        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem9.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/registroAlimentoImagen.png"))); // NOI18N
         jMenuItem9.setText("Registrar Alimento");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
@@ -495,7 +499,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem9);
 
-        jMenuItem5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/alimentosIngeridosImagen.png"))); // NOI18N
         jMenuItem5.setText("Alimentos Ingeridos");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -509,7 +513,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/directaProfesionalesImagen.png"))); // NOI18N
         jMenu4.setText("Consulta");
-        jMenu4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu4.setMargin(new java.awt.Insets(0, 40, 0, 0));
         jMenu4.setName("consulta"); // NOI18N
         jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -518,7 +522,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem4.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/nuevaConsultaImagen.png"))); // NOI18N
         jMenuItem4.setText("Consulta con Profesional");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -528,7 +532,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem4);
 
-        jMenuItem7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem7.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/responderConsultaImagen.png"))); // NOI18N
         jMenuItem7.setText("Consultas de Usuarios");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -543,11 +547,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/planAlimentacionImagen.png"))); // NOI18N
         jMenu5.setText("Plan de Alimentación");
         jMenu5.setActionCommand("Se");
-        jMenu5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenu5.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenu5.setMargin(new java.awt.Insets(0, 40, 0, 0));
         jMenu5.setName("planDeAlimentacion"); // NOI18N
 
-        jMenuItem3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem3.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/sugerenciaPAImagen.png"))); // NOI18N
         jMenuItem3.setText("Sugerencia de Plan de Alimentación");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -557,7 +561,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem3);
 
-        jMenuItem11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jMenuItem11.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jMenuItem11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/crearPlanAlimentacionImagen.png"))); // NOI18N
         jMenuItem11.setText("Crear Plan de Alimentación");
         jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
@@ -709,10 +713,19 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        sugerenciaPlanesDeAlimetacion = new JInternalFrameSugerenciaPlanAlimentacion(sistemaAlimentacionSaludable,
-                jMenu7, jMenu8);
-        jDesktopPane1.add(sugerenciaPlanesDeAlimetacion);
-        sugerenciaPlanesDeAlimetacion.setVisible(true);
+        cantidadPlanesDeAlimentacionUsuario = cantidadPlanesAlimentacionUsuarioDado(sistemaAlimentacionSaludable, jMenu8.getText());
+        //El usuario no tiene lista de planes de alimentacion.
+        if (cantidadPlanesDeAlimentacionUsuario == 0) {
+            solicitudPlanDeAlimentacion = new JInternalFrameSolicitudPlanDeAlimentacion(sistemaAlimentacionSaludable, jMenu7,
+                    jMenu8, jDesktopPane1);
+            jDesktopPane1.add(solicitudPlanDeAlimentacion);
+            solicitudPlanDeAlimentacion.setVisible(true);
+        } else {
+            sugerenciaPlanesDeAlimetacion = new JInternalFrameSugerenciaPlanAlimentacion(sistemaAlimentacionSaludable,
+                    jMenu7, jMenu8);
+            jDesktopPane1.add(sugerenciaPlanesDeAlimetacion);
+            sugerenciaPlanesDeAlimetacion.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed

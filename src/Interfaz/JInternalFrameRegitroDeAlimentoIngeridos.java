@@ -11,12 +11,18 @@ import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListStrin
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
 import static Interfaz.InterfazAlimentacionSaludable.ingresarIngestasUsuarioAutenticado;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
+import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -27,6 +33,7 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
     SistemaAlimentacionSaludable sistema;
     JMenu usuarioAutenticado;
     String datosUsuarioAutenticado;
+    Border ingestasAlimentos;
 
     //Modelo de Registro de Alimentos Ingeridos
     DefaultComboBoxModel modeloIngestaAlimentos = new DefaultComboBoxModel();
@@ -42,6 +49,9 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
         iniciarCombo();
         iniciarTablaIngestas();
         this.setTitle(" Registrar Ingestas de Alimentos ");
+
+        //Borde de los campos de ingreso de ingestas de Alimentos
+        ingestasAlimentos = jComboBox1.getBorder();
     }
 
     public void iniciarCombo() {
@@ -63,12 +73,12 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
         jList1 = new javax.swing.JList();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -91,9 +101,6 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
-        jLabel4.setText("Día de la Ingesta:");
-
         jButton1.setText("Registrar Ingesta");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,7 +115,7 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
 
             },
             new String [] {
-                "Día de Ingesta", "Nombre de Alimento", "Tipo", "Porción (grs)", "Nutrientes"
+                "Día de Ingesta", "Nombre de Alimento", "Tipo", "Porción (en gramos)", "Nutrientes"
             }
         ) {
             Class[] types = new Class [] {
@@ -145,26 +152,26 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
+        jLabel5.setFont(new java.awt.Font("Segoe UI Emoji", 1, 12)); // NOI18N
+        jLabel5.setText("Fecha de Ingesta:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3)
+                        .addGap(12, 12, 12))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(35, 35, 35)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -178,36 +185,47 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (jComboBox1.getSize() != null) {
+        if (jComboBox1.getSize() != null && jDateChooser1.getDate() != null) {
+
+            jDateChooser1.setBorder(ingestasAlimentos);
+            jComboBox1.setBorder(ingestasAlimentos);
+
             Ingesta ingestaNueva = new Ingesta();
 
             ingestaNueva.setAlimentoIngerido(buscarAlimento(sistema, jComboBox1.getSelectedItem().toString()));
-            ingestaNueva.setDiaIngesta(jComboBox2.getSelectedItem().toString());
-
+            ingestaNueva.setFechaIngesta(jDateChooser1.getDate());
             ingresarIngestasUsuarioAutenticado(sistema, datosUsuarioAutenticado, ingestaNueva);
 
             //Refrescamos tabla de Ingestas
             limpiarTablaConsultas(jTable1);
             modeloTablaIngestaAlimentos = cargarJTableAlimentosIngestas(sistema, (DefaultTableModel) jTable1.getModel(),
                     datosUsuarioAutenticado);
+
+            TableRowSorter sorter = new TableRowSorter(modeloTablaIngestaAlimentos);
             jTable1.setModel(modeloTablaIngestaAlimentos);
+            jTable1.setRowSorter(sorter);
         } else {
-            JOptionPane.showMessageDialog(null, "No se puede REGISTRAR la INGESTA de ALIMENTO. "
-                    + "No existen Alimentos cargados en el Sistema.", " Registrar Alimentos Ingeridos ", JOptionPane.ERROR_MESSAGE);
+            if (jComboBox1.getSize() == null) {
+                jComboBox1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                jComboBox1.setToolTipText("Cargar Alimento en el Sistema para registrar Ingesta");
+            } else {
+                jDateChooser1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                jDateChooser1.setToolTipText("Debe seleccionar una fecha de Ingesta");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -219,9 +237,9 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

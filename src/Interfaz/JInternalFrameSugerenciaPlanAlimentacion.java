@@ -8,6 +8,7 @@ import Dominio.Usuario;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
+import static Interfaz.InterfazAlimentacionSaludable.buscarUsuarioIngestas;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesAlimentacionTodosUsuarios;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesDeAlimentacion;
@@ -16,14 +17,20 @@ import static Interfaz.InterfazAlimentacionSaludable.infoPlanAlimentacionLunesAJ
 import static Interfaz.InterfazAlimentacionSaludable.infoPlanAlimentacionViernesADomingo;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JTable;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -35,7 +42,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     JMenu menuAutenticado;
     JMenu infoUsuarioAutenticado;
     int valorIDPlanAlimentacionClickeado = 0;
-
+    Border campoUsuarioPlanAlimentacion;
+    
     DefaultTableModel modeloTablaPlanesDeAlimentacion = new DefaultTableModel();
 
     //Modelo de listas preferencias, restricciones y alimientos ingeridos
@@ -43,14 +51,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     DefaultListModel modeloListaRestricciones = new DefaultListModel();
     DefaultListModel modeloListaAlimentosIngeridos = new DefaultListModel();
 
-    //Modelos de Listas por dia - Alimentos Ingeridos
-    DefaultListModel modeloAlimentosIngeridosLunes = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosMartes = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosMiercoles = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosJueves = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosViernes = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosSabado = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosDomingo = new DefaultListModel();
+    //Modelos de Tabla para cargar Ingestas de Usuario
+    DefaultTableModel modeloAlimentosIngeridos = new DefaultTableModel();
 
     public JInternalFrameSugerenciaPlanAlimentacion(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
             JMenu munuAutenticadoSistema, JMenu menuInfoUsuario) {
@@ -60,9 +62,13 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         infoUsuarioAutenticado = menuInfoUsuario;
         initComponents();
         this.setTitle(" Sugerencia de Planes de Alimentación Pofesional ");
+        
+        //Borde de los campos de ingreso de datos para el Usuario
+        campoUsuarioPlanAlimentacion = jTextPane1.getBorder();
+        
         eventoTablaPlanesDeAlimentacion(jTable1, sistema);
 
-        if (menuAutenticado.getText().equals(" USUARIO ")) {
+        if (menuAutenticado.getText().trim().equals("Usuario")) {
             jButton2.setEnabled(false);
             jButton3.setEnabled(false);
             jPanel13.setVisible(false);
@@ -87,7 +93,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
 
-        if (menuAutenticado.getText().equals(" PROFESIONAL ")) {
+        if (menuAutenticado.getText().trim().equals("Profesional")) {
             jButton2.setEnabled(true);
             jButton3.setEnabled(true);
             jPanel13.setVisible(true);
@@ -172,41 +178,6 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         listaABorrar.setModel(modelo);
     }
 
-    public void cargarInfoIngestasUsuarios(Usuario usuarioConsultado) {
-
-        ArrayList<Ingesta> listaIngestas = usuarioConsultado.getListaAlimentosIngeridos();
-
-        for (int i = 0; i < listaIngestas.size(); i++) {
-            Ingesta ingestaSistema = listaIngestas.get(i);
-            Alimento alimentoIngerido = ingestaSistema.getAlimentoIngerido();
-            String diaIngesa = ingestaSistema.getDiaIngesta();
-
-            switch (diaIngesa) {
-                case "Lunes":
-                    cargarJListRegistro(jList3, alimentoIngerido.getNombre(), modeloAlimentosIngeridosLunes);
-                    break;
-                case "Martes":
-                    cargarJListRegistro(jList4, alimentoIngerido.getNombre(), modeloAlimentosIngeridosMartes);
-                    break;
-                case "Miercoles":
-                    cargarJListRegistro(jList5, alimentoIngerido.getNombre(), modeloAlimentosIngeridosMiercoles);
-                    break;
-                case "Jueves":
-                    cargarJListRegistro(jList6, alimentoIngerido.getNombre(), modeloAlimentosIngeridosJueves);
-                    break;
-                case "Viernes":
-                    cargarJListRegistro(jList7, alimentoIngerido.getNombre(), modeloAlimentosIngeridosViernes);
-                    break;
-                case "Sabado":
-                    cargarJListRegistro(jList8, alimentoIngerido.getNombre(), modeloAlimentosIngeridosSabado);
-                    break;
-                case "Domingo":
-                    cargarJListRegistro(jList9, alimentoIngerido.getNombre(), modeloAlimentosIngeridosDomingo);
-                    break;
-            }
-        }
-    }
-
     public PlanAlimentacion buscarPlanDeAlimentacionClickeado(SistemaAlimentacionSaludable sistema,
             int idClickPlanDeAlimentacion) {
 
@@ -242,6 +213,45 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         jTextPane8.setText(sugerenciaDomingo);
     }
 
+    public static DefaultTableModel cargarJTableAlimentosIngestas(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaConsultas, String datosUsuario) {
+
+        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+
+        for (int i = 0; i < ingestasDeUsuario.size(); i++) {
+            Object[] objectConsulta = new Object[5];
+
+            Ingesta ingesta = ingestasDeUsuario.get(i);
+            Date fechaIngesta = ingesta.getFechaIngesta();
+            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
+            objectConsulta[0] = fechaIngestaSimpleFormat;
+
+            Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
+            String nombreAlimentoIngerido = alimentoDeIngesta.getNombre();
+            objectConsulta[1] = nombreAlimentoIngerido;
+
+            String tipoAlimentoIngerido = alimentoDeIngesta.getTipo();
+            objectConsulta[2] = tipoAlimentoIngerido;
+
+            int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
+            objectConsulta[3] = porcionAlimentoIngerido;
+
+            ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
+            String nutrientes = "";
+
+            for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
+                String nutrienteAlimento = listaNutrientesAlimento.get(j);
+                nutrientes = nutrientes + "," + nutrienteAlimento;
+            }
+
+            objectConsulta[4] = nutrientes;
+
+            modeloTablaConsultas.addRow(objectConsulta);
+        }
+
+        return modeloTablaConsultas;
+    }
+
     public void eventoTablaPlanesDeAlimentacion(final JTable tablaPlanesAlimetacion,
             final SistemaAlimentacionSaludable sistema) {
         tablaPlanesAlimetacion.addMouseListener(new MouseAdapter() {
@@ -275,7 +285,14 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
                 borrarModeloJList(jList2, modeloListaRestricciones);
                 cargarJListUsuario(datosSolicitante, "PREFERENCIAS");
                 cargarJListUsuario(datosSolicitante, "RESTRICCIONES");
-                cargarInfoIngestasUsuarios(solicitante);
+
+                //Cargamos Ingestas de Usuarios
+                limpiarTablaConsultas(jTable2);
+                modeloAlimentosIngeridos = cargarJTableAlimentosIngestas(sistema, (DefaultTableModel) jTable2.getModel(), 
+                        datosSolicitante);
+                TableRowSorter sorter = new TableRowSorter(modeloAlimentosIngeridos);
+                jTable2.setModel(modeloAlimentosIngeridos);
+                jTable2.setRowSorter(sorter);
             }
         }
         );
@@ -297,28 +314,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         jPanel18 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
-        jTabbedPane3 = new javax.swing.JTabbedPane();
-        jPanel23 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
-        jPanel24 = new javax.swing.JPanel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        jList4 = new javax.swing.JList<>();
-        jPanel25 = new javax.swing.JPanel();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        jList5 = new javax.swing.JList<>();
-        jPanel26 = new javax.swing.JPanel();
-        jScrollPane11 = new javax.swing.JScrollPane();
-        jList6 = new javax.swing.JList<>();
-        jPanel14 = new javax.swing.JPanel();
-        jScrollPane12 = new javax.swing.JScrollPane();
-        jList7 = new javax.swing.JList<>();
-        jPanel15 = new javax.swing.JPanel();
-        jScrollPane13 = new javax.swing.JScrollPane();
-        jList8 = new javax.swing.JList<>();
-        jPanel16 = new javax.swing.JPanel();
-        jScrollPane14 = new javax.swing.JScrollPane();
-        jList9 = new javax.swing.JList<>();
+        jTable2 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -410,14 +407,14 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -431,7 +428,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel18Layout.setVerticalGroup(
@@ -442,154 +439,31 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
                 .addContainerGap())
         );
 
-        jTabbedPane3.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro Alimentos Ingeridos"));
+        jTable2.setBorder(javax.swing.BorderFactory.createTitledBorder("Historial de Ingestas"));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jScrollPane8.setViewportView(jList3);
+            },
+            new String [] {
+                "Día de Ingesta", "Nombre de Alimento", "Tipo", "Porción (gramos)", "Nutrientes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
-        jPanel23.setLayout(jPanel23Layout);
-        jPanel23Layout.setHorizontalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel23Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel23Layout.setVerticalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel23Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        jTabbedPane3.addTab("Lunes", jPanel23);
-
-        jScrollPane9.setViewportView(jList4);
-
-        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
-        jPanel24.setLayout(jPanel24Layout);
-        jPanel24Layout.setHorizontalGroup(
-            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel24Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel24Layout.setVerticalGroup(
-            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel24Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane3.addTab("Martes", jPanel24);
-
-        jScrollPane10.setViewportView(jList5);
-
-        javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
-        jPanel25.setLayout(jPanel25Layout);
-        jPanel25Layout.setHorizontalGroup(
-            jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel25Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel25Layout.setVerticalGroup(
-            jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel25Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane3.addTab("Miercoles", jPanel25);
-
-        jScrollPane11.setViewportView(jList6);
-
-        javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
-        jPanel26.setLayout(jPanel26Layout);
-        jPanel26Layout.setHorizontalGroup(
-            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel26Layout.setVerticalGroup(
-            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane3.addTab("Jueves", jPanel26);
-
-        jScrollPane12.setViewportView(jList7);
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane3.addTab("Viernes", jPanel14);
-
-        jScrollPane13.setViewportView(jList8);
-
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane3.addTab("Sabado", jPanel15);
-
-        jScrollPane14.setViewportView(jList9);
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane3.addTab("Domingo", jPanel16);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane8.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -597,15 +471,15 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 168, Short.MAX_VALUE))
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane3)
-                .addGap(21, 21, 21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -615,7 +489,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane3))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -650,6 +524,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             }
         });
 
+        jTextPane2.setText("Plan de Alimentación sin elaborar");
         jScrollPane3.setViewportView(jTextPane2);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -671,6 +546,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jTabbedPane1.addTab("     Lunes      ", jPanel4);
 
+        jTextPane3.setText("Plan de Alimentación sin elaborar");
         jScrollPane5.setViewportView(jTextPane3);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -692,6 +568,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jTabbedPane1.addTab("     Martes     ", jPanel6);
 
+        jTextPane4.setText("Plan de Alimentación sin elaborar");
         jScrollPane6.setViewportView(jTextPane4);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -713,6 +590,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jTabbedPane1.addTab("     Miercoles     ", jPanel8);
 
+        jTextPane5.setText("Plan de Alimentación sin elaborar");
         jScrollPane15.setViewportView(jTextPane5);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -734,6 +612,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jTabbedPane1.addTab("     Jueves     ", jPanel9);
 
+        jTextPane6.setText("Plan de Alimentación sin elaborar");
         jScrollPane16.setViewportView(jTextPane6);
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
@@ -755,6 +634,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jTabbedPane1.addTab("     Viernes     ", jPanel10);
 
+        jTextPane7.setText("Plan de Alimentación sin elaborar");
         jScrollPane17.setViewportView(jTextPane7);
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -776,6 +656,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         jTabbedPane1.addTab("     Sabado     ", jPanel11);
 
+        jTextPane8.setText("Plan de Alimentación sin elaborar");
         jScrollPane18.setViewportView(jTextPane8);
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
@@ -926,6 +807,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Se realiza un control para que no se pueda ingresar una nota vacia
         if (!jTextPane1.getText().equals("")) {
+            
+            jTextPane1.setBorder(campoUsuarioPlanAlimentacion);
 
             PlanAlimentacion planDeAlimentacion = new PlanAlimentacion();
 
@@ -949,6 +832,9 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema,
                     (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
+        } else {
+            jTextPane1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            jTextPane1.setToolTipText("Ingrese Observaciones para la solicitud del Plan de Alimentación");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -963,28 +849,14 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
-    private javax.swing.JList<String> jList4;
-    private javax.swing.JList<String> jList5;
-    private javax.swing.JList<String> jList6;
-    private javax.swing.JList<String> jList7;
-    private javax.swing.JList<String> jList8;
-    private javax.swing.JList<String> jList9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel24;
-    private javax.swing.JPanel jPanel25;
-    private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -993,11 +865,6 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
-    private javax.swing.JScrollPane jScrollPane12;
-    private javax.swing.JScrollPane jScrollPane13;
-    private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane17;
@@ -1009,10 +876,9 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     private javax.swing.JTextPane jTextPane3;

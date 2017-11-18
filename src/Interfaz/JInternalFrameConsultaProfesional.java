@@ -9,6 +9,7 @@ import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaRegist
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.alimentoDeConsulta;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
+import static Interfaz.InterfazAlimentacionSaludable.buscarUsuarioIngestas;
 import static Interfaz.InterfazAlimentacionSaludable.cantidadDeConsultasUsuarioDado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
@@ -21,7 +22,9 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -36,6 +39,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
@@ -53,14 +57,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     DefaultListModel modeloListaRestricciones = new DefaultListModel();
     DefaultListModel modeloListaAlimentosIngeridos = new DefaultListModel();
 
-    //Modelos de Listas por dia - Alimentos Ingeridos
-    DefaultListModel modeloAlimentosIngeridosLunes = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosMartes = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosMiercoles = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosJueves = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosViernes = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosSabado = new DefaultListModel();
-    DefaultListModel modeloAlimentosIngeridosDomingo = new DefaultListModel();
+    //Modelos de Tabla para cargar Ingestas de Usuario
+    DefaultTableModel modeloAlimentosIngeridos = new DefaultTableModel();
 
     int valorIDConsultaClickeado = 0;
     int cantidadConsultasUsuario = 0;
@@ -154,6 +152,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
     }
 
+
     public DefaultListModel cargarModeloPreferenciasRestricciones(ArrayList<String> datosUsuarioPreferenciasRestricciones) {
         DefaultListModel modelo = new DefaultListModel();
 
@@ -172,41 +171,6 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             modelo.remove(modelo.getSize() - 1);
         }
         listaABorrar.setModel(modelo);
-    }
-
-    public void cargarInfoIngestasUsuarios(Usuario usuarioConsultado) {
-
-        ArrayList<Ingesta> listaIngestas = usuarioConsultado.getListaAlimentosIngeridos();
-
-        for (int i = 0; i < listaIngestas.size(); i++) {
-            Ingesta ingestaSistema = listaIngestas.get(i);
-            Alimento alimentoIngerido = ingestaSistema.getAlimentoIngerido();
-            String diaIngesa = ingestaSistema.getDiaIngesta();
-
-            switch (diaIngesa) {
-                case "Lunes":
-                    cargarJListRegistro(jList3, alimentoIngerido.getNombre(), modeloAlimentosIngeridosLunes);
-                    break;
-                case "Martes":
-                    cargarJListRegistro(jList4, alimentoIngerido.getNombre(), modeloAlimentosIngeridosMartes);
-                    break;
-                case "Miercoles":
-                    cargarJListRegistro(jList5, alimentoIngerido.getNombre(), modeloAlimentosIngeridosMiercoles);
-                    break;
-                case "Jueves":
-                    cargarJListRegistro(jList6, alimentoIngerido.getNombre(), modeloAlimentosIngeridosJueves);
-                    break;
-                case "Viernes":
-                    cargarJListRegistro(jList7, alimentoIngerido.getNombre(), modeloAlimentosIngeridosViernes);
-                    break;
-                case "Sabado":
-                    cargarJListRegistro(jList8, alimentoIngerido.getNombre(), modeloAlimentosIngeridosSabado);
-                    break;
-                case "Domingo":
-                    cargarJListRegistro(jList9, alimentoIngerido.getNombre(), modeloAlimentosIngeridosDomingo);
-                    break;
-            }
-        }
     }
 
     public void eventoTablaConsultas(final JTable tablaConsultas, final SistemaAlimentacionSaludable sistema) {
@@ -245,11 +209,53 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                 borrarModeloJList(jList2, modeloListaRestricciones);
                 cargarJListUsuario(datosSolicitante, "PREFERENCIAS");
                 cargarJListUsuario(datosSolicitante, "RESTRICCIONES");
-                cargarInfoIngestasUsuarios(solicitante);
+                
+                //Cargamos Ingestas de Usuarios
+                limpiarTablaConsultas(jTable2);
+                modeloAlimentosIngeridos = cargarJTableIngestasAlimentos(sistema, (DefaultTableModel) jTable2.getModel(), datosSolicitante);
+                TableRowSorter sorter = new TableRowSorter(modeloAlimentosIngeridos);
+                jTable2.setModel(modeloAlimentosIngeridos);
+                jTable2.setRowSorter(sorter);
             }
         }
         );
     }
+    
+    public DefaultTableModel cargarJTableIngestasAlimentos(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaIngestas, String datosUsuario) {
+
+        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+
+        for (int i = 0; i < ingestasDeUsuario.size(); i++) {
+            Object[] objectIngesta = new Object[7];
+
+            Ingesta ingestaUsuario = ingestasDeUsuario.get(i);
+
+            Date fechaIngesta = ingestaUsuario.getFechaIngesta();
+            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
+            objectIngesta[0] = fechaIngestaSimpleFormat;
+            
+            String nombreIngesta = ingestaUsuario.getAlimentoIngerido().getNombre();
+            objectIngesta[1] = nombreIngesta;
+            String tipoAlimento = ingestaUsuario.getAlimentoIngerido().getTipo();
+            objectIngesta[2] = tipoAlimento;
+            int porcionAlimento = ingestaUsuario.getAlimentoIngerido().getPorcion();
+            objectIngesta[3] = porcionAlimento;
+            
+            ArrayList<String> listaNutrientesAlimento = ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
+            String datosListaNutrientesAlimento = "";
+           
+            for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
+                datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," + listaNutrientesAlimento.get(j);
+            }
+            objectIngesta[4] = datosListaNutrientesAlimento;
+
+            modeloTablaIngestas.addRow(objectIngesta);
+        }
+
+        return modeloTablaIngestas;
+    }
+
 
     public Consulta buscarConsultaClickeada(SistemaAlimentacionSaludable sistema, int idClickConsulta) {
         Consulta consultaClickeada = null;
@@ -293,28 +299,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         jPanel8 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel10 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
-        jPanel11 = new javax.swing.JPanel();
-        jScrollPane9 = new javax.swing.JScrollPane();
-        jList4 = new javax.swing.JList<>();
-        jPanel12 = new javax.swing.JPanel();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        jList5 = new javax.swing.JList<>();
-        jPanel13 = new javax.swing.JPanel();
-        jScrollPane11 = new javax.swing.JScrollPane();
-        jList6 = new javax.swing.JList<>();
-        jPanel14 = new javax.swing.JPanel();
-        jScrollPane12 = new javax.swing.JScrollPane();
-        jList7 = new javax.swing.JList<>();
-        jPanel15 = new javax.swing.JPanel();
-        jScrollPane13 = new javax.swing.JScrollPane();
-        jList8 = new javax.swing.JList<>();
-        jPanel16 = new javax.swing.JPanel();
-        jScrollPane14 = new javax.swing.JScrollPane();
-        jList9 = new javax.swing.JList<>();
+        jTable2 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -402,7 +388,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -423,165 +409,41 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane7)
                 .addContainerGap())
         );
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro Alimentos Ingeridos"));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jScrollPane8.setViewportView(jList3);
+            },
+            new String [] {
+                "Día de Ingesta", "Nombre de Alimento", "Tipo", "Porción (gramos)", "Nutrientes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        jTabbedPane1.addTab("Lunes", jPanel10);
-
-        jScrollPane9.setViewportView(jList4);
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Martes", jPanel11);
-
-        jScrollPane10.setViewportView(jList5);
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Miercoles", jPanel12);
-
-        jScrollPane11.setViewportView(jList6);
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Jueves", jPanel13);
-
-        jScrollPane12.setViewportView(jList7);
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Viernes", jPanel14);
-
-        jScrollPane13.setViewportView(jList8);
-
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Sabado", jPanel15);
-
-        jScrollPane14.setViewportView(jList9);
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Domingo", jPanel16);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane8.setViewportView(jTable2);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -589,14 +451,14 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 157, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -607,7 +469,9 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -910,21 +774,7 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
-    private javax.swing.JList<String> jList4;
-    private javax.swing.JList<String> jList5;
-    private javax.swing.JList<String> jList6;
-    private javax.swing.JList<String> jList7;
-    private javax.swing.JList<String> jList8;
-    private javax.swing.JList<String> jList9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
-    private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -933,11 +783,6 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
-    private javax.swing.JScrollPane jScrollPane12;
-    private javax.swing.JScrollPane jScrollPane13;
-    private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -945,9 +790,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;

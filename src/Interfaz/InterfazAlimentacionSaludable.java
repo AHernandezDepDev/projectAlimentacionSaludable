@@ -9,6 +9,8 @@ import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import Interfaz.JFramePrincipalAlimentacionSaludable.SeleccionPerfiles;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
@@ -615,9 +617,9 @@ public class InterfazAlimentacionSaludable {
             Object[] objectConsulta = new Object[5];
 
             Ingesta ingesta = ingestasDeUsuario.get(i);
-
-            String diaIngesta = ingesta.getDiaIngesta();
-            objectConsulta[0] = diaIngesta;
+            Date fechaIngesta = ingesta.getFechaIngesta();
+            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
+            objectConsulta[0] = fechaIngestaSimpleFormat;
 
             Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
             String nombreAlimentoIngerido = alimentoDeIngesta.getNombre();
@@ -689,6 +691,16 @@ public class InterfazAlimentacionSaludable {
         return cantConsultas;
     }
     
+    public static int cantidadPlanesAlimentacionUsuarioDado(SistemaAlimentacionSaludable sistema, String datosUsuarioSistema){
+        int cantPlanesDeAlimentacion = 0;
+        
+        Usuario usuario = buscarUsuario(sistema, datosUsuarioSistema);
+        ArrayList<PlanAlimentacion> listaPlanesDeAlimentacionUsuario = usuario.getListaPlanesDeAlimentacion();
+        cantPlanesDeAlimentacion = listaPlanesDeAlimentacionUsuario.size();
+        
+        return cantPlanesDeAlimentacion;
+    }
+    
     public static int cantidadDeConsultasTodosUsuarios(SistemaAlimentacionSaludable sistema){
         int cantConsultas = 0;
         
@@ -699,6 +711,41 @@ public class InterfazAlimentacionSaludable {
         }
         
         return cantConsultas;
+    }
+    
+    public static DefaultTableModel cargarJTableIngestasAlimentos(SistemaAlimentacionSaludable sistema,
+            DefaultTableModel modeloTablaIngestas, String datosUsuario) {
+
+        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+
+        for (int i = 0; i < ingestasDeUsuario.size(); i++) {
+            Object[] objectIngesta = new Object[7];
+
+            Ingesta ingestaUsuario = ingestasDeUsuario.get(i);
+
+            Date fechaIngesta = ingestaUsuario.getFechaIngesta();
+            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
+            objectIngesta[0] = fechaIngestaSimpleFormat;
+            
+            String nombreIngesta = ingestaUsuario.getAlimentoIngerido().getNombre();
+            objectIngesta[1] = nombreIngesta;
+            String tipoAlimento = ingestaUsuario.getAlimentoIngerido().getTipo();
+            objectIngesta[2] = tipoAlimento;
+            int porcionAlimento = ingestaUsuario.getAlimentoIngerido().getPorcion();
+            objectIngesta[3] = porcionAlimento;
+            
+            ArrayList<String> listaNutrientesAlimento = ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
+            String datosListaNutrientesAlimento = "";
+           
+            for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
+                datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," + listaNutrientesAlimento.get(j);
+            }
+            objectIngesta[4] = datosListaNutrientesAlimento;
+
+            modeloTablaIngestas.addRow(objectIngesta);
+        }
+
+        return modeloTablaIngestas;
     }
 
 }

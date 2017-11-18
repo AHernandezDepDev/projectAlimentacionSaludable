@@ -10,9 +10,12 @@ import static Interfaz.InterfazAlimentacionSaludable.cargarJTableAlimentosIngres
 import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
 import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -26,11 +29,16 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
     //Modelo de JList Agregar Nutrientes de Alimentos
     DefaultListModel modeloJListNutrientesAlimentos = new DefaultListModel();
     DefaultTableModel modeloTablaAlimentos = new DefaultTableModel();
+    Border campoAlimento;
+    int porcionAlimentoIngresada;
 
     public JInternalFrameRegitroDeAlimento(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;
         initComponents();
         this.setTitle(" Registrar Alimento ");
+
+        //Borde de los campos de ingreso de Alimento
+        campoAlimento = jTextField1.getBorder();
 
         //Cargamos JTable con Alimentos ingresadas
         modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
@@ -245,37 +253,65 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Se deben completar todos los campos para el registro de Aliemento
-        if (!jTextField1.getText().equals("") || !jTextField4.getText().equals("") || !jTextField5.getText().equals("")) {
-            Alimento alimentoAIngresar = new Alimento();
+        if (!jTextField1.getText().equals("") && !jTextField4.getText().equals("") && !jTextField5.getText().equals("")) {
 
-            alimentoAIngresar.setNombre(jTextField1.getText());
-            alimentoAIngresar.setTipo(jTextField4.getText());
-            alimentoAIngresar.setPorcion(Integer.parseInt(jTextField5.getText()));
-            alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
+            jTextField1.setBorder(campoAlimento);
+            jTextField4.setBorder(campoAlimento);
+            jTextField5.setBorder(campoAlimento);
 
-            //REGISTRAMOS NUEVO ALIMENTO
-            if (altaAlimentoOK(sistema, alimentoAIngresar.getNombre())) {
-                agregarAListaAlimentoRegistrado(sistema, alimentoAIngresar);
+            porcionAlimentoIngresada = Integer.parseInt(jTextField5.getText());
+
+            if (porcionAlimentoIngresada < 0 || porcionAlimentoIngresada > 1000) {
+                jTextField5.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                jTextField5.setToolTipText("Porcion ingresada incorrecta. La porcion debe estar entre 1 gramo y 1000 gramos");
             } else {
-                JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO. ALIMENTO ya ingresado en el SISTEMA",
-                        "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
+
+                Alimento alimentoAIngresar = new Alimento();
+
+                alimentoAIngresar.setNombre(jTextField1.getText());
+                alimentoAIngresar.setTipo(jTextField4.getText());
+
+                porcionAlimentoIngresada = Integer.parseInt(jTextField5.getText());
+
+                if (porcionAlimentoIngresada < 0 || porcionAlimentoIngresada > 1000) {
+                    jTextField5.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                    jTextField5.setToolTipText("Porcion ingresada incorrecta. La porcion debe estar entre 1 gramo y 1000 gramos");
+                } else {
+                    alimentoAIngresar.setPorcion(porcionAlimentoIngresada);
+                }
+
+                alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
+
+                //REGISTRAMOS NUEVO ALIMENTO
+                if (altaAlimentoOK(sistema, alimentoAIngresar.getNombre())) {
+                    agregarAListaAlimentoRegistrado(sistema, alimentoAIngresar);
+
+                    jTextField1.setBorder(campoAlimento);
+                    jTextField4.setBorder(campoAlimento);
+                    jTextField5.setBorder(campoAlimento);
+                } else {
+                    jTextField1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+                    jTextField1.setToolTipText("Alimento existente en el Sistema");
+                }
+
+                //Cargamos JTable con Alimentos ingresadas
+                limpiarTablaConsultas(jTable1);
+                modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
+                jTable1.setModel(modeloTablaAlimentos);
+
+                //Refrescamos para proximo registro
+                jTextField1.setText("");
+                jTextField4.setText("");
+                jTextField5.setText("");
+                borrarModeloJList(jList2, modeloJListNutrientesAlimentos);
             }
-
-            //Cargamos JTable con Alimentos ingresadas
-            limpiarTablaConsultas(jTable1);
-            modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
-            jTable1.setModel(modeloTablaAlimentos);
-
-            //Refrescamos para proximo registro
-            jTextField1.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-            borrarModeloJList(jList2, modeloJListNutrientesAlimentos);
-
         } else {
-            JOptionPane.showMessageDialog(null, "No se puede REGISTRAR el ALIMENTO sin completar"
-                    + " todos los datos del formulario",
-                    "Registrar Alimento", JOptionPane.ERROR_MESSAGE);
+            jTextField1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            jTextField1.setToolTipText("Ingrese nombre de Alimento");
+            jTextField4.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            jTextField4.setToolTipText("Ingrese tipo de Alimento");
+            jTextField5.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
+            jTextField5.setToolTipText("Ingrese porcion de Alimento");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -15,7 +15,7 @@ public class Persona {
     private String segundoNombre;
     private String primerApellido;
     private String segundoApellido;
-    private DateFormat fechaNacimiento;
+    private Date fechaNacimiento;
     private Icon fotoPerfil;
 
     public String getPrimerNombre() {
@@ -34,7 +34,7 @@ public class Persona {
         return segundoApellido;
     }
 
-    public DateFormat getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
@@ -58,7 +58,7 @@ public class Persona {
         this.segundoApellido = segundoApellido;
     }
 
-    public void setFechaNacimiento(DateFormat fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

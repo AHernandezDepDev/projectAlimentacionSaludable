@@ -11,14 +11,14 @@ import javax.swing.ImageIcon;
 public class Profesional extends Persona {
 
     private String nombreTituloProfesional;
-    private DateFormat fechaGraduacion;
+    private Date fechaGraduacion;
     private String paisObtuvoTitulo;
 
     public String getNombreTituloProfesional() {
         return nombreTituloProfesional;
     }
 
-    public DateFormat getFechaGraduacion() {
+    public Date getFechaGraduacion() {
         return fechaGraduacion;
     }
 
@@ -30,7 +30,7 @@ public class Profesional extends Persona {
         this.nombreTituloProfesional = nombreTituloProfesional;
     }
 
-    public void setFechaGraduacion(DateFormat fechaGraduacion) {
+    public void setFechaGraduacion(Date fechaGraduacion) {
         this.fechaGraduacion = fechaGraduacion;
     }
 

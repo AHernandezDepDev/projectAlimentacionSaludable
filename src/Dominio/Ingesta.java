@@ -1,6 +1,9 @@
 
 package Dominio;
 
+import java.util.Date;
+
+
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
@@ -8,23 +11,22 @@ package Dominio;
 
 public class Ingesta {
     private Alimento alimentoIngerido;
-    private String diaIngesta;
-    
+    private Date fechaIngesta;
 
     public Alimento getAlimentoIngerido() {
         return alimentoIngerido;
     }
 
-    public String getDiaIngesta() {
-        return diaIngesta;
+    public Date getFechaIngesta() {
+        return fechaIngesta;
     }
 
     public void setAlimentoIngerido(Alimento alimentoIngerido) {
         this.alimentoIngerido = alimentoIngerido;
     }
 
-    public void setDiaIngesta(String diaIngesta) {
-        this.diaIngesta = diaIngesta;
+    public void setFechaIngesta(Date fechaIngesta) {
+        this.fechaIngesta = fechaIngesta;
     }
     
 }
