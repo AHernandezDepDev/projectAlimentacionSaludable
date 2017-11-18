@@ -471,9 +471,8 @@ public class InterfazAlimentacionSaludable {
         return diaPlanAlimentacion;
     }
 
-    public static void guardarElavoracionPlanAlimentacion(SistemaAlimentacionSaludable sistema,
-            int idPlanDeAlimentacion, ArrayList<String> planesAlimentacionLunesAJueves,
-            ArrayList<String> planesAlimentacionViernesADomingo, String nombreProfesional) {
+    public static void guardarDatosAElavoracionPlanAlimentacion(SistemaAlimentacionSaludable sistema,
+            int idPlanDeAlimentacion, ArrayList<String> planesAlimentacionLunesAJueves) {
 
         boolean planDeAlimentacionEncontrado = false;
 
@@ -488,13 +487,47 @@ public class InterfazAlimentacionSaludable {
                 planAlimentacionSistema.setListaConsejosMartes(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 1));
                 planAlimentacionSistema.setListaConsejosMiercoles(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 2));
                 planAlimentacionSistema.setListaConsejosJueves(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 3));
+            }
+        }
+    }
+
+    public static void guardarDatosBElavoracionPlanAlimentacion(SistemaAlimentacionSaludable sistema,
+            int idPlanDeAlimentacion, ArrayList<String> planesAlimentacionViernesADomingo) {
+
+        boolean planDeAlimentacionEncontrado = false;
+
+        for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !planDeAlimentacionEncontrado; i++) {
+            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+
+            if (idPlanAlimentacionSistema == idPlanDeAlimentacion) {
+                planDeAlimentacionEncontrado = true;
+
                 planAlimentacionSistema.setListaConsejosViernes(infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 0));
                 planAlimentacionSistema.setListaConsejosSabado(infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 1));
                 planAlimentacionSistema.setListaConsejosDomingo(infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 2));
-                
+            }
+        }
+    }
+
+    public static void guardarDatosCElavoracionPlanAlimentacion(SistemaAlimentacionSaludable sistema,
+            int idPlanDeAlimentacion, String nombreProfesional, Date fechaDesde, Date fechaHasta) {
+
+        boolean planDeAlimentacionEncontrado = false;
+
+        for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !planDeAlimentacionEncontrado; i++) {
+            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+
+            if (idPlanAlimentacionSistema == idPlanDeAlimentacion) {
+                planDeAlimentacionEncontrado = true;
+
                 //Buscamos profesional para asociar a la consulta
                 Profesional profesionalSistema = buscarProfesionalConsulta(sistema, nombreProfesional);
                 planAlimentacionSistema.setPlanCreadoPorProfesional(profesionalSistema);
+                
+                planAlimentacionSistema.setFechaDesdeVigencia(fechaDesde);
+                planAlimentacionSistema.setFechaHastaVigencia(fechaHasta);
             }
         }
     }
@@ -618,7 +651,7 @@ public class InterfazAlimentacionSaludable {
 
             Ingesta ingesta = ingestasDeUsuario.get(i);
             Date fechaIngesta = ingesta.getFechaIngesta();
-            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
+            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
             objectConsulta[0] = fechaIngestaSimpleFormat;
 
             Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
@@ -680,39 +713,39 @@ public class InterfazAlimentacionSaludable {
 
         return usuarioSistema;
     }
-    
-    public static int cantidadDeConsultasUsuarioDado(String datosUsuarioSistema, SistemaAlimentacionSaludable sistema){
+
+    public static int cantidadDeConsultasUsuarioDado(String datosUsuarioSistema, SistemaAlimentacionSaludable sistema) {
         int cantConsultas = 0;
-        
+
         Usuario usuario = buscarUsuario(sistema, datosUsuarioSistema);
         ArrayList<Consulta> listaConsultasUsuario = usuario.getListaConsultasRealizadas();
         cantConsultas = listaConsultasUsuario.size();
-        
+
         return cantConsultas;
     }
-    
-    public static int cantidadPlanesAlimentacionUsuarioDado(SistemaAlimentacionSaludable sistema, String datosUsuarioSistema){
+
+    public static int cantidadPlanesAlimentacionUsuarioDado(SistemaAlimentacionSaludable sistema, String datosUsuarioSistema) {
         int cantPlanesDeAlimentacion = 0;
-        
+
         Usuario usuario = buscarUsuario(sistema, datosUsuarioSistema);
         ArrayList<PlanAlimentacion> listaPlanesDeAlimentacionUsuario = usuario.getListaPlanesDeAlimentacion();
         cantPlanesDeAlimentacion = listaPlanesDeAlimentacionUsuario.size();
-        
+
         return cantPlanesDeAlimentacion;
     }
-    
-    public static int cantidadDeConsultasTodosUsuarios(SistemaAlimentacionSaludable sistema){
+
+    public static int cantidadDeConsultasTodosUsuarios(SistemaAlimentacionSaludable sistema) {
         int cantConsultas = 0;
-        
+
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
             ArrayList<Consulta> listaConsultasUsuario = usuarioSistema.getListaConsultasRealizadas();
             cantConsultas = cantConsultas + listaConsultasUsuario.size();
         }
-        
+
         return cantConsultas;
     }
-    
+
     public static DefaultTableModel cargarJTableIngestasAlimentos(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaIngestas, String datosUsuario) {
 
@@ -724,19 +757,19 @@ public class InterfazAlimentacionSaludable {
             Ingesta ingestaUsuario = ingestasDeUsuario.get(i);
 
             Date fechaIngesta = ingestaUsuario.getFechaIngesta();
-            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
+            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
             objectIngesta[0] = fechaIngestaSimpleFormat;
-            
+
             String nombreIngesta = ingestaUsuario.getAlimentoIngerido().getNombre();
             objectIngesta[1] = nombreIngesta;
             String tipoAlimento = ingestaUsuario.getAlimentoIngerido().getTipo();
             objectIngesta[2] = tipoAlimento;
             int porcionAlimento = ingestaUsuario.getAlimentoIngerido().getPorcion();
             objectIngesta[3] = porcionAlimento;
-            
+
             ArrayList<String> listaNutrientesAlimento = ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
             String datosListaNutrientesAlimento = "";
-           
+
             for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
                 datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," + listaNutrientesAlimento.get(j);
             }

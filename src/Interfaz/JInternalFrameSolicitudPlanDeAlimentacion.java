@@ -152,7 +152,8 @@ public class JInternalFrameSolicitudPlanDeAlimentacion extends javax.swing.JInte
             jTextPane1.setBorder(campoUsuarioPlanAlimentacion);
 
             PlanAlimentacion planDeAlimentacion = new PlanAlimentacion();
-
+            planDeAlimentacion.stringPorDefectoDiasPlanAlimentacion();
+            
             planDeAlimentacion.setObservaciones(jTextPane1.getText());
             planDeAlimentacion.setSolicitante(buscarUsuario(sistema, infoMenuUSUARIO.getText()));
 
