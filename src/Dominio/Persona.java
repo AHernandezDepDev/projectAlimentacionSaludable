@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  * CLASE Persona
  * 17/11/2017
  */
-public class Persona {
+public abstract class Persona {
 
     private String primerNombre;
     private String segundoNombre;
