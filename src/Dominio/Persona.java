@@ -1,6 +1,5 @@
 package Dominio;
 
-import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -8,6 +7,8 @@ import javax.swing.ImageIcon;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE Persona
+ * 17/11/2017
  */
 public class Persona {
 

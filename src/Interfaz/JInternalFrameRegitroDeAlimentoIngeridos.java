@@ -2,24 +2,15 @@ package Interfaz;
 
 import Dominio.Ingesta;
 import Dominio.SistemaAlimentacionSaludable;
-import static Interfaz.InterfazAlimentacionSaludable.borrarModeloJList;
 import static Interfaz.InterfazAlimentacionSaludable.buscarAlimento;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
-import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableAlimentosIngestas;
-import static Interfaz.InterfazAlimentacionSaludable.datosEnListaAArrayListString;
-import static Interfaz.InterfazAlimentacionSaludable.existeStringCargadoEnJList;
 import static Interfaz.InterfazAlimentacionSaludable.ingresarIngestasUsuarioAutenticado;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.Color;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -27,17 +18,19 @@ import javax.swing.table.TableRowSorter;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameRegitroDeAlimentoIngeridos
+ * 21/11/2017
  */
 public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInternalFrame {
 
-    SistemaAlimentacionSaludable sistema;
-    JMenu usuarioAutenticado;
-    String datosUsuarioAutenticado;
-    Border ingestasAlimentos;
+    private final SistemaAlimentacionSaludable sistema;
+    private final JMenu usuarioAutenticado;
+    private final String datosUsuarioAutenticado;
+    private final Border ingestasAlimentos;
 
     //Modelo de Registro de Alimentos Ingeridos
-    DefaultComboBoxModel modeloIngestaAlimentos = new DefaultComboBoxModel();
-    DefaultTableModel modeloTablaIngestaAlimentos = new DefaultTableModel();
+    private DefaultComboBoxModel modeloIngestaAlimentos = new DefaultComboBoxModel();
+    private DefaultTableModel modeloTablaIngestaAlimentos = new DefaultTableModel();
 
     public JInternalFrameRegitroDeAlimentoIngeridos(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
             JMenu menuUsuario, String datosUsuario) {
@@ -55,12 +48,14 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
     }
 
     public void iniciarCombo() {
-        modeloIngestaAlimentos = cargarComboAlimentos(modeloIngestaAlimentos, sistema);
+        modeloIngestaAlimentos = cargarComboAlimentos(modeloIngestaAlimentos, 
+                sistema);
         jComboBox1.setModel(modeloIngestaAlimentos);
     }
 
     public void iniciarTablaIngestas() {
-        modeloTablaIngestaAlimentos = cargarJTableAlimentosIngestas(sistema, (DefaultTableModel) jTable1.getModel(),
+        modeloTablaIngestaAlimentos = cargarJTableAlimentosIngestas(sistema, 
+                (DefaultTableModel) jTable1.getModel(),
                 datosUsuarioAutenticado);
         jTable1.setModel(modeloTablaIngestaAlimentos);
     }
@@ -206,13 +201,16 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
 
             Ingesta ingestaNueva = new Ingesta();
 
-            ingestaNueva.setAlimentoIngerido(buscarAlimento(sistema, jComboBox1.getSelectedItem().toString()));
+            ingestaNueva.setAlimentoIngerido(buscarAlimento(sistema, 
+                    jComboBox1.getSelectedItem().toString()));
             ingestaNueva.setFechaIngesta(jDateChooser1.getDate());
-            ingresarIngestasUsuarioAutenticado(sistema, datosUsuarioAutenticado, ingestaNueva);
+            ingresarIngestasUsuarioAutenticado(sistema, datosUsuarioAutenticado,
+                    ingestaNueva);
 
             //Refrescamos tabla de Ingestas
             limpiarTablaConsultas(jTable1);
-            modeloTablaIngestaAlimentos = cargarJTableAlimentosIngestas(sistema, (DefaultTableModel) jTable1.getModel(),
+            modeloTablaIngestaAlimentos = cargarJTableAlimentosIngestas(sistema, 
+                    (DefaultTableModel) jTable1.getModel(),
                     datosUsuarioAutenticado);
 
             TableRowSorter sorter = new TableRowSorter(modeloTablaIngestaAlimentos);
@@ -221,7 +219,8 @@ public class JInternalFrameRegitroDeAlimentoIngeridos extends javax.swing.JInter
         } else {
             if (jComboBox1.getSize() == null) {
                 jComboBox1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-                jComboBox1.setToolTipText("Cargar Alimento en el Sistema para registrar Ingesta");
+                jComboBox1.setToolTipText("Cargar Alimento en el "
+                        + "Sistema para registrar Ingesta");
             } else {
                 jDateChooser1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
                 jDateChooser1.setToolTipText("Debe seleccionar una fecha de Ingesta");

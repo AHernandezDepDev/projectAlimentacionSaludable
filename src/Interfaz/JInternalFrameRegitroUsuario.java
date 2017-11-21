@@ -16,21 +16,22 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
-import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameRegitroUsuario
+ * 21/11/2017
  */
 public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
 
     //Modelo de JList Agregar Preferencia y Restricciones de Alimento
-    DefaultListModel modeloJListPreferencias = new DefaultListModel();
-    DefaultListModel modeloJListRestricciones = new DefaultListModel();
-    JMenu menuUsuarios = null;
-    Border campoUsuario;
-    SistemaAlimentacionSaludable sistema;
+    private final DefaultListModel modeloJListPreferencias = new DefaultListModel();
+    private final DefaultListModel modeloJListRestricciones = new DefaultListModel();
+    private JMenu menuUsuarios = null;
+    private final Border campoUsuario;
+    private final SistemaAlimentacionSaludable sistema;
 
     public JInternalFrameRegitroUsuario(JMenu menuAddUsuariosRegistrados,
             SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
@@ -345,8 +346,10 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (!jTextField8.getText().equals("")) {
-            if (!existeStringCargadoEnJList(modeloJListRestricciones, jTextField8.getText())) {
-                cargarJListRegistro(jList3, jTextField8.getText(), modeloJListRestricciones);
+            if (!existeStringCargadoEnJList(modeloJListRestricciones,
+                    jTextField8.getText())) {
+                cargarJListRegistro(jList3, jTextField8.getText(),
+                        modeloJListRestricciones);
                 jTextField8.setText("");
             }
         }
@@ -354,8 +357,12 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!jTextField7.getText().equals("")) {
-            if (!existeStringCargadoEnJList(modeloJListPreferencias, jTextField7.getText())) {
-                cargarJListRegistro(jList2, jTextField7.getText(), modeloJListPreferencias);
+            if (!existeStringCargadoEnJList(modeloJListPreferencias,
+                    jTextField7.getText())) {
+
+                cargarJListRegistro(jList2, jTextField7.getText(),
+                        modeloJListPreferencias);
+
                 jTextField7.setText("");
             }
         }

@@ -10,18 +10,18 @@ import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameRegitroProfesional
+ * 21/11/2017
  */
 public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame {
 
-    SistemaAlimentacionSaludable sistema;
-    Border campoProfesional;
+    private final SistemaAlimentacionSaludable sistema;
+    private final Border campoProfesional;
 
     public JInternalFrameRegitroProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;

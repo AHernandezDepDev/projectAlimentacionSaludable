@@ -13,7 +13,6 @@ import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
@@ -21,16 +20,18 @@ import javax.swing.table.DefaultTableModel;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameRegitroDeAlimento
+ * 21/11/2017
  */
 public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame {
 
     SistemaAlimentacionSaludable sistema;
 
     //Modelo de JList Agregar Nutrientes de Alimentos
-    DefaultListModel modeloJListNutrientesAlimentos = new DefaultListModel();
-    DefaultTableModel modeloTablaAlimentos = new DefaultTableModel();
-    Border campoAlimento;
-    int porcionAlimentoIngresada;
+    private final DefaultListModel modeloJListNutrientesAlimentos = new DefaultListModel();
+    private DefaultTableModel modeloTablaAlimentos = new DefaultTableModel();
+    private final Border campoAlimento;
+    private int porcionAlimentoIngresada;
 
     public JInternalFrameRegitroDeAlimento(SistemaAlimentacionSaludable sistemaAlimentacionSaludable) {
         sistema = sistemaAlimentacionSaludable;
@@ -41,7 +42,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
         campoAlimento = jTextField1.getBorder();
 
         //Cargamos JTable con Alimentos ingresadas
-        modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
+        modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, 
+                (DefaultTableModel) jTable1.getModel());
         jTable1.setModel(modeloTablaAlimentos);
     }
 
@@ -244,8 +246,12 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if (!jTextField7.getText().equals("")) {
-            if (!existeStringCargadoEnJList(modeloJListNutrientesAlimentos, jTextField7.getText())) {
-                cargarJListRegistro(jList2, jTextField7.getText(), modeloJListNutrientesAlimentos);
+            if (!existeStringCargadoEnJList(modeloJListNutrientesAlimentos, 
+                    jTextField7.getText())) {
+                
+                cargarJListRegistro(jList2, jTextField7.getText(), 
+                        modeloJListNutrientesAlimentos);
+                
                 jTextField7.setText("");
             }
         }
@@ -253,7 +259,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Se deben completar todos los campos para el registro de Aliemento
-        if (!jTextField1.getText().equals("") && !jTextField4.getText().equals("") && !jTextField5.getText().equals("")) {
+        if (!jTextField1.getText().equals("") && !jTextField4.getText().equals("") &&
+                !jTextField5.getText().equals("")) {
 
             jTextField1.setBorder(campoAlimento);
             jTextField4.setBorder(campoAlimento);
@@ -263,7 +270,8 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
             if (porcionAlimentoIngresada < 0 || porcionAlimentoIngresada > 1000) {
                 jTextField5.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-                jTextField5.setToolTipText("Porcion ingresada incorrecta. La porcion debe estar entre 1 gramo y 1000 gramos");
+                jTextField5.setToolTipText("Porcion ingresada incorrecta. "
+                        + "La porcion debe estar entre 1 gramo y 1000 gramos");
             } else {
 
                 Alimento alimentoAIngresar = new Alimento();
@@ -275,12 +283,14 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
                 if (porcionAlimentoIngresada < 0 || porcionAlimentoIngresada > 1000) {
                     jTextField5.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-                    jTextField5.setToolTipText("Porcion ingresada incorrecta. La porcion debe estar entre 1 gramo y 1000 gramos");
+                    jTextField5.setToolTipText("Porcion ingresada incorrecta. "
+                            + "La porcion debe estar entre 1 gramo y 1000 gramos");
                 } else {
                     alimentoAIngresar.setPorcion(porcionAlimentoIngresada);
                 }
 
-                alimentoAIngresar.setListaDeNutrientes(datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
+                alimentoAIngresar.setListaDeNutrientes
+        (datosEnListaAArrayListString(modeloJListNutrientesAlimentos));
 
                 //REGISTRAMOS NUEVO ALIMENTO
                 if (altaAlimentoOK(sistema, alimentoAIngresar.getNombre())) {
@@ -296,7 +306,9 @@ public class JInternalFrameRegitroDeAlimento extends javax.swing.JInternalFrame 
 
                 //Cargamos JTable con Alimentos ingresadas
                 limpiarTablaConsultas(jTable1);
-                modeloTablaAlimentos = cargarJTableAlimentosIngresados(sistema, (DefaultTableModel) jTable1.getModel());
+                modeloTablaAlimentos = 
+                        cargarJTableAlimentosIngresados(sistema, 
+                                (DefaultTableModel) jTable1.getModel());
                 jTable1.setModel(modeloTablaAlimentos);
 
                 //Refrescamos para proximo registro

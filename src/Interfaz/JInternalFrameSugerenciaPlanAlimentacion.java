@@ -9,7 +9,6 @@ import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimenta
 import static Interfaz.InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuarioIngestas;
-import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesAlimentacionTodosUsuarios;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTablePlanesDeAlimentacion;
 import static Interfaz.InterfazAlimentacionSaludable.guardarDatosAElavoracionPlanAlimentacion;
@@ -18,7 +17,6 @@ import static Interfaz.InterfazAlimentacionSaludable.guardarDatosCElavoracionPla
 import static Interfaz.InterfazAlimentacionSaludable.infoPlanAlimentacionLunesAJueves;
 import static Interfaz.InterfazAlimentacionSaludable.infoPlanAlimentacionViernesADomingo;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,14 +35,16 @@ import javax.swing.table.TableRowSorter;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameSugerenciaPlanAlimentacion
+ * 21/11/2017
  */
 public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInternalFrame {
 
-    SistemaAlimentacionSaludable sistema;
-    JMenu menuAutenticado;
-    JMenu infoUsuarioAutenticado;
-    int valorIDPlanAlimentacionClickeado = 0;
-    Border campoUsuarioPlanAlimentacion;
+    private final SistemaAlimentacionSaludable sistema;
+    private final JMenu menuAutenticado;
+    private final JMenu infoUsuarioAutenticado;
+    private int valorIDPlanAlimentacionClickeado = 0;
+    private final Border campoUsuarioPlanAlimentacion;
 
     DefaultTableModel modeloTablaPlanesDeAlimentacion = new DefaultTableModel();
 
@@ -93,7 +93,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             //solicitados por Usuarios y formulados por Profesionales
             limpiarTablaConsultas(jTable1);
             modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema,
-                    (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
+                    (DefaultTableModel) jTable1.getModel(),
+                    infoUsuarioAutenticado.getText());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
 
@@ -118,8 +119,9 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             //Al iniciar el sistema cagamos los Planes de Alimentacion
             //solicitados por Usuarios y formulados por Profesionales
             limpiarTablaConsultas(jTable1);
-            modeloTablaPlanesDeAlimentacion = cargarJTablePlanesAlimentacionTodosUsuarios(sistema,
-                    (DefaultTableModel) jTable1.getModel());
+            modeloTablaPlanesDeAlimentacion
+                    = cargarJTablePlanesAlimentacionTodosUsuarios(sistema,
+                            (DefaultTableModel) jTable1.getModel());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         }
     }
@@ -128,7 +130,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         int maxId = 0;
 
         for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size(); i++) {
-            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
+            PlanAlimentacion planAlimentacionSistema
+                    = sistema.getListaPlanesDeAlimentacion().get(i);
             int idConsulta = planAlimentacionSistema.getIdPlanAlimentacion();
 
             if (idConsulta > maxId) {
@@ -145,18 +148,23 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " "
+                    + usuarioSistema.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosSolicitante.trim())) {
                 encontreUsuario = true;
 
                 if (segunDatosUsuario.endsWith("PREFERENCIAS")) {
-                    ArrayList<String> listaPreferencias = usuarioSistema.getListaPreferencias();
-                    modeloListaPreferencias = cargarModeloPreferenciasRestricciones(listaPreferencias);
+                    ArrayList<String> listaPreferencias
+                            = usuarioSistema.getListaPreferencias();
+                    modeloListaPreferencias
+                            = cargarModeloPreferenciasRestricciones(listaPreferencias);
                     jList1.setModel(modeloListaPreferencias);
                 } else {
-                    ArrayList<String> listaRestricciones = usuarioSistema.getListaRestricciones();
-                    modeloListaRestricciones = cargarModeloPreferenciasRestricciones(listaRestricciones);;
+                    ArrayList<String> listaRestricciones
+                            = usuarioSistema.getListaRestricciones();
+                    modeloListaRestricciones
+                            = cargarModeloPreferenciasRestricciones(listaRestricciones);;
                     jList2.setModel(modeloListaRestricciones);
                 }
             }
@@ -176,6 +184,7 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     }
 
     public void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
+
         int sizeDelModel = modelo.getSize();
 
         for (int i = 0; i < sizeDelModel; i++) {
@@ -191,8 +200,10 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         boolean encontroPlanDeAlimentacion = false;
 
         for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !encontroPlanDeAlimentacion; i++) {
-            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
-            int idPlanDeAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+            PlanAlimentacion planAlimentacionSistema
+                    = sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanDeAlimentacionSistema
+                    = planAlimentacionSistema.getIdPlanAlimentacion();
 
             if (idPlanDeAlimentacionSistema == idClickPlanDeAlimentacion) {
                 planAlimentacionClickeado = planAlimentacionSistema;
@@ -202,8 +213,9 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         return planAlimentacionClickeado;
     }
 
-    public void cargarDetallePlanAlimentacionLunesAJueves(String sugerenciaLunes, String sugerenciaMartes,
-            String sugerenciaMiercoles, String sugerenciaJueves) {
+    public void cargarDetallePlanAlimentacionLunesAJueves(String sugerenciaLunes,
+            String sugerenciaMartes, String sugerenciaMiercoles,
+            String sugerenciaJueves) {
 
         jTextPane2.setText(sugerenciaLunes);
         jTextPane3.setText(sugerenciaMartes);
@@ -211,14 +223,15 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
         jTextPane5.setText(sugerenciaJueves);
     }
 
-    public void cargarFechasVigencia(Date fechaDesdeVigencia, Date fechaHastaVigencia) {
+    public void cargarFechasVigencia(Date fechaDesdeVigencia,
+            Date fechaHastaVigencia) {
 
         jDateChooser1.setDate(fechaDesdeVigencia);
         jDateChooser2.setDate(fechaHastaVigencia);
     }
 
-    public void cargarDetallePlanAlimentacionViernesADomingo(String sugerenciaViernes, String sugerenciaSabado,
-            String sugerenciaDomingo) {
+    public void cargarDetallePlanAlimentacionViernesADomingo(String sugerenciaViernes,
+            String sugerenciaSabado, String sugerenciaDomingo) {
 
         jTextPane6.setText(sugerenciaViernes);
         jTextPane7.setText(sugerenciaSabado);
@@ -228,14 +241,16 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
     public static DefaultTableModel cargarJTableAlimentosIngestas(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaConsultas, String datosUsuario) {
 
-        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+        ArrayList<Ingesta> ingestasDeUsuario
+                = buscarUsuarioIngestas(sistema, datosUsuario);
 
         for (int i = 0; i < ingestasDeUsuario.size(); i++) {
             Object[] objectConsulta = new Object[5];
 
             Ingesta ingesta = ingestasDeUsuario.get(i);
             Date fechaIngesta = ingesta.getFechaIngesta();
-            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
+            String fechaIngestaSimpleFormat
+                    = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
             objectConsulta[0] = fechaIngestaSimpleFormat;
 
             Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
@@ -248,7 +263,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
             objectConsulta[3] = porcionAlimentoIngerido;
 
-            ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
+            ArrayList<String> listaNutrientesAlimento
+                    = alimentoDeIngesta.getListaDeNutrientes();
             String nutrientes = "";
 
             for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
@@ -268,16 +284,19 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             final SistemaAlimentacionSaludable sistema) {
         tablaPlanesAlimetacion.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent evt) {
-                Object idPlanAlimentacion = tablaPlanesAlimetacion.getValueAt(tablaPlanesAlimetacion.getSelectedRow(), 0);
+                Object idPlanAlimentacion
+                        = tablaPlanesAlimetacion.getValueAt(tablaPlanesAlimetacion.getSelectedRow(), 0);
                 valorIDPlanAlimentacionClickeado = (int) idPlanAlimentacion;
 
                 //Buscamos el plan de Alimentacion y la cargamos en Detalles
-                PlanAlimentacion planDeAlimentacionDetalles = buscarPlanDeAlimentacionClickeado(sistema,
-                        valorIDPlanAlimentacionClickeado);
+                PlanAlimentacion planDeAlimentacionDetalles
+                        = buscarPlanDeAlimentacionClickeado(sistema,
+                                valorIDPlanAlimentacionClickeado);
 
                 Usuario solicitante = planDeAlimentacionDetalles.getSolicitante();
-                String datosSolicitante = solicitante.getPrimerNombre() + " " + solicitante.getPrimerApellido();
-                
+                String datosSolicitante = solicitante.getPrimerNombre() + " "
+                        + solicitante.getPrimerApellido();
+
                 String sugerenciaLunes = planDeAlimentacionDetalles.getListaConsejosLunes();
                 String sugerenciaMartes = planDeAlimentacionDetalles.getListaConsejosMartes();
                 String sugerenciaMiercoles = planDeAlimentacionDetalles.getListaConsejosMiercoles();
@@ -286,16 +305,21 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
                 String sugerenciaSabado = planDeAlimentacionDetalles.getListaConsejosSabado();
                 String sugerenciaDomingo = planDeAlimentacionDetalles.getListaConsejosDomingo();
 
-                cargarDetallePlanAlimentacionLunesAJueves(sugerenciaLunes, sugerenciaMartes,
-                        sugerenciaMiercoles, sugerenciaJueves);
+                cargarDetallePlanAlimentacionLunesAJueves(sugerenciaLunes,
+                        sugerenciaMartes, sugerenciaMiercoles, sugerenciaJueves);
 
-                cargarDetallePlanAlimentacionViernesADomingo(sugerenciaViernes, sugerenciaSabado,
-                        sugerenciaDomingo);
+                cargarDetallePlanAlimentacionViernesADomingo(sugerenciaViernes,
+                        sugerenciaSabado, sugerenciaDomingo);
 
                 //Seteamos las fechas de vigencia del plan de alimentacion
-                Date fechaDesdeVigenciaPlanAlimentacion = planDeAlimentacionDetalles.getFechaDesdeVigencia();
-                Date fechaHastaVigenciaPlanAlimentacion = planDeAlimentacionDetalles.getFechaHastaVigencia();
-                cargarFechasVigencia(fechaDesdeVigenciaPlanAlimentacion, fechaHastaVigenciaPlanAlimentacion);
+                Date fechaDesdeVigenciaPlanAlimentacion
+                        = planDeAlimentacionDetalles.getFechaDesdeVigencia();
+
+                Date fechaHastaVigenciaPlanAlimentacion
+                        = planDeAlimentacionDetalles.getFechaHastaVigencia();
+
+                cargarFechasVigencia(fechaDesdeVigenciaPlanAlimentacion,
+                        fechaHastaVigenciaPlanAlimentacion);
 
                 //Buscamos lista de preferencias, restricciones y alimentos ingeridos y cargamos
                 borrarModeloJList(jList1, modeloListaPreferencias);
@@ -305,8 +329,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
                 //Cargamos Ingestas de Usuarios
                 limpiarTablaConsultas(jTable2);
-                modeloAlimentosIngeridos = cargarJTableAlimentosIngestas(sistema, (DefaultTableModel) jTable2.getModel(),
-                        datosSolicitante);
+                modeloAlimentosIngeridos = cargarJTableAlimentosIngestas(sistema,
+                        (DefaultTableModel) jTable2.getModel(), datosSolicitante);
                 TableRowSorter sorter = new TableRowSorter(modeloAlimentosIngeridos);
                 jTable2.setModel(modeloAlimentosIngeridos);
                 jTable2.setRowSorter(sorter);
@@ -833,14 +857,17 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         guardarDatosAElavoracionPlanAlimentacion(sistema, valorIDPlanAlimentacionClickeado,
-                infoPlanAlimentacionLunesAJueves(jTextPane2.getText(), jTextPane3.getText(),
-                        jTextPane4.getText(), jTextPane5.getText()));
+                infoPlanAlimentacionLunesAJueves(jTextPane2.getText(),
+                        jTextPane3.getText(), jTextPane4.getText(),
+                        jTextPane5.getText()));
 
         guardarDatosBElavoracionPlanAlimentacion(sistema, valorIDPlanAlimentacionClickeado,
-                infoPlanAlimentacionViernesADomingo(jTextPane6.getText(), jTextPane7.getText(), jTextPane8.getText()));
+                infoPlanAlimentacionViernesADomingo(jTextPane6.getText(),
+                        jTextPane7.getText(), jTextPane8.getText()));
 
         guardarDatosCElavoracionPlanAlimentacion(sistema, valorIDPlanAlimentacionClickeado,
-                infoUsuarioAutenticado.getText(), jDateChooser1.getDate(), jDateChooser2.getDate());
+                infoUsuarioAutenticado.getText(), jDateChooser1.getDate(),
+                jDateChooser2.getDate());
 
         jTextPane2.setEnabled(false);
         jTextPane3.setEnabled(false);
@@ -876,7 +903,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             PlanAlimentacion planDeAlimentacion = new PlanAlimentacion();
 
             planDeAlimentacion.setObservaciones(jTextPane1.getText());
-            planDeAlimentacion.setSolicitante(buscarUsuario(sistema, infoUsuarioAutenticado.getText()));
+            planDeAlimentacion.setSolicitante(buscarUsuario(sistema,
+                    infoUsuarioAutenticado.getText()));
 
             //Seteamos el contador de ID-PLANdeALIMENTACION
             int proximoIDPlanAlimentacion = tomarUltimoValorContador() + 1;
@@ -885,7 +913,8 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             //Agregar Solicitud de Plan de Alimentacion al SISTEMA
             agregarAListaPlanDeAlimentacionRegistrado(sistema, planDeAlimentacion);
             //Agregar Plan de Alimentacion al USUARIO que lo solicita
-            agregarAListaPlanDeAlimentacionUsuario(sistema, planDeAlimentacion, infoUsuarioAutenticado.getText());
+            agregarAListaPlanDeAlimentacionUsuario(sistema, planDeAlimentacion,
+                    infoUsuarioAutenticado.getText());
 
             //Refrescamos para proxima solicitud de creacion de Plan de Alimentacion
             jTextPane1.setText("");
@@ -893,11 +922,13 @@ public class JInternalFrameSugerenciaPlanAlimentacion extends javax.swing.JInter
             //Cargamos JTable con Consultas ingresadas
             limpiarTablaConsultas(jTable1);
             modeloTablaPlanesDeAlimentacion = cargarJTablePlanesDeAlimentacion(sistema,
-                    (DefaultTableModel) jTable1.getModel(), infoUsuarioAutenticado.getText());
+                    (DefaultTableModel) jTable1.getModel(),
+                    infoUsuarioAutenticado.getText());
             jTable1.setModel(modeloTablaPlanesDeAlimentacion);
         } else {
             jTextPane1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-            jTextPane1.setToolTipText("Ingrese Observaciones para la solicitud del Plan de Alimentación");
+            jTextPane1.setToolTipText("Ingrese Observaciones para la"
+                    + " solicitud del Plan de Alimentación");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

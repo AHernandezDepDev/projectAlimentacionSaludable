@@ -8,31 +8,31 @@ import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaUsuari
 import static Interfaz.InterfazAlimentacionSaludable.alimentoDeConsulta;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
-import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultas;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
 import javax.swing.JMenu;
-import javax.swing.JTable;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameNuevaConsulta
+ * 21/11/2017
  */
 public class JInternalFrameNuevaConsulta extends javax.swing.JInternalFrame {
 
-    SistemaAlimentacionSaludable sistema;
-    JMenu infoMenuUSUARIO;
-    Border campoUsuarioConsultas;
-    DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
-    JDesktopPane panelSistemaPrincipal;
-    JMenu menuAutenticadoSistema;
+    private final SistemaAlimentacionSaludable sistema;
+    private final JMenu infoMenuUSUARIO;
+    private final Border campoUsuarioConsultas;
+    private DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
+    private final JDesktopPane panelSistemaPrincipal;
+    private final JMenu menuAutenticadoSistema;
 
-    public JInternalFrameNuevaConsulta(SistemaAlimentacionSaludable sistemaAlimentacionSaludable, JMenu menuAutenticado,
-            JMenu infoMenuUsuario, JDesktopPane panelSistema) {
+    public JInternalFrameNuevaConsulta(SistemaAlimentacionSaludable sistemaAlimentacionSaludable, 
+            JMenu menuAutenticado, JMenu infoMenuUsuario, 
+            JDesktopPane panelSistema) {
 
         sistema = sistemaAlimentacionSaludable;
         infoMenuUSUARIO = infoMenuUsuario;
@@ -62,7 +62,9 @@ public class JInternalFrameNuevaConsulta extends javax.swing.JInternalFrame {
     }
 
     public void iniciarCombo() {
-        modeloComboAlimentos = cargarComboAlimentos((DefaultComboBoxModel) jComboBox1.getModel(), sistema);
+        modeloComboAlimentos = 
+                cargarComboAlimentos((DefaultComboBoxModel) jComboBox1.getModel(), 
+                        sistema);
         jComboBox1.setModel(modeloComboAlimentos);
     }
 
@@ -187,7 +189,8 @@ public class JInternalFrameNuevaConsulta extends javax.swing.JInternalFrame {
 
             Consulta nuevaConsulta = new Consulta();
 
-            nuevaConsulta.setSolcitante(buscarUsuario(sistema, infoMenuUSUARIO.getText()));
+            nuevaConsulta.setSolcitante(buscarUsuario(sistema, 
+                    infoMenuUSUARIO.getText()));
             nuevaConsulta.setTitularConsulta(jTextField1.getText());
             nuevaConsulta.setDescripcionConsulta(jTextPane1.getText());
 
@@ -195,16 +198,19 @@ public class JInternalFrameNuevaConsulta extends javax.swing.JInternalFrame {
             int proximoIDConsulta = tomarUltimoValorContador() + 1;
             nuevaConsulta.setIdConsulta(proximoIDConsulta);
 
-            Alimento alimentoSeleccionado = alimentoDeConsulta(sistema, jComboBox1.getSelectedItem().toString());
+            Alimento alimentoSeleccionado = alimentoDeConsulta(sistema, 
+                    jComboBox1.getSelectedItem().toString());
             nuevaConsulta.setAlimentoConsultado(alimentoSeleccionado);
 
             //Agregar consulta al SISTEMA
             agregarAListaConsultaRegistrada(sistema, nuevaConsulta);
             //Agregar consulta al USUARIO asociado
-            agregarAListaConsultaUsuario(sistema, nuevaConsulta, infoMenuUSUARIO.getText());
+            agregarAListaConsultaUsuario(sistema, nuevaConsulta, 
+                    infoMenuUSUARIO.getText());
             
             //Abrimos Inernal Frame Principal con la consulta ya registrada en el Sistema
-            JInternalFrameConsultaProfesional consultaProfesional = new JInternalFrameConsultaProfesional(sistema, menuAutenticadoSistema,
+            JInternalFrameConsultaProfesional consultaProfesional = 
+                    new JInternalFrameConsultaProfesional(sistema, menuAutenticadoSistema,
                     infoMenuUSUARIO, panelSistemaPrincipal);
             panelSistemaPrincipal.add(consultaProfesional);
             consultaProfesional.setVisible(true);

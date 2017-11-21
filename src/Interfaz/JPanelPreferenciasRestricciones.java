@@ -4,6 +4,8 @@ package Interfaz;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JPanelPreferenciasRestricciones
+ * 21/11/2017
  */
 
 public class JPanelPreferenciasRestricciones extends javax.swing.JPanel {

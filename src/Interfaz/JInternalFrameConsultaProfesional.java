@@ -10,16 +10,12 @@ import static Interfaz.InterfazAlimentacionSaludable.agregarAListaConsultaUsuari
 import static Interfaz.InterfazAlimentacionSaludable.alimentoDeConsulta;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuario;
 import static Interfaz.InterfazAlimentacionSaludable.buscarUsuarioIngestas;
-import static Interfaz.InterfazAlimentacionSaludable.cantidadDeConsultasUsuarioDado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarComboAlimentos;
-import static Interfaz.InterfazAlimentacionSaludable.cargarJListRegistro;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultas;
 import static Interfaz.InterfazAlimentacionSaludable.cargarJTableConsultasTodosUsuarios;
 import static Interfaz.InterfazAlimentacionSaludable.guardarRespuesta;
 import static Interfaz.InterfazAlimentacionSaludable.limpiarTablaConsultas;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
@@ -28,43 +24,40 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JList;
 import javax.swing.JMenu;
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameConsultaProfesional
+ * 21/11/2017
  */
 public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFrame {
 
-    SistemaAlimentacionSaludable sistema;
-    DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
-    DefaultTableModel modeloTablaConsultas = new DefaultTableModel();
-    Border campoUsuarioConsultas;
+    private final SistemaAlimentacionSaludable sistema;
+    private final DefaultComboBoxModel modeloComboAlimentos = new DefaultComboBoxModel();
+    private DefaultTableModel modeloTablaConsultas = new DefaultTableModel();
+    private final Border campoUsuarioConsultas;
 
     //Modelo de listas preferencias, restricciones y alimientos ingeridos
-    DefaultListModel modeloListaPreferencias = new DefaultListModel();
-    DefaultListModel modeloListaRestricciones = new DefaultListModel();
-    DefaultListModel modeloListaAlimentosIngeridos = new DefaultListModel();
+    private DefaultListModel modeloListaPreferencias = new DefaultListModel();
+    private DefaultListModel modeloListaRestricciones = new DefaultListModel();
+    private final DefaultListModel modeloListaAlimentosIngeridos = new DefaultListModel();
 
     //Modelos de Tabla para cargar Ingestas de Usuario
-    DefaultTableModel modeloAlimentosIngeridos = new DefaultTableModel();
+    private DefaultTableModel modeloAlimentosIngeridos = new DefaultTableModel();
 
-    int valorIDConsultaClickeado = 0;
-    int cantidadConsultasUsuario = 0;
-    JMenu menuUSUARIO;
-    JMenu infoMenuUSUARIO;
-    JDesktopPane panelAplicacionSaludable;
+    private int valorIDConsultaClickeado = 0;
+    private final int cantidadConsultasUsuario = 0;
+    private final JMenu menuUSUARIO;
+    private final JMenu infoMenuUSUARIO;
+    private final JDesktopPane panelAplicacionSaludable;
 
     public JInternalFrameConsultaProfesional(SistemaAlimentacionSaludable sistemaAlimentacionSaludable,
             JMenu menuUsuario, JMenu infoMenuUsuario, JDesktopPane panelSistema) {
@@ -87,9 +80,11 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jPanel5.setVisible(true);
             jPanel4.setVisible(false);
 
-            //Al iniciar el sistema cagamos las consultas realizadas previamente por el Usuarios autenticado
+            //Al iniciar el sistema cagamos las 
+            //consultas realizadas previamente por el Usuarios autenticado
             limpiarTablaConsultas(jTable1);
-            modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
+            modeloTablaConsultas = cargarJTableConsultas(sistema, 
+                    (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
             jTable1.setModel(modeloTablaConsultas);
         }
 
@@ -100,15 +95,18 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             jPanel5.setVisible(false);
             jPanel4.setVisible(true);
 
-            //Al iniciar el sistema cagamos todas las consultas realizadas previamente por los Usuarios
+            //Al iniciar el sistema cagamos todas las consultas 
+            //realizadas previamente por los Usuarios
             limpiarTablaConsultas(jTable1);
-            modeloTablaConsultas = cargarJTableConsultasTodosUsuarios(sistema, (DefaultTableModel) jTable1.getModel());
+            modeloTablaConsultas = cargarJTableConsultasTodosUsuarios(sistema, 
+                    (DefaultTableModel) jTable1.getModel());
             jTable1.setModel(modeloTablaConsultas);
         }
     }
 
     public void iniciarCombo() {
-        DefaultComboBoxModel modeloAlimentos = cargarComboAlimentos(modeloComboAlimentos, sistema);
+        DefaultComboBoxModel modeloAlimentos = 
+                cargarComboAlimentos(modeloComboAlimentos, sistema);
         jComboBox1.setModel(modeloAlimentos);
     }
 
@@ -133,18 +131,23 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosSolicitante.trim())) {
                 encontreUsuario = true;
 
                 if (segunDatosUsuario.endsWith("PREFERENCIAS")) {
-                    ArrayList<String> listaPreferencias = usuarioSistema.getListaPreferencias();
-                    modeloListaPreferencias = cargarModeloPreferenciasRestricciones(listaPreferencias);
+                    ArrayList<String> listaPreferencias = 
+                            usuarioSistema.getListaPreferencias();
+                    modeloListaPreferencias = 
+                            cargarModeloPreferenciasRestricciones(listaPreferencias);
                     jList1.setModel(modeloListaPreferencias);
                 } else {
-                    ArrayList<String> listaRestricciones = usuarioSistema.getListaRestricciones();
-                    modeloListaRestricciones = cargarModeloPreferenciasRestricciones(listaRestricciones);;
+                    ArrayList<String> listaRestricciones = 
+                            usuarioSistema.getListaRestricciones();
+                    modeloListaRestricciones = 
+                            cargarModeloPreferenciasRestricciones(listaRestricciones);;
                     jList2.setModel(modeloListaRestricciones);
                 }
             }
@@ -153,7 +156,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     }
 
 
-    public DefaultListModel cargarModeloPreferenciasRestricciones(ArrayList<String> datosUsuarioPreferenciasRestricciones) {
+    public DefaultListModel cargarModeloPreferenciasRestricciones(
+            ArrayList<String> datosUsuarioPreferenciasRestricciones) {
         DefaultListModel modelo = new DefaultListModel();
 
         for (int i = 0; i < datosUsuarioPreferenciasRestricciones.size(); i++) {
@@ -173,17 +177,20 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         listaABorrar.setModel(modelo);
     }
 
-    public void eventoTablaConsultas(final JTable tablaConsultas, final SistemaAlimentacionSaludable sistema) {
+    public void eventoTablaConsultas(final JTable tablaConsultas, 
+            final SistemaAlimentacionSaludable sistema) {
         tablaConsultas.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent evt) {
                 Object valorIDConsulta = tablaConsultas.getValueAt(tablaConsultas.getSelectedRow(), 0);
                 valorIDConsultaClickeado = (int) valorIDConsulta;
 
                 //Buscamos la consulta y la cargamos en Detalles
-                Consulta consultaAVerDetalles = buscarConsultaClickeada(sistema, valorIDConsultaClickeado);
+                Consulta consultaAVerDetalles = buscarConsultaClickeada(sistema, 
+                        valorIDConsultaClickeado);
 
                 Usuario solicitante = consultaAVerDetalles.getSolcitante();
-                String datosSolicitante = solicitante.getPrimerNombre() + " " + solicitante.getPrimerApellido();
+                String datosSolicitante = solicitante.getPrimerNombre() + " " + 
+                        solicitante.getPrimerApellido();
 
                 String titularConsulta = consultaAVerDetalles.getTitularConsulta();
                 String descripcionConsulta = consultaAVerDetalles.getDescripcionConsulta();
@@ -212,7 +219,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
                 
                 //Cargamos Ingestas de Usuarios
                 limpiarTablaConsultas(jTable2);
-                modeloAlimentosIngeridos = cargarJTableIngestasAlimentos(sistema, (DefaultTableModel) jTable2.getModel(), datosSolicitante);
+                modeloAlimentosIngeridos = cargarJTableIngestasAlimentos(sistema, 
+                        (DefaultTableModel) jTable2.getModel(), datosSolicitante);
                 TableRowSorter sorter = new TableRowSorter(modeloAlimentosIngeridos);
                 jTable2.setModel(modeloAlimentosIngeridos);
                 jTable2.setRowSorter(sorter);
@@ -224,7 +232,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     public DefaultTableModel cargarJTableIngestasAlimentos(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaIngestas, String datosUsuario) {
 
-        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+        ArrayList<Ingesta> ingestasDeUsuario = 
+                buscarUsuarioIngestas(sistema, datosUsuario);
 
         for (int i = 0; i < ingestasDeUsuario.size(); i++) {
             Object[] objectIngesta = new Object[7];
@@ -232,7 +241,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             Ingesta ingestaUsuario = ingestasDeUsuario.get(i);
 
             Date fechaIngesta = ingestaUsuario.getFechaIngesta();
-            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
+            String fechaIngestaSimpleFormat = 
+                    new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta); 
             objectIngesta[0] = fechaIngestaSimpleFormat;
             
             String nombreIngesta = ingestaUsuario.getAlimentoIngerido().getNombre();
@@ -242,11 +252,13 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             int porcionAlimento = ingestaUsuario.getAlimentoIngerido().getPorcion();
             objectIngesta[3] = porcionAlimento;
             
-            ArrayList<String> listaNutrientesAlimento = ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
+            ArrayList<String> listaNutrientesAlimento = 
+                    ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
             String datosListaNutrientesAlimento = "";
            
             for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
-                datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," + listaNutrientesAlimento.get(j);
+                datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," + 
+                        listaNutrientesAlimento.get(j);
             }
             objectIngesta[4] = datosListaNutrientesAlimento;
 
@@ -257,7 +269,9 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     }
 
 
-    public Consulta buscarConsultaClickeada(SistemaAlimentacionSaludable sistema, int idClickConsulta) {
+    public Consulta buscarConsultaClickeada(SistemaAlimentacionSaludable sistema, 
+            int idClickConsulta) {
+        
         Consulta consultaClickeada = null;
         boolean encontroConsulta = false;
 
@@ -273,8 +287,9 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
         return consultaClickeada;
     }
 
-    public void cargarDatosConsultaDetalle(String titularConsulta, String descripcionConsulta,
-            String atendidaPorProfesional, String alimentoConsultado, String respuestaConsulta) {
+    public void cargarDatosConsultaDetalle(String titularConsulta, 
+            String descripcionConsulta,String atendidaPorProfesional, 
+            String alimentoConsultado, String respuestaConsulta) {
 
         jTextPane2.setText(titularConsulta);
         jEditorPane1.setText(descripcionConsulta);
@@ -702,7 +717,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             Consulta nuevaConsulta = new Consulta();
 
-            nuevaConsulta.setSolcitante(buscarUsuario(sistema, infoMenuUSUARIO.getText()));
+            nuevaConsulta.setSolcitante(buscarUsuario(sistema, 
+                    infoMenuUSUARIO.getText()));
             nuevaConsulta.setTitularConsulta(jTextField1.getText());
             nuevaConsulta.setDescripcionConsulta(jTextPane1.getText());
 
@@ -710,13 +726,15 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
             int proximoIDConsulta = tomarUltimoValorContador() + 1;
             nuevaConsulta.setIdConsulta(proximoIDConsulta);
 
-            Alimento alimentoSeleccionado = alimentoDeConsulta(sistema, jComboBox1.getSelectedItem().toString());
+            Alimento alimentoSeleccionado = alimentoDeConsulta(sistema,
+                    jComboBox1.getSelectedItem().toString());
             nuevaConsulta.setAlimentoConsultado(alimentoSeleccionado);
 
             //Agregar consulta al SISTEMA
             agregarAListaConsultaRegistrada(sistema, nuevaConsulta);
             //Agregar consulta al USUARIO asociado
-            agregarAListaConsultaUsuario(sistema, nuevaConsulta, infoMenuUSUARIO.getText());
+            agregarAListaConsultaUsuario(sistema, nuevaConsulta, 
+                    infoMenuUSUARIO.getText());
 
             //Refrescamos para proximo consulta
             jTextField1.setText("");
@@ -726,7 +744,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
 
             //Cargamos JTable con Consultas ingresadas
             limpiarTablaConsultas(jTable1);
-            modeloTablaConsultas = cargarJTableConsultas(sistema, (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
+            modeloTablaConsultas = cargarJTableConsultas(sistema, 
+                    (DefaultTableModel) jTable1.getModel(), infoMenuUSUARIO.getText());
             jTable1.setModel(modeloTablaConsultas);
 
         } else {
@@ -741,7 +760,8 @@ public class JInternalFrameConsultaProfesional extends javax.swing.JInternalFram
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        guardarRespuesta(sistema, valorIDConsultaClickeado, jTextPane4.getText(), infoMenuUSUARIO.getText());
+        guardarRespuesta(sistema, valorIDConsultaClickeado, jTextPane4.getText(),
+                infoMenuUSUARIO.getText());
         jTextPane4.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 

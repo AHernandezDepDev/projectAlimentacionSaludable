@@ -1,20 +1,21 @@
 package Dominio;
 
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE Usuario
+ * 17/11/2017
  */
 public class Usuario extends Persona {
 
     private String nacionalidad;
-    private ArrayList<String> listaPreferencias = new ArrayList<String>();
-    private ArrayList<String> listaRestricciones = new ArrayList<String>();
-    private ArrayList<Ingesta> listaAlimentosIngeridos = new ArrayList<Ingesta>();
-    private ArrayList<Consulta> listaConsultasRealizadas = new ArrayList<Consulta>();
-    private ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = new ArrayList<PlanAlimentacion>();
+    private ArrayList<String> listaPreferencias = new ArrayList<>();
+    private ArrayList<String> listaRestricciones = new ArrayList<>();
+    private ArrayList<Ingesta> listaAlimentosIngeridos = new ArrayList<>();
+    private ArrayList<Consulta> listaConsultasRealizadas = new ArrayList<>();
+    private ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = new ArrayList<>();
 
     public String getNacionalidad() {
         return nacionalidad;

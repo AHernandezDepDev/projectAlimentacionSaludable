@@ -1,6 +1,4 @@
-/**
- * @(#)MenuScroller.java	1.5.0 04/02/12
- */
+
 package Interfaz;
 
 import java.awt.Color;
@@ -21,18 +19,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-/**
- * A class that provides scrolling capabilities to a long menu dropdown or
- * popup menu.  A number of items can optionally be frozen at the top and/or
- * bottom of the menu.
- * <P>
- * <B>Implementation note:</B>  The default number of items to display
- * at a time is 15, and the default scrolling interval is 125 milliseconds.
- * <P>
- *
- * @version 1.5.0 04/05/12
- * @author Darryl
+/*
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE MenuScroller
+ * 21/11/2017
  */
+
 public class MenuScroller {
 
   //private JMenu menu;

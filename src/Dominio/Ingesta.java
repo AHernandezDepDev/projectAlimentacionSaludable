@@ -7,6 +7,8 @@ import java.util.Date;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE Ingesta
+ * 17/11/2017
  */
 
 public class Ingesta {

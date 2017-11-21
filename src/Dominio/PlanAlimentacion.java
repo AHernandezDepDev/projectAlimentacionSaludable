@@ -1,11 +1,12 @@
 package Dominio;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE PlanAlimentacion
+ * 17/11/2017
  */
 public class PlanAlimentacion {
 

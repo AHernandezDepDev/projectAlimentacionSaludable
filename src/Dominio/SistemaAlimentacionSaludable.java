@@ -5,14 +5,16 @@ import java.util.ArrayList;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE SistemaAlimentacionSaludable
+ * 17/11/2017
  */
 public class SistemaAlimentacionSaludable {
 
-    private ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
-    private ArrayList<Profesional> listaProfesionales = new ArrayList<Profesional>();
-    private ArrayList<Alimento> listaAlimentos = new ArrayList<Alimento>();
-    private ArrayList<Consulta> listaConsultas = new ArrayList<Consulta>();
-    private ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = new ArrayList<PlanAlimentacion>();
+    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+    private ArrayList<Profesional> listaProfesionales = new ArrayList<>();
+    private ArrayList<Alimento> listaAlimentos = new ArrayList<>();
+    private ArrayList<Consulta> listaConsultas = new ArrayList<>();
+    private ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = new ArrayList<>();
 
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;

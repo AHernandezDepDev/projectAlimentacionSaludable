@@ -8,37 +8,32 @@ import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
 import Interfaz.JFramePrincipalAlimentacionSaludable.SeleccionPerfiles;
-import java.awt.event.MouseListener;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE InterfazAlimentacionSaludable
+ * 21/11/2017
  */
 public class InterfazAlimentacionSaludable {
 
     //JFileChooser
     public static String creacionJFileChooser(JInternalFrame JInternalFrame) {
+        
         String rutaFoto = "";
 
         JFileChooser MyFileChooser = new JFileChooser();
@@ -53,12 +48,16 @@ public class InterfazAlimentacionSaludable {
         return rutaFoto;
     }
 
-    public static void cargarJListRegistro(JList lista, String nuevoRegistro, DefaultListModel modelo) {
+    public static void cargarJListRegistro(JList lista, String nuevoRegistro, 
+            DefaultListModel modelo) {
+        
         modelo.addElement(nuevoRegistro.replaceAll(" ", ""));
         lista.setModel(modelo);
     }
 
-    public static boolean existeStringCargadoEnJList(DefaultListModel modelo, String stringAIngresar) {
+    public static boolean existeStringCargadoEnJList(DefaultListModel modelo, 
+            String stringAIngresar) {
+        
         boolean existeString = false;
 
         for (int i = 0; i < modelo.getSize() && !existeString; i++) {
@@ -74,6 +73,7 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static ArrayList<String> datosEnListaAArrayListString(DefaultListModel modelo) {
+        
         ArrayList<String> listaDatos = new ArrayList<String>();
 
         for (int i = 0; i < modelo.getSize(); i++) {
@@ -124,7 +124,8 @@ public class InterfazAlimentacionSaludable {
         boolean encontreUsuario = false;
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
             ArrayList<Consulta> consultasUsuario = usuarioSistema.getListaConsultasRealizadas();
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
@@ -139,8 +140,10 @@ public class InterfazAlimentacionSaludable {
         boolean encontreUsuario = false;
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
-            ArrayList<PlanAlimentacion> planesAlimentacionUsuario = usuarioSistema.getListaPlanesDeAlimentacion();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
+            ArrayList<PlanAlimentacion> planesAlimentacionUsuario = 
+                    usuarioSistema.getListaPlanesDeAlimentacion();
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
                 planesAlimentacionUsuario.add(planDeAlimentacionARegistrar);
@@ -149,6 +152,7 @@ public class InterfazAlimentacionSaludable {
     }
 
     public static void borrarModeloJList(JList listaABorrar, DefaultListModel modelo) {
+        
         int sizeDelModel = modelo.getSize();
 
         for (int i = 0; i < sizeDelModel; i++) {
@@ -157,35 +161,41 @@ public class InterfazAlimentacionSaludable {
         listaABorrar.setModel(modelo);
     }
 
-    public static ArrayList<String> cargarUsuarioRegistrado(SistemaAlimentacionSaludable sistema, JMenu menuPefiles,
-            JMenu usuarioAutenticado, JDesktopPane panelSistema, ArrayList<JMenu> listaMenus) {
+    public static ArrayList<String> cargarUsuarioRegistrado(SistemaAlimentacionSaludable sistema, 
+            JMenu menuPefiles, JMenu usuarioAutenticado, 
+            JDesktopPane panelSistema, ArrayList<JMenu> listaMenus) {
 
         ArrayList<String> datosUsuario = new ArrayList<String>();
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario user = sistema.getListaUsuarios().get(i);
             JMenuItem usuarioRegistradoMenu = new JMenuItem();
-            usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + user.getPrimerApellido());
+            usuarioRegistradoMenu.setText(user.getPrimerNombre() + " " + 
+                    user.getPrimerApellido());
             datosUsuario.add(user.getPrimerNombre() + " " + user.getPrimerApellido());
             usuarioRegistradoMenu.setIcon(user.getFotoPerfil());
-            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado, panelSistema, listaMenus));
+            usuarioRegistradoMenu.addMouseListener(new SeleccionPerfiles(usuarioAutenticado,
+                    panelSistema, listaMenus));
             menuPefiles.add(usuarioRegistradoMenu);
         }
 
         return datosUsuario;
     }
 
-    public static ArrayList<String> cargarProfesionalRegistrado(SistemaAlimentacionSaludable sistema, JMenu menuPefiles,
-            JMenu profesionalAutenticado, JDesktopPane panelSistema, ArrayList<JMenu> listaMenus) {
+    public static ArrayList<String> cargarProfesionalRegistrado(SistemaAlimentacionSaludable sistema,
+            JMenu menuPefiles, JMenu profesionalAutenticado, 
+            JDesktopPane panelSistema, ArrayList<JMenu> listaMenus) {
 
         ArrayList<String> datosProfesional = new ArrayList<String>();
 
         for (int i = 0; i < sistema.getListaProfesionales().size(); i++) {
             Profesional prof = sistema.getListaProfesionales().get(i);
             JMenuItem profesionalRegistradoMenu = new JMenuItem();
-            profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + prof.getPrimerApellido());
+            profesionalRegistradoMenu.setText(prof.getPrimerNombre() + " " + 
+                    prof.getPrimerApellido());
             profesionalRegistradoMenu.setIcon(prof.getFotoPerfil());
-            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado, panelSistema, listaMenus));
+            profesionalRegistradoMenu.addMouseListener(new SeleccionPerfiles(profesionalAutenticado,
+                    panelSistema, listaMenus));
             menuPefiles.add(profesionalRegistradoMenu);
         }
 
@@ -197,8 +207,10 @@ public class InterfazAlimentacionSaludable {
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioRegistrado = sistema.getListaUsuarios().get(i);
-            String consultaDatosUsuario = usuarioRegistrado.getPrimerNombre() + " " + usuarioRegistrado.getPrimerApellido();
-            ArrayList<Ingesta> listaIngestasUsuario = usuarioRegistrado.getListaAlimentosIngeridos();
+            String consultaDatosUsuario = usuarioRegistrado.getPrimerNombre() + " " +
+                    usuarioRegistrado.getPrimerApellido();
+            ArrayList<Ingesta> listaIngestasUsuario =
+                    usuarioRegistrado.getListaAlimentosIngeridos();
 
             if (consultaDatosUsuario.trim().equals(datosUsuarioAutenticado.trim())) {
                 listaIngestasUsuario.add(nuevaIngesta);
@@ -219,7 +231,8 @@ public class InterfazAlimentacionSaludable {
         return modeloAlimentosCargado;
     }
 
-    public static Alimento alimentoDeConsulta(SistemaAlimentacionSaludable sistema, String seleccionAlimento) {
+    public static Alimento alimentoDeConsulta(SistemaAlimentacionSaludable sistema, 
+            String seleccionAlimento) {
 
         Alimento alimentoDeConsultaNueva = null;
         boolean encontroAlimento = false;
@@ -258,7 +271,8 @@ public class InterfazAlimentacionSaludable {
             String atendidaPorProfesional = "Consulta sin atender";
             if (consulta.getProfesionalRespondeConsulta() != null) {
                 Profesional profesionalSistema = consulta.getProfesionalRespondeConsulta();
-                atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+                atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " +
+                        profesionalSistema.getPrimerApellido();
             }
 
             objectConsulta[4] = atendidaPorProfesional;
@@ -276,7 +290,8 @@ public class InterfazAlimentacionSaludable {
     public static DefaultTableModel cargarJTablePlanesDeAlimentacion(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaPlanesDeAlimentacion, String datosUsuario) {
 
-        ArrayList<PlanAlimentacion> planesDeAlimentacionUsuario = buscarUsuarioPlanesDeAlimentacion(sistema, datosUsuario);
+        ArrayList<PlanAlimentacion> planesDeAlimentacionUsuario =
+                buscarUsuarioPlanesDeAlimentacion(sistema, datosUsuario);
 
         for (int i = 0; i < planesDeAlimentacionUsuario.size(); i++) {
             Object[] objectPlanesDeAlimentacion = new Object[5];
@@ -290,8 +305,10 @@ public class InterfazAlimentacionSaludable {
 
             String atendidaPorProfesional = "Solicitud enviada";
             if (planDeAlimentacion.getPlanCreadoPorProfesional() != null) {
-                Profesional profesionalSistema = planDeAlimentacion.getPlanCreadoPorProfesional();
-                atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+                Profesional profesionalSistema = 
+                        planDeAlimentacion.getPlanCreadoPorProfesional();
+                atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " +
+                        profesionalSistema.getPrimerApellido();
             }
 
             objectPlanesDeAlimentacion[2] = atendidaPorProfesional;
@@ -311,8 +328,10 @@ public class InterfazAlimentacionSaludable {
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
-            ArrayList<Consulta> consultaUsuarioSistema = usuarioSistema.getListaConsultasRealizadas();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
+            ArrayList<Consulta> consultaUsuarioSistema = 
+                    usuarioSistema.getListaConsultasRealizadas();
 
             for (int j = 0; j < consultaUsuarioSistema.size(); j++) {
                 Object[] objectConsulta = new Object[7];
@@ -329,8 +348,10 @@ public class InterfazAlimentacionSaludable {
 
                 String atendidaPorProfesional = "Consulta sin atender";
                 if (consulta.getProfesionalRespondeConsulta() != null) {
-                    Profesional profesionalSistema = consulta.getProfesionalRespondeConsulta();
-                    atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+                    Profesional profesionalSistema = 
+                            consulta.getProfesionalRespondeConsulta();
+                    atendidaPorProfesional = profesionalSistema.getPrimerNombre() + " " + 
+                            profesionalSistema.getPrimerApellido();
                 }
 
                 objectConsulta[4] = atendidaPorProfesional;
@@ -351,8 +372,10 @@ public class InterfazAlimentacionSaludable {
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
-            ArrayList<PlanAlimentacion> planesAlimentacionUsuarioSistema = usuarioSistema.getListaPlanesDeAlimentacion();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
+            ArrayList<PlanAlimentacion> planesAlimentacionUsuarioSistema =
+                    usuarioSistema.getListaPlanesDeAlimentacion();
 
             for (int j = 0; j < planesAlimentacionUsuarioSistema.size(); j++) {
                 Object[] objectPlanDeAlimentacion = new Object[5];
@@ -366,7 +389,8 @@ public class InterfazAlimentacionSaludable {
                 String atendidaPorProfesional = "Solicitud enviada";
                 if (planAlimentacion.getPlanCreadoPorProfesional() != null) {
                     Profesional profesional = planAlimentacion.getPlanCreadoPorProfesional();
-                    atendidaPorProfesional = profesional.getPrimerNombre() + " " + profesional.getPrimerApellido();
+                    atendidaPorProfesional = profesional.getPrimerNombre() + " " +
+                            profesional.getPrimerApellido();
                 }
 
                 objectPlanDeAlimentacion[2] = atendidaPorProfesional;
@@ -382,13 +406,16 @@ public class InterfazAlimentacionSaludable {
         return modeloTablaPlanesDeAlimentacion;
     }
 
-    public static ArrayList<Consulta> buscarUsuarioConsultas(SistemaAlimentacionSaludable sistema, String datosUsuario) {
+    public static ArrayList<Consulta> buscarUsuarioConsultas(SistemaAlimentacionSaludable sistema,
+            String datosUsuario) {
+        
         ArrayList<Consulta> consultasDeUsuario = new ArrayList<Consulta>();
         boolean encontreUsuario = false;
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
                 encontreUsuario = true;
@@ -407,7 +434,8 @@ public class InterfazAlimentacionSaludable {
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " +
+                    usuarioSistema.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
                 encontreUsuario = true;
@@ -426,8 +454,9 @@ public class InterfazAlimentacionSaludable {
         }
     }
 
-    public static void guardarRespuesta(SistemaAlimentacionSaludable sistema, int idConsulta,
-            String respuestaProfesional, String nombreProfesional) {
+    public static void guardarRespuesta(SistemaAlimentacionSaludable sistema, 
+            int idConsulta, String respuestaProfesional, String nombreProfesional) {
+        
         boolean consultaEncontrada = false;
 
         for (int i = 0; i < sistema.getListaConsultas().size() && !consultaEncontrada; i++) {
@@ -438,14 +467,16 @@ public class InterfazAlimentacionSaludable {
                 consultaEncontrada = true;
                 consultaSistema.setRespuestaConsulta(respuestaProfesional);
                 //Buscamos profesional para asociar a la consulta
-                Profesional profesionalSistema = buscarProfesionalConsulta(sistema, nombreProfesional);
+                Profesional profesionalSistema = 
+                        buscarProfesionalConsulta(sistema, nombreProfesional);
                 consultaSistema.setProfesionalRespondeConsulta(profesionalSistema);
             }
         }
     }
 
     public static ArrayList<String> infoPlanAlimentacionLunesAJueves(String planAlimentacionLunes,
-            String planAlimentacionMartes, String planAlimentacionMiercoles, String planAlimentacionJueves) {
+            String planAlimentacionMartes, String planAlimentacionMiercoles, 
+            String planAlimentacionJueves) {
 
         ArrayList<String> listaInfoPlanesAlimentacion = new ArrayList<String>();
         listaInfoPlanesAlimentacion.add(planAlimentacionLunes);
@@ -465,7 +496,9 @@ public class InterfazAlimentacionSaludable {
         return listaInfoPlanesAlimentacion;
     }
 
-    public static String infoDiaPlanAlimentacion(ArrayList<String> infoStringArray, int posicionDiaPlanAlimentacion) {
+    public static String infoDiaPlanAlimentacion(ArrayList<String> infoStringArray,
+            int posicionDiaPlanAlimentacion) {
+        
         String diaPlanAlimentacion = "";
         diaPlanAlimentacion = infoStringArray.get(posicionDiaPlanAlimentacion);
         return diaPlanAlimentacion;
@@ -477,16 +510,22 @@ public class InterfazAlimentacionSaludable {
         boolean planDeAlimentacionEncontrado = false;
 
         for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !planDeAlimentacionEncontrado; i++) {
-            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
-            int idPlanAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+            PlanAlimentacion planAlimentacionSistema = 
+                    sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanAlimentacionSistema = 
+                    planAlimentacionSistema.getIdPlanAlimentacion();
 
             if (idPlanAlimentacionSistema == idPlanDeAlimentacion) {
                 planDeAlimentacionEncontrado = true;
 
-                planAlimentacionSistema.setListaConsejosLunes(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 0));
-                planAlimentacionSistema.setListaConsejosMartes(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 1));
-                planAlimentacionSistema.setListaConsejosMiercoles(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 2));
-                planAlimentacionSistema.setListaConsejosJueves(infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 3));
+                planAlimentacionSistema.setListaConsejosLunes
+        (infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 0));
+                planAlimentacionSistema.setListaConsejosMartes
+        (infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 1));
+                planAlimentacionSistema.setListaConsejosMiercoles
+        (infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 2));
+                planAlimentacionSistema.setListaConsejosJueves
+        (infoDiaPlanAlimentacion(planesAlimentacionLunesAJueves, 3));
             }
         }
     }
@@ -497,33 +536,42 @@ public class InterfazAlimentacionSaludable {
         boolean planDeAlimentacionEncontrado = false;
 
         for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !planDeAlimentacionEncontrado; i++) {
-            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
-            int idPlanAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+            PlanAlimentacion planAlimentacionSistema = 
+                    sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanAlimentacionSistema = 
+                    planAlimentacionSistema.getIdPlanAlimentacion();
 
             if (idPlanAlimentacionSistema == idPlanDeAlimentacion) {
                 planDeAlimentacionEncontrado = true;
 
-                planAlimentacionSistema.setListaConsejosViernes(infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 0));
-                planAlimentacionSistema.setListaConsejosSabado(infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 1));
-                planAlimentacionSistema.setListaConsejosDomingo(infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 2));
+                planAlimentacionSistema.setListaConsejosViernes
+        (infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 0));
+                planAlimentacionSistema.setListaConsejosSabado
+        (infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 1));
+                planAlimentacionSistema.setListaConsejosDomingo
+        (infoDiaPlanAlimentacion(planesAlimentacionViernesADomingo, 2));
             }
         }
     }
 
     public static void guardarDatosCElavoracionPlanAlimentacion(SistemaAlimentacionSaludable sistema,
-            int idPlanDeAlimentacion, String nombreProfesional, Date fechaDesde, Date fechaHasta) {
+            int idPlanDeAlimentacion, String nombreProfesional,
+            Date fechaDesde, Date fechaHasta) {
 
         boolean planDeAlimentacionEncontrado = false;
 
         for (int i = 0; i < sistema.getListaPlanesDeAlimentacion().size() && !planDeAlimentacionEncontrado; i++) {
-            PlanAlimentacion planAlimentacionSistema = sistema.getListaPlanesDeAlimentacion().get(i);
-            int idPlanAlimentacionSistema = planAlimentacionSistema.getIdPlanAlimentacion();
+            PlanAlimentacion planAlimentacionSistema = 
+                    sistema.getListaPlanesDeAlimentacion().get(i);
+            int idPlanAlimentacionSistema = 
+                    planAlimentacionSistema.getIdPlanAlimentacion();
 
             if (idPlanAlimentacionSistema == idPlanDeAlimentacion) {
                 planDeAlimentacionEncontrado = true;
 
                 //Buscamos profesional para asociar a la consulta
-                Profesional profesionalSistema = buscarProfesionalConsulta(sistema, nombreProfesional);
+                Profesional profesionalSistema = 
+                        buscarProfesionalConsulta(sistema, nombreProfesional);
                 planAlimentacionSistema.setPlanCreadoPorProfesional(profesionalSistema);
                 
                 planAlimentacionSistema.setFechaDesdeVigencia(fechaDesde);
@@ -532,13 +580,16 @@ public class InterfazAlimentacionSaludable {
         }
     }
 
-    public static Profesional buscarProfesionalConsulta(SistemaAlimentacionSaludable sistema, String nombreProfesional) {
+    public static Profesional buscarProfesionalConsulta(SistemaAlimentacionSaludable sistema, 
+            String nombreProfesional) {
+        
         Profesional profesionalSistema = null;
         boolean encontreProfesional = false;
 
         for (int i = 0; i < sistema.getListaProfesionales().size() && !encontreProfesional; i++) {
             Profesional profesional = sistema.getListaProfesionales().get(i);
-            String nombreProfesionalSistema = profesional.getPrimerNombre() + " " + profesional.getPrimerApellido();
+            String nombreProfesionalSistema = profesional.getPrimerNombre() + " " +
+                    profesional.getPrimerApellido();
 
             if (nombreProfesionalSistema.trim().equals(nombreProfesional.trim())) {
                 encontreProfesional = true;
@@ -579,12 +630,15 @@ public class InterfazAlimentacionSaludable {
         return modeloTablaConsultas;
     }
 
-    public static boolean altaUsuarioOK(SistemaAlimentacionSaludable sistema, String datosUsuarioAIngresar) {
+    public static boolean altaUsuarioOK(SistemaAlimentacionSaludable sistema, 
+            String datosUsuarioAIngresar) {
+        
         boolean usuarioSePuedeIngresar = true;
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && usuarioSePuedeIngresar; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " +
+                    usuarioSistema.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosUsuarioAIngresar.trim())) {
                 usuarioSePuedeIngresar = false;
@@ -594,12 +648,15 @@ public class InterfazAlimentacionSaludable {
         return usuarioSePuedeIngresar;
     }
 
-    public static boolean altaProfesionalOK(SistemaAlimentacionSaludable sistema, String datosProfesionalAIngresar) {
+    public static boolean altaProfesionalOK(SistemaAlimentacionSaludable sistema, 
+            String datosProfesionalAIngresar) {
+        
         boolean profesionalSePuedeIngresar = true;
 
         for (int i = 0; i < sistema.getListaProfesionales().size() && profesionalSePuedeIngresar; i++) {
             Profesional profesionalSistema = sistema.getListaProfesionales().get(i);
-            String datosProfesionalSistema = profesionalSistema.getPrimerNombre() + " " + profesionalSistema.getPrimerApellido();
+            String datosProfesionalSistema = profesionalSistema.getPrimerNombre() + " " +
+                    profesionalSistema.getPrimerApellido();
 
             if (datosProfesionalSistema.trim().equals(datosProfesionalAIngresar.trim())) {
                 profesionalSePuedeIngresar = false;
@@ -609,7 +666,9 @@ public class InterfazAlimentacionSaludable {
         return profesionalSePuedeIngresar;
     }
 
-    public static boolean altaAlimentoOK(SistemaAlimentacionSaludable sistema, String datosAlimentoAIngresar) {
+    public static boolean altaAlimentoOK(SistemaAlimentacionSaludable sistema, 
+            String datosAlimentoAIngresar) {
+        
         boolean alimentoSePuedeIngresar = true;
 
         for (int i = 0; i < sistema.getListaAlimentos().size() && alimentoSePuedeIngresar; i++) {
@@ -624,7 +683,9 @@ public class InterfazAlimentacionSaludable {
         return alimentoSePuedeIngresar;
     }
 
-    public static Alimento buscarAlimento(SistemaAlimentacionSaludable sistema, String nombreAlimento) {
+    public static Alimento buscarAlimento(SistemaAlimentacionSaludable sistema, 
+            String nombreAlimento) {
+        
         Alimento alimento = null;
         boolean encontreAlimento = false;
 
@@ -651,7 +712,8 @@ public class InterfazAlimentacionSaludable {
 
             Ingesta ingesta = ingestasDeUsuario.get(i);
             Date fechaIngesta = ingesta.getFechaIngesta();
-            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
+            String fechaIngestaSimpleFormat = 
+                    new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
             objectConsulta[0] = fechaIngestaSimpleFormat;
 
             Alimento alimentoDeIngesta = ingesta.getAlimentoIngerido();
@@ -664,7 +726,8 @@ public class InterfazAlimentacionSaludable {
             int porcionAlimentoIngerido = alimentoDeIngesta.getPorcion();
             objectConsulta[3] = porcionAlimentoIngerido;
 
-            ArrayList<String> listaNutrientesAlimento = alimentoDeIngesta.getListaDeNutrientes();
+            ArrayList<String> listaNutrientesAlimento = 
+                    alimentoDeIngesta.getListaDeNutrientes();
             String nutrientes = "";
 
             for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
@@ -680,13 +743,16 @@ public class InterfazAlimentacionSaludable {
         return modeloTablaConsultas;
     }
 
-    public static ArrayList<Ingesta> buscarUsuarioIngestas(SistemaAlimentacionSaludable sistema, String datosUsuario) {
+    public static ArrayList<Ingesta> buscarUsuarioIngestas(SistemaAlimentacionSaludable sistema, 
+            String datosUsuario) {
+        
         ArrayList<Ingesta> ingestasDeUsuario = new ArrayList<Ingesta>();
         boolean encontreUsuario = false;
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + usuarioSistema.getPrimerApellido();
+            String datosUsuarioSistema = usuarioSistema.getPrimerNombre() + " " + 
+                    usuarioSistema.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
                 encontreUsuario = true;
@@ -697,13 +763,16 @@ public class InterfazAlimentacionSaludable {
         return ingestasDeUsuario;
     }
 
-    public static Usuario buscarUsuario(SistemaAlimentacionSaludable sistema, String datosUsuario) {
+    public static Usuario buscarUsuario(SistemaAlimentacionSaludable sistema, 
+            String datosUsuario) {
+        
         Usuario usuarioSistema = null;
         boolean encontreUsuario = false;
 
         for (int i = 0; i < sistema.getListaUsuarios().size() && !encontreUsuario; i++) {
             Usuario usuario = sistema.getListaUsuarios().get(i);
-            String datosUsuarioSistema = usuario.getPrimerNombre() + " " + usuario.getPrimerApellido();
+            String datosUsuarioSistema = usuario.getPrimerNombre() + " " +
+                    usuario.getPrimerApellido();
 
             if (datosUsuarioSistema.trim().equals(datosUsuario.trim())) {
                 encontreUsuario = true;
@@ -714,7 +783,9 @@ public class InterfazAlimentacionSaludable {
         return usuarioSistema;
     }
 
-    public static int cantidadDeConsultasUsuarioDado(String datosUsuarioSistema, SistemaAlimentacionSaludable sistema) {
+    public static int cantidadDeConsultasUsuarioDado(String datosUsuarioSistema, 
+            SistemaAlimentacionSaludable sistema) {
+        
         int cantConsultas = 0;
 
         Usuario usuario = buscarUsuario(sistema, datosUsuarioSistema);
@@ -724,11 +795,14 @@ public class InterfazAlimentacionSaludable {
         return cantConsultas;
     }
 
-    public static int cantidadPlanesAlimentacionUsuarioDado(SistemaAlimentacionSaludable sistema, String datosUsuarioSistema) {
+    public static int cantidadPlanesAlimentacionUsuarioDado(SistemaAlimentacionSaludable sistema,
+            String datosUsuarioSistema) {
+        
         int cantPlanesDeAlimentacion = 0;
 
         Usuario usuario = buscarUsuario(sistema, datosUsuarioSistema);
-        ArrayList<PlanAlimentacion> listaPlanesDeAlimentacionUsuario = usuario.getListaPlanesDeAlimentacion();
+        ArrayList<PlanAlimentacion> listaPlanesDeAlimentacionUsuario = 
+                usuario.getListaPlanesDeAlimentacion();
         cantPlanesDeAlimentacion = listaPlanesDeAlimentacionUsuario.size();
 
         return cantPlanesDeAlimentacion;
@@ -739,7 +813,8 @@ public class InterfazAlimentacionSaludable {
 
         for (int i = 0; i < sistema.getListaUsuarios().size(); i++) {
             Usuario usuarioSistema = sistema.getListaUsuarios().get(i);
-            ArrayList<Consulta> listaConsultasUsuario = usuarioSistema.getListaConsultasRealizadas();
+            ArrayList<Consulta> listaConsultasUsuario = 
+                    usuarioSistema.getListaConsultasRealizadas();
             cantConsultas = cantConsultas + listaConsultasUsuario.size();
         }
 
@@ -749,7 +824,8 @@ public class InterfazAlimentacionSaludable {
     public static DefaultTableModel cargarJTableIngestasAlimentos(SistemaAlimentacionSaludable sistema,
             DefaultTableModel modeloTablaIngestas, String datosUsuario) {
 
-        ArrayList<Ingesta> ingestasDeUsuario = buscarUsuarioIngestas(sistema, datosUsuario);
+        ArrayList<Ingesta> ingestasDeUsuario = 
+                buscarUsuarioIngestas(sistema, datosUsuario);
 
         for (int i = 0; i < ingestasDeUsuario.size(); i++) {
             Object[] objectIngesta = new Object[7];
@@ -757,7 +833,8 @@ public class InterfazAlimentacionSaludable {
             Ingesta ingestaUsuario = ingestasDeUsuario.get(i);
 
             Date fechaIngesta = ingestaUsuario.getFechaIngesta();
-            String fechaIngestaSimpleFormat = new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
+            String fechaIngestaSimpleFormat = 
+                    new SimpleDateFormat("dd-MM-yyyy").format(fechaIngesta);
             objectIngesta[0] = fechaIngestaSimpleFormat;
 
             String nombreIngesta = ingestaUsuario.getAlimentoIngerido().getNombre();
@@ -767,11 +844,13 @@ public class InterfazAlimentacionSaludable {
             int porcionAlimento = ingestaUsuario.getAlimentoIngerido().getPorcion();
             objectIngesta[3] = porcionAlimento;
 
-            ArrayList<String> listaNutrientesAlimento = ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
+            ArrayList<String> listaNutrientesAlimento = 
+                    ingestaUsuario.getAlimentoIngerido().getListaDeNutrientes();
             String datosListaNutrientesAlimento = "";
 
             for (int j = 0; j < listaNutrientesAlimento.size(); j++) {
-                datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," + listaNutrientesAlimento.get(j);
+                datosListaNutrientesAlimento = datosListaNutrientesAlimento + "," +
+                        listaNutrientesAlimento.get(j);
             }
             objectIngesta[4] = datosListaNutrientesAlimento;
 

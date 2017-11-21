@@ -10,9 +10,6 @@ import static Interfaz.InterfazAlimentacionSaludable.cantidadPlanesAlimentacionU
 import static Interfaz.InterfazAlimentacionSaludable.cargarProfesionalRegistrado;
 import static Interfaz.InterfazAlimentacionSaludable.cargarUsuarioRegistrado;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -20,35 +17,35 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JFramePrincipalAlimentacionSaludable
+ * 21/11/2017
  */
 public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
     //Instancio Sistema Alimentacion Saludable
-    static SistemaAlimentacionSaludable sistemaAlimentacionSaludable = new SistemaAlimentacionSaludable();
-    JInternalFrameRegitroUsuario registroUsuario;
-    JInternalFrameRegitroProfesional registroProfesional;
-    JInternalFrameRegitroDeAlimento registroAlimento;
-    JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido;
-    JInternalFrameConsultaProfesional consultaProfesional;
-    JInternalFrameSugerenciaPlanAlimentacion sugerenciaPlanesDeAlimetacion;
-    JInternalFrameNuevaConsulta registroNuevaConsulta;
-    JInternalFrameSolicitudPlanDeAlimentacion solicitudPlanDeAlimentacion;
-    static ArrayList<String> datosUsuariosSistema;
-    static String datosUsuarioAutenticado;
-    int cantidadConsultasUsuario = 0;
-    int cantidadPlanesDeAlimentacionUsuario = 0;
-    static Border borderJMenuConsultas;
+    private static final SistemaAlimentacionSaludable sistemaAlimentacionSaludable = 
+            new SistemaAlimentacionSaludable();
+    private JInternalFrameRegitroUsuario registroUsuario;
+    private JInternalFrameRegitroProfesional registroProfesional;
+    private JInternalFrameRegitroDeAlimento registroAlimento;
+    private JInternalFrameRegitroDeAlimentoIngeridos registroAlimentoIngerido;
+    private JInternalFrameConsultaProfesional consultaProfesional;
+    private JInternalFrameSugerenciaPlanAlimentacion sugerenciaPlanesDeAlimetacion;
+    private JInternalFrameNuevaConsulta registroNuevaConsulta;
+    private JInternalFrameSolicitudPlanDeAlimentacion solicitudPlanDeAlimentacion;
+    private static ArrayList<String> datosUsuariosSistema;
+    private static String datosUsuarioAutenticado;
+    private int cantidadConsultasUsuario = 0;
+    private int cantidadPlanesDeAlimentacionUsuario = 0;
+    private static Border borderJMenuConsultas;
 
     public JFramePrincipalAlimentacionSaludable() {
         initComponents();
@@ -61,9 +58,11 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
 
         //Se inicia la aplicacion y mostramos un USUARIO AUTENTICADO.
         Usuario inicioSistema = usuarioAutenticadoInicio();
-        datosUsuarioAutenticado = inicioSistema.getPrimerNombre() + " " + inicioSistema.getPrimerApellido();
+        datosUsuarioAutenticado = inicioSistema.getPrimerNombre() + " " + 
+                inicioSistema.getPrimerApellido();
         jMenu8.setIcon(inicioSistema.getFotoPerfil());
-        jMenu8.setText(inicioSistema.getPrimerNombre() + " " + inicioSistema.getPrimerApellido() + space(10));
+        jMenu8.setText(inicioSistema.getPrimerNombre() + " " +
+                inicioSistema.getPrimerApellido() + space(10));
         //INICIO DE SISTEMA - MENU USUARIO AUTENTICADO
         jMenuItem6.setVisible(true);
         jMenuItem8.setVisible(false);
@@ -75,8 +74,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         jMenuItem11.setVisible(false);
         jMenu2.setVisible(false);
         //Cargamos Lista de Usuarios cargados en el Sistema por si se quiere cambiar de Autenticacion
-        datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, jMenu7,
-                jMenu8, jDesktopPane1, listaMenuParametros());
+        datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, 
+                jMenu7, jMenu8, jDesktopPane1, listaMenuParametros());
 
         //Borde de los JMenu
         borderJMenuConsultas = jMenu4.getBorder();
@@ -93,8 +92,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         private ArrayList<JMenu> activarMenuPrincipal;
         private JDesktopPane panelSistema;
 
-        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado, JDesktopPane panel,
-                ArrayList<JMenu> menuPrincipalSistema) {
+        public SeleccionPerfiles(JMenu menuACrearUsuarioAutenticado, 
+                JDesktopPane panel, ArrayList<JMenu> menuPrincipalSistema) {
 
             menuAutenticado = menuACrearUsuarioAutenticado;
             activarMenuPrincipal = menuPrincipalSistema;
@@ -203,7 +202,7 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         return arrayJMenu;
     }
 
-    public void agregarEventosMenu() {
+    public final void agregarEventosMenu() {
         jMenu1.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
         jMenu2.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
         jMenu3.addMouseListener(new HuboSeleccionDeMenu(menuEstadoOriginal()));
@@ -252,8 +251,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
      ********************** CREACION DATOS DE PRUEBA **********************
      **********************************************************************
      */
-    public static void crearDatosPruebaSistemaA(Usuario usuarioA, Profesional profesionalA,
-            Alimento alimentoA, SistemaAlimentacionSaludable sistema) {
+    public static void crearDatosPruebaSistemaA(Usuario usuarioA, 
+            Profesional profesionalA, Alimento alimentoA, 
+            SistemaAlimentacionSaludable sistema) {
 
         //USUARIO A
         usuarioA.setPrimerNombre("Andre");
@@ -287,8 +287,9 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         sistema.agregarRegistroAlimento(alimentoA);
     }
 
-    public static void crearDatosPruebaSistemaB(Usuario usuarioB, Profesional profesionalB,
-            Alimento alimentoB, SistemaAlimentacionSaludable sistema) {
+    public static void crearDatosPruebaSistemaB(Usuario usuarioB, 
+            Profesional profesionalB, Alimento alimentoB, 
+            SistemaAlimentacionSaludable sistema) {
 
         //USUARIO B
         usuarioB.setPrimerNombre("Roberto");
@@ -613,8 +614,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Se agrega el Usuario Registrado al Menú de Usuarios Registrados para tener 
         //su propio pérfil de Usuario
         jMenu7.removeAll();
-        datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, jMenu7,
-                jMenu8, jDesktopPane1, listaMenuParametros());
+        datosUsuariosSistema = cargarUsuarioRegistrado(sistemaAlimentacionSaludable, 
+                jMenu7, jMenu8, jDesktopPane1, listaMenuParametros());
 
         //Se da reset al jDesktopPane contendor principal
         //por si quedan funcionalidades levantadas de otros perfiles
@@ -651,8 +652,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         //Se agrega el Profesional Registrado al Menú de Profesionales Registrados para tener 
         //su propio pérfil de Profesional
         jMenu7.removeAll();
-        datosUsuariosSistema = cargarProfesionalRegistrado(sistemaAlimentacionSaludable, jMenu7,
-                jMenu8, jDesktopPane1, listaMenuParametros());
+        datosUsuariosSistema = cargarProfesionalRegistrado(sistemaAlimentacionSaludable, 
+                jMenu7, jMenu8, jDesktopPane1, listaMenuParametros());
 
         //Se da reset al jDesktopPane contendor principal
         //por si quedan funcionalidades levantadas de otros perfiles
@@ -673,15 +674,17 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        cantidadConsultasUsuario = cantidadDeConsultasUsuarioDado(jMenu8.getText(), sistemaAlimentacionSaludable);
+        cantidadConsultasUsuario = cantidadDeConsultasUsuarioDado(jMenu8.getText(), 
+                sistemaAlimentacionSaludable);
         //El usuario no tiene lista de consultas ingresadas.
         if (cantidadConsultasUsuario == 0) {
-            registroNuevaConsulta = new JInternalFrameNuevaConsulta(sistemaAlimentacionSaludable, jMenu7,
-                    jMenu8, jDesktopPane1);
+            registroNuevaConsulta = new JInternalFrameNuevaConsulta(sistemaAlimentacionSaludable, 
+                    jMenu7, jMenu8, jDesktopPane1);
             jDesktopPane1.add(registroNuevaConsulta);
             registroNuevaConsulta.setVisible(true);
         } else {
-            consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, jMenu7, jMenu8, jDesktopPane1);
+            consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, 
+                    jMenu7, jMenu8, jDesktopPane1);
             jDesktopPane1.add(consultaProfesional);
             consultaProfesional.setVisible(true);
         }
@@ -713,11 +716,13 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-        cantidadPlanesDeAlimentacionUsuario = cantidadPlanesAlimentacionUsuarioDado(sistemaAlimentacionSaludable, jMenu8.getText());
+        cantidadPlanesDeAlimentacionUsuario = 
+                cantidadPlanesAlimentacionUsuarioDado(sistemaAlimentacionSaludable, 
+                        jMenu8.getText());
         //El usuario no tiene lista de planes de alimentacion.
         if (cantidadPlanesDeAlimentacionUsuario == 0) {
-            solicitudPlanDeAlimentacion = new JInternalFrameSolicitudPlanDeAlimentacion(sistemaAlimentacionSaludable, jMenu7,
-                    jMenu8, jDesktopPane1);
+            solicitudPlanDeAlimentacion = new JInternalFrameSolicitudPlanDeAlimentacion(sistemaAlimentacionSaludable, 
+                    jMenu7, jMenu8, jDesktopPane1);
             jDesktopPane1.add(solicitudPlanDeAlimentacion);
             solicitudPlanDeAlimentacion.setVisible(true);
         } else {
@@ -842,7 +847,8 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
             jMenu4.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
             jMenu4.setToolTipText("No hay Consultas de Usuarios para Responder");
         } else {
-            consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, jMenu7, jMenu8, jDesktopPane1);
+            consultaProfesional = new JInternalFrameConsultaProfesional(sistemaAlimentacionSaludable, 
+                    jMenu7, jMenu8, jDesktopPane1);
             jDesktopPane1.add(consultaProfesional);
             consultaProfesional.setVisible(true);
         }
@@ -864,8 +870,10 @@ public class JFramePrincipalAlimentacionSaludable extends javax.swing.JFrame {
         Alimento alimentoPruebaA = new Alimento();
         Alimento alimentoPruebaB = new Alimento();
 
-        crearDatosPruebaSistemaA(usuarioPruebaA, profesionalPruebaA, alimentoPruebaA, sistemaAlimentacionSaludable);
-        crearDatosPruebaSistemaB(usuarioPruebaB, profesionalPruebaB, alimentoPruebaB, sistemaAlimentacionSaludable);
+        crearDatosPruebaSistemaA(usuarioPruebaA, profesionalPruebaA, 
+                alimentoPruebaA, sistemaAlimentacionSaludable);
+        crearDatosPruebaSistemaB(usuarioPruebaB, profesionalPruebaB, 
+                alimentoPruebaB, sistemaAlimentacionSaludable);
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

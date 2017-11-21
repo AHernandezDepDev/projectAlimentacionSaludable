@@ -15,17 +15,20 @@ import javax.swing.border.Border;
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE JInternalFrameSolicitudPlanDeAlimentacion
+ * 21/11/2017
  */
 public class JInternalFrameSolicitudPlanDeAlimentacion extends javax.swing.JInternalFrame {
 
-    SistemaAlimentacionSaludable sistema;
-    JMenu infoMenuUSUARIO;
-    Border campoUsuarioPlanAlimentacion;
-    JDesktopPane panelSistemaPrincipal;
-    JMenu menuAutenticadoSistema;
+    private final SistemaAlimentacionSaludable sistema;
+    private final JMenu infoMenuUSUARIO;
+    private final Border campoUsuarioPlanAlimentacion;
+    private final JDesktopPane panelSistemaPrincipal;
+    private final JMenu menuAutenticadoSistema;
 
-    public JInternalFrameSolicitudPlanDeAlimentacion(SistemaAlimentacionSaludable sistemaAlimentacionSaludable, JMenu menuAutenticado,
-            JMenu infoMenuUsuario, JDesktopPane panelSistema) {
+    public JInternalFrameSolicitudPlanDeAlimentacion(SistemaAlimentacionSaludable sistemaAlimentacionSaludable, 
+            JMenu menuAutenticado, JMenu infoMenuUsuario, 
+            JDesktopPane panelSistema) {
 
         sistema = sistemaAlimentacionSaludable;
         infoMenuUSUARIO = infoMenuUsuario;
@@ -155,7 +158,8 @@ public class JInternalFrameSolicitudPlanDeAlimentacion extends javax.swing.JInte
             planDeAlimentacion.stringPorDefectoDiasPlanAlimentacion();
             
             planDeAlimentacion.setObservaciones(jTextPane1.getText());
-            planDeAlimentacion.setSolicitante(buscarUsuario(sistema, infoMenuUSUARIO.getText()));
+            planDeAlimentacion.setSolicitante(buscarUsuario(sistema, 
+                    infoMenuUSUARIO.getText()));
 
             //Seteamos el contador de ID-PLANdeALIMENTACION
             int proximoIDPlanAlimentacion = tomarUltimoValorContador() + 1;
@@ -164,11 +168,13 @@ public class JInternalFrameSolicitudPlanDeAlimentacion extends javax.swing.JInte
             //Agregar Solicitud de Plan de Alimentacion al SISTEMA
             agregarAListaPlanDeAlimentacionRegistrado(sistema, planDeAlimentacion);
             //Agregar Plan de Alimentacion al USUARIO que lo solicita
-            agregarAListaPlanDeAlimentacionUsuario(sistema, planDeAlimentacion, infoMenuUSUARIO.getText());
+            agregarAListaPlanDeAlimentacionUsuario(sistema, planDeAlimentacion, 
+                    infoMenuUSUARIO.getText());
 
             //Abrimos Inernal Frame Principal con la consulta ya registrada en el Sistema
             JInternalFrameSugerenciaPlanAlimentacion solicitudPlanAlimentacion
-                    = new JInternalFrameSugerenciaPlanAlimentacion(sistema, menuAutenticadoSistema, infoMenuUSUARIO);
+                    = new JInternalFrameSugerenciaPlanAlimentacion(sistema, 
+                            menuAutenticadoSistema, infoMenuUSUARIO);
 
             panelSistemaPrincipal.add(solicitudPlanAlimentacion);
             solicitudPlanAlimentacion.setVisible(true);
@@ -176,7 +182,8 @@ public class JInternalFrameSolicitudPlanDeAlimentacion extends javax.swing.JInte
             this.dispose();
         } else {
             jTextPane1.setBorder(BorderFactory.createLineBorder(Color.RED, 1));
-            jTextPane1.setToolTipText("Ingrese Observaciones para la solicitud del Plan de Alimentación");
+            jTextPane1.setToolTipText("Ingrese Observaciones para la "
+                    + "solicitud del Plan de Alimentación");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -1,10 +1,10 @@
 package Dominio;
 
-import java.util.ArrayList;
-
 /*
  * @author André Hernández  ---- Numero de Estudiante: 193234 
  * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE Consulta
+ * 17/11/2017
  */
 public class Consulta {
 
