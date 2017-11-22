@@ -1,12 +1,15 @@
 package Interfaz;
 
 import Dominio.Alimento;
+import Dominio.CargaDeDatosTest;
 import Dominio.Consulta;
 import Dominio.Ingesta;
 import Dominio.PlanAlimentacion;
 import Dominio.Profesional;
 import Dominio.SistemaAlimentacionSaludable;
 import Dominio.Usuario;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
@@ -31,83 +34,43 @@ import static org.junit.Assert.*;
  * 21/11/2017
  */
 public class InterfazAlimentacionSaludableTest {
-
+    
+    InterfazAlimentacionSaludable expInterfazAlimentacion;
+    SistemaAlimentacionSaludable expSistema;
+    CargaDeDatosTest cargaDeDatos;
+    Usuario expUsuario;
+    Profesional expProfesional;
+    PlanAlimentacion expPlanAlimentacion;
+    Consulta expConsulta;
+    Alimento expAlimento;
+    Ingesta expIngesta;
+    
     public InterfazAlimentacionSaludableTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() {
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
     }
-
+    
     @Before
     public void setUp() {
+        expInterfazAlimentacion = new InterfazAlimentacionSaludable();
+        expSistema = new SistemaAlimentacionSaludable();
+        cargaDeDatos = new CargaDeDatosTest();
+        expUsuario = new Usuario();
+        expProfesional = new Profesional();
+        expPlanAlimentacion = new PlanAlimentacion();
+        expConsulta = new Consulta();
+        expAlimento = new Alimento();
+        expIngesta = new Ingesta();
     }
-
+    
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of creacionJFileChooser method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCreacionJFileChooser() {
-        System.out.println("cargarJListRegistro");
-        JInternalFrame JInternalFrame = null;
-        String expResult = "";
-        String result = InterfazAlimentacionSaludable.creacionJFileChooser(JInternalFrame);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of cargarJListRegistro method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJListRegistro() {
-        System.out.println("cargarJListRegistro");
-        JList lista = null;
-        String nuevoRegistro = "";
-        DefaultListModel modelo = null;
-        InterfazAlimentacionSaludable.cargarJListRegistro(lista, nuevoRegistro, modelo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of existeStringCargadoEnJList method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testExisteStringCargadoEnJList() {
-        System.out.println("existeStringCargadoEnJList");
-        DefaultListModel modelo = null;
-        String stringAIngresar = "";
-        boolean expResult = false;
-        boolean result = InterfazAlimentacionSaludable.existeStringCargadoEnJList(modelo, stringAIngresar);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of datosEnListaAArrayListString method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testDatosEnListaAArrayListString() {
-        System.out.println("datosEnListaAArrayListString");
-        DefaultListModel modelo = null;
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = InterfazAlimentacionSaludable.datosEnListaAArrayListString(modelo);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -116,14 +79,17 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaUsuarioRegistrado() {
-        System.out.println("agregarAListaUsuarioRegistrado");
-        SistemaAlimentacionSaludable sistema = null;
-        Usuario usuarioARegistrar = null;
-        ArrayList<Usuario> expResult = null;
-        ArrayList<Usuario> result = InterfazAlimentacionSaludable.agregarAListaUsuarioRegistrado(sistema, usuarioARegistrar);
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario,
+                expPlanAlimentacion, expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        ArrayList<Usuario> expResult = expSistema.getListaUsuarios();
+        
+        ArrayList<Usuario> result = expInterfazAlimentacion.agregarAListaUsuarioRegistrado(expSistema,
+                expUsuario);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -132,14 +98,16 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaProfesionalRegistrado() {
-        System.out.println("agregarAListaProfesionalRegistrado");
-        SistemaAlimentacionSaludable sistema = null;
-        Profesional usuarioAProfesional = null;
-        ArrayList<Profesional> expResult = null;
-        ArrayList<Profesional> result = InterfazAlimentacionSaludable.agregarAListaProfesionalRegistrado(sistema, usuarioAProfesional);
+        
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        
+        expSistema.agregarRegistroProfesional(expProfesional);
+        
+        ArrayList<Profesional> expResult = expSistema.getListaProfesionales();
+        
+        ArrayList<Profesional> result = expInterfazAlimentacion.agregarAListaProfesionalRegistrado(expSistema,
+                expProfesional);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -148,14 +116,16 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaAlimentoRegistrado() {
-        System.out.println("agregarAListaAlimentoRegistrado");
-        SistemaAlimentacionSaludable sistema = null;
-        Alimento alimentoARegistrar = null;
-        ArrayList<Alimento> expResult = null;
-        ArrayList<Alimento> result = InterfazAlimentacionSaludable.agregarAListaAlimentoRegistrado(sistema, alimentoARegistrar);
+        
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+        
+        expSistema.agregarRegistroAlimento(expAlimento);
+        
+        ArrayList<Alimento> expResult = expSistema.getListaAlimentos();
+        
+        ArrayList<Alimento> result = expInterfazAlimentacion.agregarAListaAlimentoRegistrado(expSistema,
+                expAlimento);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -164,14 +134,17 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaConsultaRegistrada() {
-        System.out.println("agregarAListaConsultaRegistrada");
-        SistemaAlimentacionSaludable sistema = null;
-        Consulta consultaARegistrar = null;
-        ArrayList<Consulta> expResult = null;
-        ArrayList<Consulta> result = InterfazAlimentacionSaludable.agregarAListaConsultaRegistrada(sistema, consultaARegistrar);
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        
+        expSistema.agregarRegistroConsulta(expConsulta);
+        
+        ArrayList<Consulta> expResult = expSistema.getListaConsultas();
+        
+        ArrayList<Consulta> result = expInterfazAlimentacion.agregarAListaConsultaRegistrada(expSistema,
+                expConsulta);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -180,14 +153,17 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaPlanDeAlimentacionRegistrado() {
-        System.out.println("agregarAListaPlanDeAlimentacionRegistrado");
-        SistemaAlimentacionSaludable sistema = null;
-        PlanAlimentacion planAlimentacionARegistrar = null;
-        ArrayList<PlanAlimentacion> expResult = null;
-        ArrayList<PlanAlimentacion> result = InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionRegistrado(sistema, planAlimentacionARegistrar);
+        
+        expPlanAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroPlanDeAlimentacion(expPlanAlimentacion);
+        
+        ArrayList<PlanAlimentacion> expResult = expSistema.getListaPlanesDeAlimentacion();
+        
+        ArrayList<PlanAlimentacion> result = expInterfazAlimentacion.agregarAListaPlanDeAlimentacionRegistrado(expSistema,
+                expPlanAlimentacion);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -196,13 +172,19 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaConsultaUsuario() {
-        System.out.println("agregarAListaConsultaUsuario");
-        SistemaAlimentacionSaludable sistema = null;
-        Consulta consultaARegistrar = null;
-        String datosUsuario = "";
-        InterfazAlimentacionSaludable.agregarAListaConsultaUsuario(sistema, consultaARegistrar, datosUsuario);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        InterfazAlimentacionSaludable.agregarAListaConsultaUsuario(expSistema, expConsulta, datosUsuario);
     }
 
     /**
@@ -211,64 +193,23 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAgregarAListaPlanDeAlimentacionUsuario() {
-        System.out.println("agregarAListaPlanDeAlimentacionUsuario");
-        SistemaAlimentacionSaludable sistema = null;
-        PlanAlimentacion planDeAlimentacionARegistrar = null;
-        String datosUsuario = "";
-        InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionUsuario(sistema, planDeAlimentacionARegistrar, datosUsuario);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of borrarModeloJList method, of class InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testBorrarModeloJList() {
-        System.out.println("borrarModeloJList");
-        JList listaABorrar = null;
-        DefaultListModel modelo = null;
-        InterfazAlimentacionSaludable.borrarModeloJList(listaABorrar, modelo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarUsuarioRegistrado method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarUsuarioRegistrado() {
-        System.out.println("cargarUsuarioRegistrado");
-        SistemaAlimentacionSaludable sistema = null;
-        JMenu menuPefiles = null;
-        JMenu usuarioAutenticado = null;
-        JDesktopPane panelSistema = null;
-        ArrayList<JMenu> listaMenus = null;
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = InterfazAlimentacionSaludable.cargarUsuarioRegistrado(sistema, menuPefiles, usuarioAutenticado, panelSistema, listaMenus);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarProfesionalRegistrado method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarProfesionalRegistrado() {
-        System.out.println("cargarProfesionalRegistrado");
-        SistemaAlimentacionSaludable sistema = null;
-        JMenu menuPefiles = null;
-        JMenu profesionalAutenticado = null;
-        JDesktopPane panelSistema = null;
-        ArrayList<JMenu> listaMenus = null;
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = InterfazAlimentacionSaludable.cargarProfesionalRegistrado(sistema, menuPefiles, profesionalAutenticado, panelSistema, listaMenus);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        
+        expPlanAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        InterfazAlimentacionSaludable.agregarAListaPlanDeAlimentacionUsuario(expSistema,
+                expPlanAlimentacion, datosUsuario);
     }
 
     /**
@@ -277,29 +218,22 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testIngresarIngestasUsuarioAutenticado() {
-        System.out.println("ingresarIngestasUsuarioAutenticado");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuarioAutenticado = "";
-        Ingesta nuevaIngesta = null;
-        InterfazAlimentacionSaludable.ingresarIngestasUsuarioAutenticado(sistema, datosUsuarioAutenticado, nuevaIngesta);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarComboAlimentos method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarComboAlimentos() {
-        System.out.println("cargarComboAlimentos");
-        DefaultComboBoxModel modeloAlimentos = null;
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultComboBoxModel expResult = null;
-        DefaultComboBoxModel result = InterfazAlimentacionSaludable.cargarComboAlimentos(modeloAlimentos, sistema);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+        
+        expIngesta = cargaDeDatos.cargarIngesta(expIngesta, expAlimento);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        InterfazAlimentacionSaludable.ingresarIngestasUsuarioAutenticado(expSistema,
+                datosUsuario, expIngesta);
+        
     }
 
     /**
@@ -308,80 +242,15 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAlimentoDeConsulta() {
-        System.out.println("alimentoDeConsulta");
-        SistemaAlimentacionSaludable sistema = null;
-        String seleccionAlimento = "";
-        Alimento expResult = null;
-        Alimento result = InterfazAlimentacionSaludable.alimentoDeConsulta(sistema, seleccionAlimento);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarJTableConsultas method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTableConsultas() {
-        System.out.println("cargarJTableConsultas");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaConsultas = null;
-        String datosUsuario = "";
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTableConsultas(sistema, modeloTablaConsultas, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarJTablePlanesDeAlimentacion method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTablePlanesDeAlimentacion() {
-        System.out.println("cargarJTablePlanesDeAlimentacion");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaPlanesDeAlimentacion = null;
-        String datosUsuario = "";
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTablePlanesDeAlimentacion(sistema, modeloTablaPlanesDeAlimentacion, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarJTableConsultasTodosUsuarios method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTableConsultasTodosUsuarios() {
-        System.out.println("cargarJTableConsultasTodosUsuarios");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaConsultas = null;
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTableConsultasTodosUsuarios(sistema, modeloTablaConsultas);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarJTablePlanesAlimentacionTodosUsuarios method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTablePlanesAlimentacionTodosUsuarios() {
-        System.out.println("cargarJTablePlanesAlimentacionTodosUsuarios");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaPlanesDeAlimentacion = null;
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTablePlanesAlimentacionTodosUsuarios(sistema, modeloTablaPlanesDeAlimentacion);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+        String seleccionAlimento = expAlimento.getNombre();
+        
+        expSistema.agregarRegistroAlimento(expAlimento);
+        
+        Alimento result = InterfazAlimentacionSaludable.alimentoDeConsulta(expSistema,
+                seleccionAlimento);
+        assertEquals(expAlimento, result);
     }
 
     /**
@@ -390,14 +259,21 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testBuscarUsuarioConsultas() {
-        System.out.println("buscarUsuarioConsultas");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuario = "";
-        ArrayList<Consulta> expResult = null;
-        ArrayList<Consulta> result = InterfazAlimentacionSaludable.buscarUsuarioConsultas(sistema, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        ArrayList<Consulta> listaConsultas = expUsuario.getListaConsultasRealizadas();
+        
+        ArrayList<Consulta> result = InterfazAlimentacionSaludable.
+                buscarUsuarioConsultas(expSistema, datosUsuario);
+        assertEquals(listaConsultas, result);
     }
 
     /**
@@ -406,27 +282,21 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testBuscarUsuarioPlanesDeAlimentacion() {
-        System.out.println("buscarUsuarioPlanesDeAlimentacion");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuario = "";
-        ArrayList<PlanAlimentacion> expResult = null;
-        ArrayList<PlanAlimentacion> result = InterfazAlimentacionSaludable.buscarUsuarioPlanesDeAlimentacion(sistema, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of limpiarTablaConsultas method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testLimpiarTablaConsultas() {
-        System.out.println("limpiarTablaConsultas");
-        JTable tabla = null;
-        InterfazAlimentacionSaludable.limpiarTablaConsultas(tabla);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expPlanAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expPlanAlimentacion,
+                expConsulta);
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = expUsuario.getListaPlanesDeAlimentacion();
+        
+        ArrayList<PlanAlimentacion> result = InterfazAlimentacionSaludable.
+                buscarUsuarioPlanesDeAlimentacion(expSistema, datosUsuario);
+        assertEquals(listaPlanesDeAlimentacion, result);
     }
 
     /**
@@ -434,14 +304,16 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testGuardarRespuesta() {
-        System.out.println("guardarRespuesta");
-        SistemaAlimentacionSaludable sistema = null;
+        
         int idConsulta = 0;
-        String respuestaProfesional = "";
-        String nombreProfesional = "";
-        InterfazAlimentacionSaludable.guardarRespuesta(sistema, idConsulta, respuestaProfesional, nombreProfesional);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String respuestaProfesional = "Respuesta Profesional";
+        
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        String nombreProfesional = expProfesional.getPrimerNombre() + " "
+                + expProfesional.getPrimerApellido();
+        
+        InterfazAlimentacionSaludable.guardarRespuesta(expSistema, idConsulta,
+                respuestaProfesional, nombreProfesional);
     }
 
     /**
@@ -450,16 +322,23 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testInfoPlanAlimentacionLunesAJueves() {
-        System.out.println("infoPlanAlimentacionLunesAJueves");
-        String planAlimentacionLunes = "";
-        String planAlimentacionMartes = "";
-        String planAlimentacionMiercoles = "";
-        String planAlimentacionJueves = "";
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = InterfazAlimentacionSaludable.infoPlanAlimentacionLunesAJueves(planAlimentacionLunes, planAlimentacionMartes, planAlimentacionMiercoles, planAlimentacionJueves);
+        
+        String planAlimentacionLunes = "Info Lunes";
+        String planAlimentacionMartes = "Info Martes";
+        String planAlimentacionMiercoles = "Info Miercoles";
+        String planAlimentacionJueves = "Info Jueves";
+        
+        ArrayList<String> expResult = new ArrayList<String>();
+        expResult.add(planAlimentacionLunes);
+        expResult.add(planAlimentacionMartes);
+        expResult.add(planAlimentacionMiercoles);
+        expResult.add(planAlimentacionJueves);
+        
+        ArrayList<String> result = InterfazAlimentacionSaludable.
+                infoPlanAlimentacionLunesAJueves(planAlimentacionLunes,
+                        planAlimentacionMartes, planAlimentacionMiercoles,
+                        planAlimentacionJueves);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -468,15 +347,20 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testInfoPlanAlimentacionViernesADomingo() {
-        System.out.println("infoPlanAlimentacionViernesADomingo");
-        String planAlimentacionViernes = "";
-        String planAlimentacionSabado = "";
-        String planAlimentacionDomingo = "";
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = InterfazAlimentacionSaludable.infoPlanAlimentacionViernesADomingo(planAlimentacionViernes, planAlimentacionSabado, planAlimentacionDomingo);
+        
+        String planAlimentacionViernes = "Info Viernes";
+        String planAlimentacionSabado = "Info Sabado";
+        String planAlimentacionDomingo = "Info Domingo";
+        
+        ArrayList<String> expResult = new ArrayList<String>();
+        expResult.add(planAlimentacionViernes);
+        expResult.add(planAlimentacionSabado);
+        expResult.add(planAlimentacionDomingo);
+        
+        ArrayList<String> result = InterfazAlimentacionSaludable.
+                infoPlanAlimentacionViernesADomingo(planAlimentacionViernes,
+                        planAlimentacionSabado, planAlimentacionDomingo);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -485,14 +369,20 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testInfoDiaPlanAlimentacion() {
-        System.out.println("infoDiaPlanAlimentacion");
-        ArrayList<String> infoStringArray = null;
+        
+        ArrayList<String> infoStringArray = new ArrayList<String>();
+        String infoStringArrayDia1 = "Ensalada con arroz";
+        String infoStringArrayDia2 = "Ensalada con papa";
+        String infoStringArrayDia3 = "Ensalada con pollo";
+        infoStringArray.add(infoStringArrayDia1);
+        infoStringArray.add(infoStringArrayDia2);
+        infoStringArray.add(infoStringArrayDia3);
+        
         int posicionDiaPlanAlimentacion = 0;
-        String expResult = "";
-        String result = InterfazAlimentacionSaludable.infoDiaPlanAlimentacion(infoStringArray, posicionDiaPlanAlimentacion);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        String result = InterfazAlimentacionSaludable.
+                infoDiaPlanAlimentacion(infoStringArray, posicionDiaPlanAlimentacion);
+        assertEquals(infoStringArray.get(posicionDiaPlanAlimentacion), result);
     }
 
     /**
@@ -501,13 +391,22 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testGuardarDatosAElavoracionPlanAlimentacion() {
-        System.out.println("guardarDatosAElavoracionPlanAlimentacion");
-        SistemaAlimentacionSaludable sistema = null;
-        int idPlanDeAlimentacion = 0;
-        ArrayList<String> planesAlimentacionLunesAJueves = null;
-        InterfazAlimentacionSaludable.guardarDatosAElavoracionPlanAlimentacion(sistema, idPlanDeAlimentacion, planesAlimentacionLunesAJueves);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        int idPlanDeAlimentacion = 1;
+        
+        ArrayList<String> planesAlimentacionLunesAJueves = new ArrayList<String>();
+        String datosPlanAlimentacionLunes = "Pollo con ensalda y algo de pescado";
+        String datosPlanAlimentacionMartes = "Pollo con ensalda";
+        String datosPlanAlimentacionMiercoles = "Pescado y arroz";
+        String datosPlanAlimentacionJueves = "Pollo con ensalda y algo de pescado";
+        planesAlimentacionLunesAJueves.add(datosPlanAlimentacionLunes);
+        planesAlimentacionLunesAJueves.add(datosPlanAlimentacionMartes);
+        planesAlimentacionLunesAJueves.add(datosPlanAlimentacionMiercoles);
+        planesAlimentacionLunesAJueves.add(datosPlanAlimentacionJueves);
+        
+        InterfazAlimentacionSaludable.
+                guardarDatosAElavoracionPlanAlimentacion(expSistema, idPlanDeAlimentacion,
+                        planesAlimentacionLunesAJueves);
     }
 
     /**
@@ -516,13 +415,20 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testGuardarDatosBElavoracionPlanAlimentacion() {
-        System.out.println("guardarDatosBElavoracionPlanAlimentacion");
-        SistemaAlimentacionSaludable sistema = null;
-        int idPlanDeAlimentacion = 0;
-        ArrayList<String> planesAlimentacionViernesADomingo = null;
-        InterfazAlimentacionSaludable.guardarDatosBElavoracionPlanAlimentacion(sistema, idPlanDeAlimentacion, planesAlimentacionViernesADomingo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        int idPlanDeAlimentacion = 1;
+        
+        ArrayList<String> planesAlimentacionViernesADomingo = new ArrayList<String>();
+        String datosPlanAlimentacionViernes = "Pollo con ensalda y algo de pescado";
+        String datosPlanAlimentacionSabado = "Pollo con ensalda";
+        String datosPlanAlimentacionDomingo = "Pescado y arroz";
+        planesAlimentacionViernesADomingo.add(datosPlanAlimentacionViernes);
+        planesAlimentacionViernesADomingo.add(datosPlanAlimentacionSabado);
+        planesAlimentacionViernesADomingo.add(datosPlanAlimentacionDomingo);
+        
+        InterfazAlimentacionSaludable.
+                guardarDatosBElavoracionPlanAlimentacion(expSistema,
+                        idPlanDeAlimentacion, planesAlimentacionViernesADomingo);
     }
 
     /**
@@ -531,15 +437,30 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testGuardarDatosCElavoracionPlanAlimentacion() {
-        System.out.println("guardarDatosCElavoracionPlanAlimentacion");
-        SistemaAlimentacionSaludable sistema = null;
-        int idPlanDeAlimentacion = 0;
-        String nombreProfesional = "";
+        
+        int idPlanDeAlimentacion = 1;
+        
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        
+        String nombreProfesional = expProfesional.getPrimerNombre() + " "
+                + expProfesional.getPrimerApellido();
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaDesdeStr = "20-Jun-2017";
+        String fechaHastaStr = "27-Jun-2017";
         Date fechaDesde = null;
         Date fechaHasta = null;
-        InterfazAlimentacionSaludable.guardarDatosCElavoracionPlanAlimentacion(sistema, idPlanDeAlimentacion, nombreProfesional, fechaDesde, fechaHasta);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        try {
+            fechaDesde = formatter.parse(fechaDesdeStr);
+            fechaHasta = formatter.parse(fechaHastaStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        InterfazAlimentacionSaludable.
+                guardarDatosCElavoracionPlanAlimentacion(expSistema, idPlanDeAlimentacion,
+                        nombreProfesional, fechaDesde, fechaHasta);
     }
 
     /**
@@ -548,30 +469,16 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testBuscarProfesionalConsulta() {
-        System.out.println("buscarProfesionalConsulta");
-        SistemaAlimentacionSaludable sistema = null;
-        String nombreProfesional = "";
-        Profesional expResult = null;
-        Profesional result = InterfazAlimentacionSaludable.buscarProfesionalConsulta(sistema, nombreProfesional);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarJTableAlimentosIngresados method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTableAlimentosIngresados() {
-        System.out.println("cargarJTableAlimentosIngresados");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaConsultas = null;
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTableAlimentosIngresados(sistema, modeloTablaConsultas);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        String nombreProfesional = expProfesional.getPrimerNombre() + " "
+                + expProfesional.getPrimerApellido();
+        
+        expSistema.agregarRegistroProfesional(expProfesional);
+        
+        Profesional result = InterfazAlimentacionSaludable.
+                buscarProfesionalConsulta(expSistema, nombreProfesional);
+        assertEquals(expProfesional, result);
     }
 
     /**
@@ -579,14 +486,16 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAltaUsuarioOK() {
-        System.out.println("altaUsuarioOK");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuarioAIngresar = "";
-        boolean expResult = false;
-        boolean result = InterfazAlimentacionSaludable.altaUsuarioOK(sistema, datosUsuarioAIngresar);
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        String datosUsuarioAIngresar = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        boolean expResult = true;
+        boolean result = InterfazAlimentacionSaludable.altaUsuarioOK(expSistema,
+                datosUsuarioAIngresar);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -594,14 +503,15 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAltaProfesionalOK() {
-        System.out.println("altaProfesionalOK");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosProfesionalAIngresar = "";
-        boolean expResult = false;
-        boolean result = InterfazAlimentacionSaludable.altaProfesionalOK(sistema, datosProfesionalAIngresar);
+        
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        String datosProfesionalAIngresar = expProfesional.getPrimerNombre() + " "
+                + expProfesional.getPrimerApellido();
+        
+        boolean expResult = true;
+        boolean result = InterfazAlimentacionSaludable.altaProfesionalOK(expSistema,
+                datosProfesionalAIngresar);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -609,14 +519,14 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testAltaAlimentoOK() {
-        System.out.println("altaAlimentoOK");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosAlimentoAIngresar = "";
-        boolean expResult = false;
-        boolean result = InterfazAlimentacionSaludable.altaAlimentoOK(sistema, datosAlimentoAIngresar);
+        
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+        String datosAlimentoAIngresar = expAlimento.getNombre();
+        
+        boolean expResult = true;
+        boolean result = InterfazAlimentacionSaludable.altaAlimentoOK(expSistema,
+                datosAlimentoAIngresar);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -624,31 +534,15 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testBuscarAlimento() {
-        System.out.println("buscarAlimento");
-        SistemaAlimentacionSaludable sistema = null;
-        String nombreAlimento = "";
-        Alimento expResult = null;
-        Alimento result = InterfazAlimentacionSaludable.buscarAlimento(sistema, nombreAlimento);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of cargarJTableAlimentosIngestas method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTableAlimentosIngestas() {
-        System.out.println("cargarJTableAlimentosIngestas");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaConsultas = null;
-        String datosUsuario = "";
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTableAlimentosIngestas(sistema, modeloTablaConsultas, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+        String nombreAlimento = expAlimento.getNombre();
+        
+        expSistema.agregarRegistroAlimento(expAlimento);
+        
+        Alimento result = InterfazAlimentacionSaludable.
+                buscarAlimento(expSistema, nombreAlimento);
+        assertEquals(expAlimento, result);
     }
 
     /**
@@ -657,14 +551,20 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testBuscarUsuarioIngestas() {
-        System.out.println("buscarUsuarioIngestas");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuario = "";
-        ArrayList<Ingesta> expResult = null;
-        ArrayList<Ingesta> result = InterfazAlimentacionSaludable.buscarUsuarioIngestas(sistema, datosUsuario);
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        ArrayList<Ingesta> expResult = expUsuario.getListaAlimentosIngeridos();
+        
+        ArrayList<Ingesta> result = InterfazAlimentacionSaludable.
+                buscarUsuarioIngestas(expSistema, datosUsuario);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -672,14 +572,18 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testBuscarUsuario() {
-        System.out.println("buscarUsuario");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuario = "";
-        Usuario expResult = null;
-        Usuario result = InterfazAlimentacionSaludable.buscarUsuario(sistema, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuario = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        Usuario result = InterfazAlimentacionSaludable.
+                buscarUsuario(expSistema, datosUsuario);
+        assertEquals(expUsuario, result);
     }
 
     /**
@@ -688,14 +592,22 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testCantidadDeConsultasUsuarioDado() {
-        System.out.println("cantidadDeConsultasUsuarioDado");
-        String datosUsuarioSistema = "";
-        SistemaAlimentacionSaludable sistema = null;
-        int expResult = 0;
-        int result = InterfazAlimentacionSaludable.cantidadDeConsultasUsuarioDado(datosUsuarioSistema, sistema);
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuarioSistema = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        int expResult = expUsuario.getListaConsultasRealizadas().size();
+        int result = InterfazAlimentacionSaludable.
+                cantidadDeConsultasUsuarioDado(datosUsuarioSistema, expSistema);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -704,14 +616,22 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testCantidadPlanesAlimentacionUsuarioDado() {
-        System.out.println("cantidadPlanesAlimentacionUsuarioDado");
-        SistemaAlimentacionSaludable sistema = null;
-        String datosUsuarioSistema = "";
-        int expResult = 0;
-        int result = InterfazAlimentacionSaludable.cantidadPlanesAlimentacionUsuarioDado(sistema, datosUsuarioSistema);
+        
+        expPlanAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expPlanAlimentacion,
+                expConsulta);
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        
+        String datosUsuarioSistema = expUsuario.getPrimerNombre() + " "
+                + expUsuario.getPrimerApellido();
+        
+        int expResult = expUsuario.getListaPlanesDeAlimentacion().size();
+        int result = InterfazAlimentacionSaludable.
+                cantidadPlanesAlimentacionUsuarioDado(expSistema, datosUsuarioSistema);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -720,30 +640,20 @@ public class InterfazAlimentacionSaludableTest {
      */
     @Test
     public void testCantidadDeConsultasTodosUsuarios() {
-        System.out.println("cantidadDeConsultasTodosUsuarios");
-        SistemaAlimentacionSaludable sistema = null;
-        int expResult = 0;
-        int result = InterfazAlimentacionSaludable.cantidadDeConsultasTodosUsuarios(sistema);
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expPlanAlimentacion,
+                expConsulta);
+        
+        expSistema.agregarRegistroUsuario(expUsuario);
+        expSistema.agregarRegistroConsulta(expConsulta);
+        
+        int expResult = expSistema.getListaConsultas().size();
+        int result = InterfazAlimentacionSaludable.
+                cantidadDeConsultasTodosUsuarios(expSistema);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of cargarJTableIngestasAlimentos method, of class
-     * InterfazAlimentacionSaludable.
-     */
-    @Test
-    public void testCargarJTableIngestasAlimentos() {
-        System.out.println("cargarJTableIngestasAlimentos");
-        SistemaAlimentacionSaludable sistema = null;
-        DefaultTableModel modeloTablaIngestas = null;
-        String datosUsuario = "";
-        DefaultTableModel expResult = null;
-        DefaultTableModel result = InterfazAlimentacionSaludable.cargarJTableIngestasAlimentos(sistema, modeloTablaIngestas, datosUsuario);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+    
 }
