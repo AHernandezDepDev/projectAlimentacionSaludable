@@ -31,6 +31,7 @@ public class IngestaTest {
     public static void setUpClass() {
     }
     
+    
     @AfterClass
     public static void tearDownClass() {
     }

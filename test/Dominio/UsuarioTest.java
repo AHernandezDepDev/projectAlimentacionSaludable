@@ -1,11 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Dominio;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,29 +13,216 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Usuario
+/*
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE UsuarioTest
+ * 21/11/2017
  */
-public class UsuarioTest {
-    
+public class UsuarioTest extends PersonaTest {
+
+    Usuario expUsuario;
+    Ingesta expIngesta;
+    Alimento expAlimento;
+    Consulta expConsulta;
+    CargaDeDatosTest cargaDeDatos;
+    Profesional expProfesional;
+    PlanAlimentacion expPlanAlimentacion;
+
     public UsuarioTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        expUsuario = new Usuario();
+        cargaDeDatos = new CargaDeDatosTest();
+        expIngesta = new Ingesta();
+        expAlimento = new Alimento();
+        expConsulta = new Consulta();
+        expProfesional = new Profesional();
+        expPlanAlimentacion = new PlanAlimentacion();
     }
-    
+
     @After
     public void tearDown() {
+    }
+
+    /**
+     * Test of getPrimerNombre method, of class Usuario.
+     */
+    @Test
+    public void testGetPrimerNombre() {
+
+        String expResult = "Andre";
+        expUsuario.setPrimerNombre(expResult);
+
+        String result = expUsuario.getPrimerNombre();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getSegundoNombre method, of class Usuario.
+     */
+    @Test
+    public void testGetSegundoNombre() {
+
+        String expResult = "Pepe";
+        expUsuario.setSegundoNombre(expResult);
+
+        String result = expUsuario.getSegundoNombre();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getPrimerApellido method, of class Usuario.
+     */
+    @Test
+    public void testGetPrimerApellido() {
+
+        String expResult = "Hernandez";
+        expUsuario.setPrimerApellido(expResult);
+
+        String result = expUsuario.getPrimerApellido();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getSegundoApellido method, of class Usuario.
+     */
+    @Test
+    public void testGetSegundoApellido() {
+
+        String expResult = "Gonzalez";
+        expUsuario.setSegundoApellido(expResult);
+
+        String result = expUsuario.getSegundoApellido();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getFechaNacimiento method, of class Usuario.
+     */
+    @Test
+    public void testGetFechaNacimiento() {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaNacimientoStr = "20-Jun-1989";
+        Date fechaNacimiento = null;
+
+        try {
+            fechaNacimiento = formatter.parse(fechaNacimientoStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expUsuario.setFechaNacimiento(fechaNacimiento);
+
+        Date result = expUsuario.getFechaNacimiento();
+        assertEquals(fechaNacimiento, result);
+    }
+
+    /**
+     * Test of getFotoPerfil method, of class Usuario.
+     */
+    @Test
+    public void testGetFotoPerfil() {
+
+        ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
+        expUsuario.setFotoPerfil(noPerfil);
+
+        Icon result = expUsuario.getFotoPerfil();
+        assertEquals(noPerfil, result);
+    }
+
+    /**
+     * Test of setPrimerNombre method, of class Usuario.
+     */
+    @Test
+    public void testSetPrimerNombre() {
+
+        String expResult = "Andre";
+
+        expUsuario.setPrimerNombre(expResult);
+    }
+
+    /**
+     * Test of setSegundoNombre method, of class Usuario.
+     */
+    @Test
+    public void testSetSegundoNombre() {
+
+        String expResult = "Pepe";
+
+        expUsuario.setSegundoNombre(expResult);
+    }
+
+    /**
+     * Test of setPrimerApellido method, of class Usuario.
+     */
+    @Test
+    public void testSetPrimerApellido() {
+
+        String expResult = "Hernandez";
+
+        expUsuario.setPrimerApellido(expResult);
+    }
+
+    /**
+     * Test of setSegundoApellido method, of class Usuario.
+     */
+    @Test
+    public void testSetSegundoApellido() {
+
+        String expResult = "Hernandez";
+
+        expUsuario.setSegundoApellido(expResult);
+    }
+
+    /**
+     * Test of setFechaNacimiento method, of class Usuario.
+     */
+    @Test
+    public void testSetFechaNacimiento() {
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaNacimientoStr = "20-Jun-1989";
+        Date fechaNacimiento = null;
+
+        try {
+            fechaNacimiento = formatter.parse(fechaNacimientoStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expUsuario.setFechaNacimiento(fechaNacimiento);
+    }
+
+    /**
+     * Test of setFotoPerfil method, of class Usuario.
+     */
+    @Test
+    public void testSetFotoPerfil() {
+
+        ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
+
+        expUsuario.setFotoPerfil(noPerfil);
+    }
+    
+    /**
+     * Test of ingresarFotoPerfilDefecto method, of class Usuario.
+     */
+    @Test
+    public void ingresarFotoPerfilDefecto() {
+
+        expUsuario.ingresarFotoPerfilDefecto();
     }
 
     /**
@@ -43,13 +230,12 @@ public class UsuarioTest {
      */
     @Test
     public void testGetNacionalidad() {
-        System.out.println("getNacionalidad");
-        Usuario instance = new Usuario();
-        String expResult = "";
-        String result = instance.getNacionalidad();
+
+        String expResult = "Uruguaya";
+        expUsuario.setNacionalidad(expResult);
+
+        String result = expUsuario.getNacionalidad();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -57,13 +243,16 @@ public class UsuarioTest {
      */
     @Test
     public void testGetListaPreferencias() {
-        System.out.println("getListaPreferencias");
-        Usuario instance = new Usuario();
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = instance.getListaPreferencias();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        ArrayList<String> listaPreferencias = new ArrayList<String>();
+        String preferenciaA = "Frutas";
+        String preferenciaB = "Pastas";
+        listaPreferencias.add(preferenciaA);
+        listaPreferencias.add(preferenciaB);
+        expUsuario.setListaPreferencias(listaPreferencias);
+
+        ArrayList<String> result = expUsuario.getListaPreferencias();
+        assertEquals(listaPreferencias, result);
     }
 
     /**
@@ -71,13 +260,16 @@ public class UsuarioTest {
      */
     @Test
     public void testGetListaRestricciones() {
-        System.out.println("getListaRestricciones");
-        Usuario instance = new Usuario();
-        ArrayList<String> expResult = null;
-        ArrayList<String> result = instance.getListaRestricciones();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        ArrayList<String> listaRestricciones = new ArrayList<String>();
+        String restriccionA = "Harina";
+        String restriccionB = "Sal";
+        listaRestricciones.add(restriccionA);
+        listaRestricciones.add(restriccionB);
+        expUsuario.setListaRestricciones(listaRestricciones);
+
+        ArrayList<String> result = expUsuario.getListaRestricciones();
+        assertEquals(listaRestricciones, result);
     }
 
     /**
@@ -85,13 +277,12 @@ public class UsuarioTest {
      */
     @Test
     public void testGetListaAlimentosIngeridos() {
-        System.out.println("getListaAlimentosIngeridos");
-        Usuario instance = new Usuario();
-        ArrayList<Ingesta> expResult = null;
-        ArrayList<Ingesta> result = instance.getListaAlimentosIngeridos();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expIngesta = cargaDeDatos.cargarIngesta(expIngesta, expAlimento);
+        expUsuario.getListaAlimentosIngeridos().add(expIngesta);
+
+        ArrayList<Ingesta> result = expUsuario.getListaAlimentosIngeridos();
+        assertEquals(expUsuario.getListaAlimentosIngeridos(), result);
     }
 
     /**
@@ -99,13 +290,13 @@ public class UsuarioTest {
      */
     @Test
     public void testGetListaConsultasRealizadas() {
-        System.out.println("getListaConsultasRealizadas");
-        Usuario instance = new Usuario();
-        ArrayList<Consulta> expResult = null;
-        ArrayList<Consulta> result = instance.getListaConsultasRealizadas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        expUsuario.getListaConsultasRealizadas().add(expConsulta);
+
+        ArrayList<Consulta> result = expUsuario.getListaConsultasRealizadas();
+        assertEquals(expUsuario.getListaConsultasRealizadas(), result);
     }
 
     /**
@@ -113,13 +304,13 @@ public class UsuarioTest {
      */
     @Test
     public void testGetListaPlanesDeAlimentacion() {
-        System.out.println("getListaPlanesDeAlimentacion");
-        Usuario instance = new Usuario();
-        ArrayList<PlanAlimentacion> expResult = null;
-        ArrayList<PlanAlimentacion> result = instance.getListaPlanesDeAlimentacion();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expPlanAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expPlanAlimentacion,
+                expConsulta);
+        expUsuario.getListaPlanesDeAlimentacion().add(expPlanAlimentacion);
+
+        ArrayList<PlanAlimentacion> result = expUsuario.getListaPlanesDeAlimentacion();
+        assertEquals(expUsuario.getListaPlanesDeAlimentacion(), result);
     }
 
     /**
@@ -127,12 +318,10 @@ public class UsuarioTest {
      */
     @Test
     public void testSetNacionalidad() {
-        System.out.println("setNacionalidad");
-        String nacionalidad = "";
-        Usuario instance = new Usuario();
-        instance.setNacionalidad(nacionalidad);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String expResult = "Uruguaya";
+
+        expUsuario.setNacionalidad(expResult);
     }
 
     /**
@@ -140,12 +329,14 @@ public class UsuarioTest {
      */
     @Test
     public void testSetListaPreferencias() {
-        System.out.println("setListaPreferencias");
-        ArrayList<String> listaPreferencias = null;
-        Usuario instance = new Usuario();
-        instance.setListaPreferencias(listaPreferencias);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        ArrayList<String> listaPreferencias = new ArrayList<String>();
+        String preferenciaA = "Frutas";
+        String preferenciaB = "Pastas";
+        listaPreferencias.add(preferenciaA);
+        listaPreferencias.add(preferenciaB);
+        expUsuario.setListaPreferencias(listaPreferencias);
+
     }
 
     /**
@@ -153,12 +344,13 @@ public class UsuarioTest {
      */
     @Test
     public void testSetListaRestricciones() {
-        System.out.println("setListaRestricciones");
-        ArrayList<String> listaRestricciones = null;
-        Usuario instance = new Usuario();
-        instance.setListaRestricciones(listaRestricciones);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        ArrayList<String> listaRestricciones = new ArrayList<String>();
+        String restriccionA = "Harina";
+        String restriccionB = "Sal";
+        listaRestricciones.add(restriccionA);
+        listaRestricciones.add(restriccionB);
+        expUsuario.setListaRestricciones(listaRestricciones);
     }
 
     /**
@@ -166,12 +358,11 @@ public class UsuarioTest {
      */
     @Test
     public void testSetListaAlimentosIngeridos() {
-        System.out.println("setListaAlimentosIngeridos");
-        ArrayList<Ingesta> listaAlimentosIngeridos = null;
-        Usuario instance = new Usuario();
-        instance.setListaAlimentosIngeridos(listaAlimentosIngeridos);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expIngesta = cargaDeDatos.cargarIngesta(expIngesta, expAlimento);
+
+        expUsuario.getListaAlimentosIngeridos().add(expIngesta);
+
     }
 
     /**
@@ -179,12 +370,11 @@ public class UsuarioTest {
      */
     @Test
     public void testSetListaConsultasRealizadas() {
-        System.out.println("setListaConsultasRealizadas");
-        ArrayList<Consulta> listaConsultasRealizadas = null;
-        Usuario instance = new Usuario();
-        instance.setListaConsultasRealizadas(listaConsultasRealizadas);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+
+        expUsuario.getListaConsultasRealizadas().add(expConsulta);
     }
 
     /**
@@ -192,12 +382,12 @@ public class UsuarioTest {
      */
     @Test
     public void testSetListaPlanesDeAlimentacion() {
-        System.out.println("setListaPlanesDeAlimentacion");
-        ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = null;
-        Usuario instance = new Usuario();
-        instance.setListaPlanesDeAlimentacion(listaPlanesDeAlimentacion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expPlanAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expPlanAlimentacion,
+                expConsulta);
+
+        expUsuario.getListaPlanesDeAlimentacion().add(expPlanAlimentacion);
+
     }
-    
+
 }

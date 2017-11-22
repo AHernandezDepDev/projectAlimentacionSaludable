@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Dominio;
 
 import java.util.ArrayList;
@@ -13,27 +8,44 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Usuario
+/*
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE SistemaAlimentacionSaludableTest
+ * 21/11/2017
  */
 public class SistemaAlimentacionSaludableTest {
-    
+
+    SistemaAlimentacionSaludable expSistema;
+    Usuario expUsuario;
+    Profesional expProfesional;
+    Alimento expAlimento;
+    Consulta expConsulta;
+    PlanAlimentacion expAlimentacion;
+    CargaDeDatosTest cargaDeDatos;
+
     public SistemaAlimentacionSaludableTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        expSistema = new SistemaAlimentacionSaludable();
+        expUsuario = new Usuario();
+        expProfesional = new Profesional();
+        expAlimento = new Alimento();
+        expConsulta = new Consulta();
+        expAlimentacion = new PlanAlimentacion();
+        cargaDeDatos = new CargaDeDatosTest();
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -43,27 +55,29 @@ public class SistemaAlimentacionSaludableTest {
      */
     @Test
     public void testGetListaUsuarios() {
-        System.out.println("getListaUsuarios");
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        ArrayList<Usuario> expResult = null;
-        ArrayList<Usuario> result = instance.getListaUsuarios();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expAlimentacion,
+                expConsulta);
+
+        expSistema.getListaUsuarios().add(expUsuario);
+
+        ArrayList<Usuario> result = expSistema.getListaUsuarios();
+        assertEquals(expSistema.getListaUsuarios(), result);
     }
 
     /**
-     * Test of getListaProfesionales method, of class SistemaAlimentacionSaludable.
+     * Test of getListaProfesionales method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testGetListaProfesionales() {
-        System.out.println("getListaProfesionales");
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        ArrayList<Profesional> expResult = null;
-        ArrayList<Profesional> result = instance.getListaProfesionales();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+
+        expSistema.getListaProfesionales().add(expProfesional);
+
+        ArrayList<Profesional> result = expSistema.getListaProfesionales();
+        assertEquals(expSistema.getListaProfesionales(), result);
     }
 
     /**
@@ -71,13 +85,13 @@ public class SistemaAlimentacionSaludableTest {
      */
     @Test
     public void testGetListaAlimentos() {
-        System.out.println("getListaAlimentos");
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        ArrayList<Alimento> expResult = null;
-        ArrayList<Alimento> result = instance.getListaAlimentos();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+
+        expSistema.getListaAlimentos().add(expAlimento);
+
+        ArrayList<Alimento> result = expSistema.getListaAlimentos();
+        assertEquals(expSistema.getListaAlimentos(), result);
     }
 
     /**
@@ -85,27 +99,29 @@ public class SistemaAlimentacionSaludableTest {
      */
     @Test
     public void testGetListaConsultas() {
-        System.out.println("getListaConsultas");
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        ArrayList<Consulta> expResult = null;
-        ArrayList<Consulta> result = instance.getListaConsultas();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+
+        expSistema.getListaConsultas().add(expConsulta);
+
+        ArrayList<Consulta> result = expSistema.getListaConsultas();
+        assertEquals(expSistema.getListaConsultas(), result);
     }
 
     /**
-     * Test of getListaPlanesDeAlimentacion method, of class SistemaAlimentacionSaludable.
+     * Test of getListaPlanesDeAlimentacion method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testGetListaPlanesDeAlimentacion() {
-        System.out.println("getListaPlanesDeAlimentacion");
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        ArrayList<PlanAlimentacion> expResult = null;
-        ArrayList<PlanAlimentacion> result = instance.getListaPlanesDeAlimentacion();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expAlimentacion, expConsulta);
+
+        expSistema.getListaPlanesDeAlimentacion().add(expAlimentacion);
+
+        ArrayList<PlanAlimentacion> result = expSistema.getListaPlanesDeAlimentacion();
+        assertEquals(expSistema.getListaPlanesDeAlimentacion(), result);
     }
 
     /**
@@ -113,25 +129,29 @@ public class SistemaAlimentacionSaludableTest {
      */
     @Test
     public void testSetListaUsuarios() {
-        System.out.println("setListaUsuarios");
-        ArrayList<Usuario> listaUsuarios = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.setListaUsuarios(listaUsuarios);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+        
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expAlimentacion,
+                expConsulta);
+        listaUsuarios.add(expUsuario);
+        
+        expSistema.setListaUsuarios(listaUsuarios);
     }
 
     /**
-     * Test of setListaProfesionales method, of class SistemaAlimentacionSaludable.
+     * Test of setListaProfesionales method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testSetListaProfesionales() {
-        System.out.println("setListaProfesionales");
-        ArrayList<Profesional> listaProfesionales = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.setListaProfesionales(listaProfesionales);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        ArrayList<Profesional> listaProfesionales = new ArrayList<Profesional>();
+        
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        listaProfesionales.add(expProfesional);
+
+        expSistema.setListaProfesionales(listaProfesionales);
     }
 
     /**
@@ -139,12 +159,13 @@ public class SistemaAlimentacionSaludableTest {
      */
     @Test
     public void testSetListaAlimentos() {
-        System.out.println("setListaAlimentos");
-        ArrayList<Alimento> listaAlimentos = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.setListaAlimentos(listaAlimentos);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        ArrayList<Alimento> listaAlimentos = new ArrayList<Alimento>();
+
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+        listaAlimentos.add(expAlimento);
+        
+        expSistema.setListaAlimentos(listaAlimentos);
     }
 
     /**
@@ -152,90 +173,92 @@ public class SistemaAlimentacionSaludableTest {
      */
     @Test
     public void testSetListaConsultas() {
-        System.out.println("setListaConsultas");
-        ArrayList<Consulta> listaConsultas = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.setListaConsultas(listaConsultas);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        ArrayList<Consulta> listaConsultas = new ArrayList<Consulta>();
+        
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+        listaConsultas.add(expConsulta);
+
+        expSistema.setListaConsultas(listaConsultas);
     }
 
     /**
-     * Test of setListaPlanesDeAlimentacion method, of class SistemaAlimentacionSaludable.
+     * Test of setListaPlanesDeAlimentacion method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testSetListaPlanesDeAlimentacion() {
-        System.out.println("setListaPlanesDeAlimentacion");
-        ArrayList<PlanAlimentacion> listaPlanesDeAlimentacion = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.setListaPlanesDeAlimentacion(listaPlanesDeAlimentacion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        ArrayList<PlanAlimentacion> listaPlanesAlimentacion = new ArrayList<PlanAlimentacion>();
+
+        expAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expAlimentacion, expConsulta);
+        listaPlanesAlimentacion.add(expAlimentacion);
+        
+        expSistema.setListaPlanesDeAlimentacion(listaPlanesAlimentacion);
     }
 
     /**
-     * Test of agregarRegistroUsuario method, of class SistemaAlimentacionSaludable.
+     * Test of agregarRegistroUsuario method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testAgregarRegistroUsuario() {
-        System.out.println("agregarRegistroUsuario");
-        Usuario nuevoUsuario = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.agregarRegistroUsuario(nuevoUsuario);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expAlimentacion,
+                expConsulta);
+
+        expSistema.agregarRegistroUsuario(expUsuario);
     }
 
     /**
-     * Test of agregarRegistroProfesional method, of class SistemaAlimentacionSaludable.
+     * Test of agregarRegistroProfesional method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testAgregarRegistroProfesional() {
-        System.out.println("agregarRegistroProfesional");
-        Profesional nuevoProfesional = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.agregarRegistroProfesional(nuevoProfesional);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+
+        expSistema.agregarRegistroProfesional(expProfesional);
     }
 
     /**
-     * Test of agregarRegistroAlimento method, of class SistemaAlimentacionSaludable.
+     * Test of agregarRegistroAlimento method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testAgregarRegistroAlimento() {
-        System.out.println("agregarRegistroAlimento");
-        Alimento nuevoAlimento = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.agregarRegistroAlimento(nuevoAlimento);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expAlimento = cargaDeDatos.cargarAlimento(expAlimento);
+
+        expSistema.agregarRegistroAlimento(expAlimento);
     }
 
     /**
-     * Test of agregarRegistroConsulta method, of class SistemaAlimentacionSaludable.
+     * Test of agregarRegistroConsulta method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testAgregarRegistroConsulta() {
-        System.out.println("agregarRegistroConsulta");
-        Consulta nuevaConsulta = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.agregarRegistroConsulta(nuevaConsulta);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expConsulta = cargaDeDatos.cargarConsulta(expConsulta, expAlimento,
+                expProfesional, expUsuario);
+
+        expSistema.agregarRegistroConsulta(expConsulta);
     }
 
     /**
-     * Test of agregarRegistroPlanDeAlimentacion method, of class SistemaAlimentacionSaludable.
+     * Test of agregarRegistroPlanDeAlimentacion method, of class
+     * SistemaAlimentacionSaludable.
      */
     @Test
     public void testAgregarRegistroPlanDeAlimentacion() {
-        System.out.println("agregarRegistroPlanDeAlimentacion");
-        PlanAlimentacion nuevoPlanDeAlimentacion = null;
-        SistemaAlimentacionSaludable instance = new SistemaAlimentacionSaludable();
-        instance.agregarRegistroPlanDeAlimentacion(nuevoPlanDeAlimentacion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expAlimentacion = cargaDeDatos.cargarPlanDeAlimentacion(expAlimentacion, 
+                expConsulta);
+
+        expSistema.agregarRegistroPlanDeAlimentacion(expAlimentacion);
     }
-    
+
 }

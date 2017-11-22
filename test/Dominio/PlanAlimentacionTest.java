@@ -1,10 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Dominio;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,27 +11,44 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author Usuario
+/*
+ * @author André Hernández  ---- Numero de Estudiante: 193234 
+ * SEGUNDO OBLIGARORIO      ---- Ingenieria de Software I
+ * CLASE PlanAlimentacionTest
+ * 21/11/2017
  */
 public class PlanAlimentacionTest {
-    
+
+    PlanAlimentacion expResultPlanAlimentacion;
+    CargaDeDatosTest cargaDeDatos;
+    Profesional expProfesional;
+    Usuario expUsuario;
+    Consulta expConsulta;
+    Ingesta expIngesta;
+    Alimento expAlimento;
+
     public PlanAlimentacionTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        expResultPlanAlimentacion = new PlanAlimentacion();
+        cargaDeDatos = new CargaDeDatosTest();
+        expProfesional = new Profesional();
+        expUsuario = new Usuario();
+        expConsulta = new Consulta();
+        expIngesta = new Ingesta();
+        expAlimento = new Alimento();
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -43,13 +58,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetIdPlanAlimentacion() {
-        System.out.println("getIdPlanAlimentacion");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        int expResult = 0;
-        int result = instance.getIdPlanAlimentacion();
+
+        int expResult = 5;
+        expResultPlanAlimentacion.setIdPlanAlimentacion(expResult);
+
+        int result = expResultPlanAlimentacion.getIdPlanAlimentacion();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -57,13 +71,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetPlanCreadoPorProfesional() {
-        System.out.println("getPlanCreadoPorProfesional");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        Profesional expResult = null;
-        Profesional result = instance.getPlanCreadoPorProfesional();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+        expResultPlanAlimentacion.setPlanCreadoPorProfesional(expProfesional);
+
+        Profesional result = expResultPlanAlimentacion.getPlanCreadoPorProfesional();
+        assertEquals(expProfesional, result);
     }
 
     /**
@@ -71,13 +84,13 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetSolicitante() {
-        System.out.println("getSolicitante");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        Usuario expResult = null;
-        Usuario result = instance.getSolicitante();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario,
+                expResultPlanAlimentacion, expConsulta);
+        expResultPlanAlimentacion.setSolicitante(expUsuario);
+
+        Usuario result = expResultPlanAlimentacion.getSolicitante();
+        assertEquals(expUsuario, result);
     }
 
     /**
@@ -85,13 +98,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetObservaciones() {
-        System.out.println("getObservaciones");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getObservaciones();
+
+        String expResult = "Me gustaria un plan de alimentacion en base a comidas frias";
+        expResultPlanAlimentacion.setObservaciones(expResult);
+
+        String result = expResultPlanAlimentacion.getObservaciones();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -99,13 +111,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosLunes() {
-        System.out.println("getListaConsejosLunes");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosLunes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoLunes = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosLunes(consejoLunes);
+
+        String result = expResultPlanAlimentacion.getListaConsejosLunes();
+        assertEquals(consejoLunes, result);
     }
 
     /**
@@ -113,13 +124,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosMartes() {
-        System.out.println("getListaConsejosMartes");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosMartes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoMartes = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosMartes(consejoMartes);
+
+        String result = expResultPlanAlimentacion.getListaConsejosMartes();
+        assertEquals(consejoMartes, result);
     }
 
     /**
@@ -127,13 +137,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosMiercoles() {
-        System.out.println("getListaConsejosMiercoles");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosMiercoles();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoMiercoles = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosMiercoles(consejoMiercoles);
+
+        String result = expResultPlanAlimentacion.getListaConsejosMiercoles();
+        assertEquals(consejoMiercoles, result);
     }
 
     /**
@@ -141,13 +150,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosJueves() {
-        System.out.println("getListaConsejosJueves");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosJueves();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoJueves = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosJueves(consejoJueves);
+
+        String result = expResultPlanAlimentacion.getListaConsejosJueves();
+        assertEquals(consejoJueves, result);
     }
 
     /**
@@ -155,13 +163,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosViernes() {
-        System.out.println("getListaConsejosViernes");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosViernes();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoViernes = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosViernes(consejoViernes);
+
+        String result = expResultPlanAlimentacion.getListaConsejosViernes();
+        assertEquals(consejoViernes, result);
     }
 
     /**
@@ -169,13 +176,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosSabado() {
-        System.out.println("getListaConsejosSabado");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosSabado();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoSabado = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosSabado(consejoSabado);
+
+        String result = expResultPlanAlimentacion.getListaConsejosSabado();
+        assertEquals(consejoSabado, result);
     }
 
     /**
@@ -183,13 +189,12 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetListaConsejosDomingo() {
-        System.out.println("getListaConsejosDomingo");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        String expResult = "";
-        String result = instance.getListaConsejosDomingo();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoDomingo = "10 gramos de pan con mermelada";
+        expResultPlanAlimentacion.setListaConsejosDomingo(consejoDomingo);
+
+        String result = expResultPlanAlimentacion.getListaConsejosDomingo();
+        assertEquals(consejoDomingo, result);
     }
 
     /**
@@ -197,13 +202,21 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetFechaDesdeVigencia() {
-        System.out.println("getFechaDesdeVigencia");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        Date expResult = null;
-        Date result = instance.getFechaDesdeVigencia();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaDesdeVigenciaStr = "20-Jun-2017";
+        Date fechaDesdeVigencia = null;
+
+        try {
+            fechaDesdeVigencia = formatter.parse(fechaDesdeVigenciaStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expResultPlanAlimentacion.setFechaDesdeVigencia(fechaDesdeVigencia);
+
+        Date result = expResultPlanAlimentacion.getFechaDesdeVigencia();
+        assertEquals(fechaDesdeVigencia, result);
     }
 
     /**
@@ -211,13 +224,21 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testGetFechaHastaVigencia() {
-        System.out.println("getFechaHastaVigencia");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        Date expResult = null;
-        Date result = instance.getFechaHastaVigencia();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaHastaVigenciaStr = "20-Jun-2017";
+        Date fechaHastaVigencia = null;
+
+        try {
+            fechaHastaVigencia = formatter.parse(fechaHastaVigenciaStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expResultPlanAlimentacion.setFechaHastaVigencia(fechaHastaVigencia);
+
+        Date result = expResultPlanAlimentacion.getFechaHastaVigencia();
+        assertEquals(fechaHastaVigencia, result);
     }
 
     /**
@@ -225,12 +246,11 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetIdPlanAlimentacion() {
-        System.out.println("setIdPlanAlimentacion");
-        int idPlanAlimentacion = 0;
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setIdPlanAlimentacion(idPlanAlimentacion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        int idPlanAlimentacion = 9;
+        expResultPlanAlimentacion.setIdPlanAlimentacion(idPlanAlimentacion);
+
+        expResultPlanAlimentacion.setIdPlanAlimentacion(idPlanAlimentacion);
     }
 
     /**
@@ -238,12 +258,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetPlanCreadoPorProfesional() {
-        System.out.println("setPlanCreadoPorProfesional");
-        Profesional planCreadoPorProfesional = null;
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setPlanCreadoPorProfesional(planCreadoPorProfesional);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expProfesional = cargaDeDatos.cargarPorfesional(expProfesional);
+
+        expResultPlanAlimentacion.setPlanCreadoPorProfesional(expProfesional);
     }
 
     /**
@@ -251,12 +269,9 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetSolicitante() {
-        System.out.println("setSolicitante");
-        Usuario solicitante = null;
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setSolicitante(solicitante);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        expUsuario = cargaDeDatos.cargarUsuario(expUsuario, expResultPlanAlimentacion, expConsulta);
+        expResultPlanAlimentacion.setSolicitante(expUsuario);
     }
 
     /**
@@ -264,12 +279,9 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetObservaciones() {
-        System.out.println("setObservaciones");
-        String observaciones = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setObservaciones(observaciones);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String observaciones = "Plan de alimentacion en base a lacteos";
+        expResultPlanAlimentacion.setObservaciones(observaciones);
     }
 
     /**
@@ -277,12 +289,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosLunes() {
-        System.out.println("setListaConsejosLunes");
-        String listaConsejosLunes = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosLunes(listaConsejosLunes);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoLunes = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosLunes(consejoLunes);
     }
 
     /**
@@ -290,12 +300,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosMartes() {
-        System.out.println("setListaConsejosMartes");
-        String listaConsejosMartes = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosMartes(listaConsejosMartes);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoMartes = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosMartes(consejoMartes);
     }
 
     /**
@@ -303,12 +311,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosMiercoles() {
-        System.out.println("setListaConsejosMiercoles");
-        String listaConsejosMiercoles = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosMiercoles(listaConsejosMiercoles);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoMiercoles = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosMiercoles(consejoMiercoles);
     }
 
     /**
@@ -316,12 +322,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosJueves() {
-        System.out.println("setListaConsejosJueves");
-        String listaConsejosJueves = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosJueves(listaConsejosJueves);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoJueves = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosJueves(consejoJueves);
     }
 
     /**
@@ -329,12 +333,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosViernes() {
-        System.out.println("setListaConsejosViernes");
-        String listaConsejosViernes = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosViernes(listaConsejosViernes);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoViernes = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosViernes(consejoViernes);
     }
 
     /**
@@ -342,12 +344,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosSabado() {
-        System.out.println("setListaConsejosSabado");
-        String listaConsejosSabado = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosSabado(listaConsejosSabado);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoSabado = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosSabado(consejoSabado);
     }
 
     /**
@@ -355,12 +355,10 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetListaConsejosDomingo() {
-        System.out.println("setListaConsejosDomingo");
-        String listaConsejosDomingo = "";
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setListaConsejosDomingo(listaConsejosDomingo);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        String consejoDomingo = "10 gramos de pan con mermelada";
+
+        expResultPlanAlimentacion.setListaConsejosDomingo(consejoDomingo);
     }
 
     /**
@@ -368,12 +366,17 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetFechaDesdeVigencia() {
-        System.out.println("setFechaDesdeVigencia");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaDesdeVigenciaStr = "20-Jun-2017";
         Date fechaDesdeVigencia = null;
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setFechaDesdeVigencia(fechaDesdeVigencia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        try {
+            fechaDesdeVigencia = formatter.parse(fechaDesdeVigenciaStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expResultPlanAlimentacion.setFechaDesdeVigencia(fechaDesdeVigencia);
     }
 
     /**
@@ -381,24 +384,27 @@ public class PlanAlimentacionTest {
      */
     @Test
     public void testSetFechaHastaVigencia() {
-        System.out.println("setFechaHastaVigencia");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        String fechaHastaVigenciaStr = "20-Jun-2017";
         Date fechaHastaVigencia = null;
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.setFechaHastaVigencia(fechaHastaVigencia);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        try {
+            fechaHastaVigencia = formatter.parse(fechaHastaVigenciaStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        expResultPlanAlimentacion.setFechaHastaVigencia(fechaHastaVigencia);
     }
 
     /**
-     * Test of stringPorDefectoDiasPlanAlimentacion method, of class PlanAlimentacion.
+     * Test of stringPorDefectoDiasPlanAlimentacion method, of class
+     * PlanAlimentacion.
      */
     @Test
     public void testStringPorDefectoDiasPlanAlimentacion() {
-        System.out.println("stringPorDefectoDiasPlanAlimentacion");
-        PlanAlimentacion instance = new PlanAlimentacion();
-        instance.stringPorDefectoDiasPlanAlimentacion();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String stringDefecto = "Sin sugerencia de plan de alimentacion";
+        expResultPlanAlimentacion.stringPorDefectoDiasPlanAlimentacion();
     }
-    
+
 }

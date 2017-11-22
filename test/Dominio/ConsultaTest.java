@@ -123,8 +123,7 @@ public class ConsultaTest {
     public void testGetSolcitante() {
         
         expResultUsuario = cargaDeDatos.cargarUsuario(expResultUsuario, 
-                expResultPlanAlimentacion, consultaJUnit, 
-                expResultAlimento, expResultIngesta);
+                expResultPlanAlimentacion, consultaJUnit);
         
         consultaJUnit.setSolcitante(expResultUsuario);
         
@@ -201,8 +200,7 @@ public class ConsultaTest {
     public void testSetSolcitante() {
        
         expResultUsuario = cargaDeDatos.cargarUsuario(expResultUsuario, 
-                expResultPlanAlimentacion, consultaJUnit, 
-                expResultAlimento, expResultIngesta);
+                expResultPlanAlimentacion, consultaJUnit);
         
         consultaJUnit.setSolcitante(expResultUsuario);
     }
