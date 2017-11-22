@@ -383,8 +383,7 @@ public class JInternalFrameRegitroUsuario extends javax.swing.JInternalFrame {
                 preRegistroUsuario.setFechaNacimiento(jDateChooser1.getDate());
 
                 if (jButton5.getIcon() == null) {
-                    ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
-                    preRegistroUsuario.setFotoPerfil(noPerfil);
+                    preRegistroUsuario.setFotoPerfil(new ImageIcon(getClass().getResource("/Imagenes/noPerfilImagen.png")));
                 } else {
                     preRegistroUsuario.setFotoPerfil(jButton5.getIcon());
                 }

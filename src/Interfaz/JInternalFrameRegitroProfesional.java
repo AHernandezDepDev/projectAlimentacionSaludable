@@ -280,8 +280,7 @@ public class JInternalFrameRegitroProfesional extends javax.swing.JInternalFrame
                 preRegistroProfesional.setPaisObtuvoTitulo(jTextField6.getText());
 
                 if (jButton2.getIcon() == null) {
-                    ImageIcon noPerfil = new ImageIcon("src/Imagenes/noPerfilImagen.png");
-                    preRegistroProfesional.setFotoPerfil(noPerfil);
+                    preRegistroProfesional.setFotoPerfil(new ImageIcon(getClass().getResource("/Imagenes/noPerfilImagen.png")));
                 } else {
                     preRegistroProfesional.setFotoPerfil(jButton2.getIcon());
                 }
